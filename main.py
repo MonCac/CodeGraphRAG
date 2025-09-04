@@ -1,10 +1,9 @@
-import requests
-
-
-def main():
-    print("Hello from codegraphrag!")
-    print(requests.__version__)
-
+#!/usr/bin/env python3
+"""
+Entry point for Graph-Code binary distribution.
+"""
 
 if __name__ == "__main__":
-    main()
+    from codebase_rag.main import app
+
+    app()
