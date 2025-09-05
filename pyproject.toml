@@ -16,4 +16,6 @@ dependencies = [
     "requests>=2.32.5",
     "typer>=0.17.3",
     "toml>=0.10.2",
+    "pydantic-ai>=1.0.0",
+    "diff-match-patch>=20241021",
 ]
