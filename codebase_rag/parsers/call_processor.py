@@ -13,20 +13,21 @@ from ..services.graph_service import MemgraphIngestor
 # No longer need constants import - using Tree-sitter directly
 from .import_processor import ImportProcessor
 from .type_inference import TypeInferenceEngine
+from .python_utils import resolve_class_name
 
 
 class CallProcessor:
     """Handles processing of function and method calls."""
 
     def __init__(
-        self,
-        ingestor: MemgraphIngestor,
-        repo_path: Path,
-        project_name: str,
-        function_registry: Any,
-        import_processor: ImportProcessor,
-        type_inference: TypeInferenceEngine,
-        class_inheritance: dict[str, list[str]],
+            self,
+            ingestor: MemgraphIngestor,
+            repo_path: Path,
+            project_name: str,
+            function_registry: Any,
+            import_processor: ImportProcessor,
+            type_inference: TypeInferenceEngine,
+            class_inheritance: dict[str, list[str]],
     ):
         self.ingestor = ingestor
         self.repo_path = repo_path
@@ -37,7 +38,7 @@ class CallProcessor:
         self.class_inheritance = class_inheritance
 
     def process_calls_in_file(
-        self, file_path: Path, root_node: Node, language: str, queries: dict[str, Any]
+            self, file_path: Path, root_node: Node, language: str, queries: dict[str, Any]
     ) -> None:
         """Process function calls in a specific file using its cached AST."""
         relative_path = file_path.relative_to(self.repo_path)
@@ -60,7 +61,7 @@ class CallProcessor:
             logger.error(f"Failed to process calls in {file_path}: {e}")
 
     def _process_calls_in_functions(
-        self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
+            self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
     ) -> None:
         """Process calls within top-level functions."""
         lang_queries = queries[language]
@@ -94,7 +95,7 @@ class CallProcessor:
                 )
 
     def _process_calls_in_classes(
-        self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
+            self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
     ) -> None:
         """Process calls within class methods."""
         lang_queries = queries[language]
@@ -149,7 +150,7 @@ class CallProcessor:
                 )
 
     def _process_module_level_calls(
-        self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
+            self, root_node: Node, module_qn: str, language: str, queries: dict[str, Any]
     ) -> None:
         """Process top-level calls in the module (like IIFE calls)."""
         # Process calls that are directly at module level, not inside functions/classes
@@ -191,14 +192,14 @@ class CallProcessor:
         return None
 
     def _ingest_function_calls(
-        self,
-        caller_node: Node,
-        caller_qn: str,
-        caller_type: str,
-        module_qn: str,
-        language: str,
-        queries: dict[str, Any],
-        class_context: str | None = None,
+            self,
+            caller_node: Node,
+            caller_qn: str,
+            caller_type: str,
+            module_qn: str,
+            language: str,
+            queries: dict[str, Any],
+            class_context: str | None = None,
     ) -> None:
         """Find and ingest function calls within a caller node."""
         calls_query = queries[language].get("calls")
@@ -271,13 +272,13 @@ class CallProcessor:
             )
 
     def _process_nested_calls_in_node(
-        self,
-        call_node: Node,
-        caller_qn: str,
-        caller_type: str,
-        module_qn: str,
-        local_var_types: dict[str, str] | None,
-        class_context: str | None,
+            self,
+            call_node: Node,
+            caller_qn: str,
+            caller_type: str,
+            module_qn: str,
+            local_var_types: dict[str, str] | None,
+            class_context: str | None,
     ) -> None:
         """Process nested call expressions within a call node's function expression."""
         # Get the function expression of this call
@@ -298,13 +299,13 @@ class CallProcessor:
             )
 
     def _find_and_process_nested_calls(
-        self,
-        node: Node,
-        caller_qn: str,
-        caller_type: str,
-        module_qn: str,
-        local_var_types: dict[str, str] | None,
-        class_context: str | None,
+            self,
+            node: Node,
+            caller_qn: str,
+            caller_type: str,
+            module_qn: str,
+            local_var_types: dict[str, str] | None,
+            class_context: str | None,
     ) -> None:
         """Recursively find and process call expressions in a node tree."""
         # If this node is a call expression, process it
@@ -339,16 +340,16 @@ class CallProcessor:
             )
 
     def _resolve_function_call(
-        self,
-        call_name: str,
-        module_qn: str,
-        local_var_types: dict[str, str] | None = None,
-        class_context: str | None = None,
+            self,
+            call_name: str,
+            module_qn: str,
+            local_var_types: dict[str, str] | None = None,
+            class_context: str | None = None,
     ) -> tuple[str, str] | None:
         """Resolve a function call to its qualified name and type."""
         # Phase -1: Handle IIFE calls specially
         if call_name and (
-            call_name.startswith("iife_func_") or call_name.startswith("iife_arrow_")
+                call_name.startswith("iife_func_") or call_name.startswith("iife_arrow_")
         ):
             # IIFE calls: resolve to the anonymous function in the same module
             iife_qn = f"{module_qn}.{call_name}"
@@ -357,9 +358,9 @@ class CallProcessor:
 
         # Phase 0: Handle super calls specially (JavaScript/TypeScript patterns)
         if (
-            call_name == "super"
-            or call_name.startswith("super.")
-            or call_name.startswith("super()")
+                call_name == "super"
+                or call_name.startswith("super.")
+                or call_name.startswith("super()")
         ):
             return self._resolve_super_call(call_name, module_qn, class_context)
 
@@ -586,109 +587,6 @@ class CallProcessor:
         logger.debug(f"Could not resolve call: {call_name}")
         return None
 
-    def _resolve_builtin_call(self, call_name: str) -> tuple[str, str] | None:
-        """Resolve built-in JavaScript method calls that don't exist in user code."""
-        # Common built-in JavaScript objects and their methods
-        # Check if the call matches any built-in pattern
-        if call_name in self._JS_BUILTIN_PATTERNS:
-            return ("Function", f"builtin.{call_name}")
-
-        # Note: Instance method calls on built-in objects (e.g., myArray.push)
-        # are now handled via type inference in _resolve_function_call
-
-        # Handle JavaScript function binding methods (.bind, .call, .apply)
-        if (
-            call_name.endswith(".bind")
-            or call_name.endswith(".call")
-            or call_name.endswith(".apply")
-        ):
-            # These are special JavaScript method binding calls
-            # Track them as function calls to the binding methods themselves
-            if call_name.endswith(".bind"):
-                return ("Function", "builtin.Function.prototype.bind")
-            elif call_name.endswith(".call"):
-                return ("Function", "builtin.Function.prototype.call")
-            elif call_name.endswith(".apply"):
-                return ("Function", "builtin.Function.prototype.apply")
-
-        # Handle prototype method calls with .call or .apply
-        if ".prototype." in call_name and (
-            call_name.endswith(".call") or call_name.endswith(".apply")
-        ):
-            # Extract the prototype method name without .call/.apply
-            base_call = call_name.rsplit(".", 1)[0]  # Remove .call or .apply
-            return ("Function", base_call)
-
-        return None
-
-    def _resolve_cpp_operator_call(
-        self, call_name: str, module_qn: str
-    ) -> tuple[str, str] | None:
-        """Resolve C++ operator calls to built-in operator functions."""
-        if not call_name.startswith("operator"):
-            return None
-
-        # Map C++ operators to standardized function names
-        cpp_operators = {
-            "operator_plus": "builtin.cpp.operator_plus",
-            "operator_minus": "builtin.cpp.operator_minus",
-            "operator_multiply": "builtin.cpp.operator_multiply",
-            "operator_divide": "builtin.cpp.operator_divide",
-            "operator_modulo": "builtin.cpp.operator_modulo",
-            "operator_equal": "builtin.cpp.operator_equal",
-            "operator_not_equal": "builtin.cpp.operator_not_equal",
-            "operator_less": "builtin.cpp.operator_less",
-            "operator_greater": "builtin.cpp.operator_greater",
-            "operator_less_equal": "builtin.cpp.operator_less_equal",
-            "operator_greater_equal": "builtin.cpp.operator_greater_equal",
-            "operator_assign": "builtin.cpp.operator_assign",
-            "operator_plus_assign": "builtin.cpp.operator_plus_assign",
-            "operator_minus_assign": "builtin.cpp.operator_minus_assign",
-            "operator_multiply_assign": "builtin.cpp.operator_multiply_assign",
-            "operator_divide_assign": "builtin.cpp.operator_divide_assign",
-            "operator_modulo_assign": "builtin.cpp.operator_modulo_assign",
-            "operator_increment": "builtin.cpp.operator_increment",
-            "operator_decrement": "builtin.cpp.operator_decrement",
-            "operator_left_shift": "builtin.cpp.operator_left_shift",
-            "operator_right_shift": "builtin.cpp.operator_right_shift",
-            "operator_bitwise_and": "builtin.cpp.operator_bitwise_and",
-            "operator_bitwise_or": "builtin.cpp.operator_bitwise_or",
-            "operator_bitwise_xor": "builtin.cpp.operator_bitwise_xor",
-            "operator_bitwise_not": "builtin.cpp.operator_bitwise_not",
-            "operator_logical_and": "builtin.cpp.operator_logical_and",
-            "operator_logical_or": "builtin.cpp.operator_logical_or",
-            "operator_logical_not": "builtin.cpp.operator_logical_not",
-            "operator_subscript": "builtin.cpp.operator_subscript",
-            "operator_call": "builtin.cpp.operator_call",
-        }
-
-        if call_name in cpp_operators:
-            return ("Function", cpp_operators[call_name])
-
-        # Handle custom/overloaded operators in the same module
-        # Try to find a matching operator definition
-        possible_matches = self.function_registry.find_ending_with(call_name)
-        if possible_matches:
-            # Prefer operators from the same module
-            same_module_ops = [
-                qn
-                for qn in possible_matches
-                if qn.startswith(module_qn) and call_name in qn
-            ]
-            if same_module_ops:
-                # Sort to ensure deterministic selection, preferring shorter QNs
-                same_module_ops.sort(key=lambda qn: (len(qn), qn))
-                best_candidate = same_module_ops[0]
-                return (self.function_registry[best_candidate], best_candidate)
-
-            # Fallback to any matching operator
-            # Sort to ensure deterministic selection
-            possible_matches.sort(key=lambda qn: (len(qn), qn))
-            best_candidate = possible_matches[0]
-            return (self.function_registry[best_candidate], best_candidate)
-
-        return None
-
     def _is_method_chain(self, call_name: str) -> bool:
         """Check if this appears to be a method chain with parentheses (not just obj.method)."""
         # Look for patterns like: obj.method().other_method or obj.method("arg").other_method
@@ -701,10 +599,10 @@ class CallProcessor:
         return False
 
     def _resolve_chained_call(
-        self,
-        call_name: str,
-        module_qn: str,
-        local_var_types: dict[str, str] | None = None,
+            self,
+            call_name: str,
+            module_qn: str,
+            local_var_types: dict[str, str] | None = None,
     ) -> tuple[str, str] | None:
         """Resolve chained method calls like obj.method().other_method()."""
         # For chained calls like "processed_user.update_name('Updated').clone"
@@ -762,7 +660,7 @@ class CallProcessor:
         return None
 
     def _resolve_super_call(
-        self, call_name: str, module_qn: str, class_context: str | None = None
+            self, call_name: str, module_qn: str, class_context: str | None = None
     ) -> tuple[str, str] | None:
         """Resolve super calls to parent class methods (JavaScript/TypeScript patterns)."""
         # Extract method name from super call
@@ -813,7 +711,7 @@ class CallProcessor:
         return None
 
     def _resolve_inherited_method(
-        self, class_qn: str, method_name: str
+            self, class_qn: str, method_name: str
     ) -> tuple[str, str] | None:
         """Resolve a method by looking up the inheritance chain."""
         # Check if we have inheritance information for this class
@@ -845,7 +743,7 @@ class CallProcessor:
         return None
 
     def _calculate_import_distance(
-        self, candidate_qn: str, caller_module_qn: str
+            self, candidate_qn: str, caller_module_qn: str
     ) -> int:
         """
         Calculate the 'distance' between a candidate function and the calling module.
@@ -878,11 +776,11 @@ class CallProcessor:
         )
 
     def _build_nested_qualified_name(
-        self,
-        func_node: Node,
-        module_qn: str,
-        func_name: str,
-        lang_config: LanguageConfig,
+            self,
+            func_node: Node,
+            module_qn: str,
+            func_name: str,
+            lang_config: LanguageConfig,
     ) -> str | None:
         """Build qualified name for nested functions."""
         path_parts = []
@@ -925,10 +823,10 @@ class CallProcessor:
         return False
 
     def _resolve_java_method_call(
-        self,
-        call_node: Node,
-        module_qn: str,
-        local_var_types: dict[str, str],
+            self,
+            call_node: Node,
+            module_qn: str,
+            local_var_types: dict[str, str],
     ) -> tuple[str, str] | None:
         """Resolve Java method calls using the JavaTypeInferenceEngine."""
         # Get the Java type inference engine from the main type inference engine
