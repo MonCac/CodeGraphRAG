@@ -1,14 +1,9 @@
 """Definition processor for extracting functions, classes and methods."""
 
-import json
-import re
-import textwrap
-import xml.etree.ElementTree as ET
 from collections import deque
 from pathlib import Path
 from typing import Any
 
-import toml
 from loguru import logger
 from tree_sitter import Node, Query, QueryCursor
 
