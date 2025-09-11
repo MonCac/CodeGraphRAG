@@ -22,8 +22,6 @@ from rich.panel import Panel
 from rich.text import Text
 
 
-
-
 from .config import (
     EDIT_INDICATORS,
     EDIT_REQUEST_KEYWORDS,
