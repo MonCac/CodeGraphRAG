@@ -102,7 +102,7 @@ class AppConfig(BaseSettings):
         if self._active_orchestrator_model:
             return self._active_orchestrator_model
         # Default fallback to Gemini
-        return self.GEMINI_MODEL_ID
+        return self.LOCAL_ORCHESTRATOR_MODEL_ID
 
     @property
     def active_cypher_model(self) -> str:
@@ -110,7 +110,7 @@ class AppConfig(BaseSettings):
         if self._active_cypher_model:
             return self._active_cypher_model
         # Default fallback to Gemini
-        return self.MODEL_CYPHER_ID
+        return self.LOCAL_CYPHER_MODEL_ID
 
     def set_orchestrator_model(self, model: str) -> None:
         """Set the active orchestrator model."""

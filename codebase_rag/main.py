@@ -7,6 +7,7 @@ import sys
 import uuid
 from pathlib import Path
 from typing import Any
+from datetime import datetime
 
 import typer
 from loguru import logger
@@ -82,7 +83,8 @@ def init_session_log(project_root: Path) -> Path:
     global session_log_file
     log_dir = project_root / ".tmp"
     log_dir.mkdir(exist_ok=True)
-    session_log_file = log_dir / f"session_{uuid.uuid4().hex[:8]}.log"
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    session_log_file = log_dir / f"session_{timestamp}_{uuid.uuid4().hex[:8]}.log"
     with open(session_log_file, "w") as f:
         f.write("=== CODE-GRAPH RAG SESSION LOG ===\n\n")
     return session_log_file
@@ -268,18 +270,12 @@ def _setup_common_initialization(repo_path: str) -> Path:
     logger.remove()
     logger.add(sys.stdout, format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {message}")
 
-    # Temporary directory cleanup
+    # Temporary directory setup (keep existing .tmp if already present)
     project_root = Path(repo_path).resolve()
     tmp_dir = project_root / ".tmp"
-    if tmp_dir.exists():
-        if tmp_dir.is_dir():
-            shutil.rmtree(tmp_dir)
-        else:
-            tmp_dir.unlink()
-    tmp_dir.mkdir()
+    tmp_dir.mkdir(exist_ok=True)
 
     return project_root
-
 
 def _create_configuration_table(
     repo_path: str,
@@ -386,9 +382,15 @@ async def run_chat_loop(
     while True:
         try:
             # Get user input
+            '''
+            # true input
             question = await asyncio.to_thread(
                 get_multiline_input, "[bold cyan]Ask a question[/bold cyan]"
             )
+            '''
+
+            # DEBUG: 固定用户输入
+            question = "这是一条测试问题"
 
             if question.lower() in ["exit", "quit"]:
                 break

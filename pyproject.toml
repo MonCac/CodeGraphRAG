@@ -19,4 +19,5 @@ dependencies = [
     "pydantic-ai>=1.0.0",
     "diff-match-patch>=20241021",
     "tree-sitter-java>=0.23.5",
+    "datetime>=5.5",
 ]
