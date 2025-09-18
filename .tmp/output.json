@@ -1,0 +1,437 @@
+{
+  "nodes": [
+    {
+      "node_id": 53,
+      "labels": [
+        "Project"
+      ],
+      "properties": {
+        "name": "src"
+      }
+    },
+    {
+      "node_id": 54,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": ".tmp",
+        "path": ".tmp"
+      }
+    },
+    {
+      "node_id": 55,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "main",
+        "path": "main"
+      }
+    },
+    {
+      "node_id": 56,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "java",
+        "path": "main/java"
+      }
+    },
+    {
+      "node_id": 57,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "org",
+        "path": "main/java/org"
+      }
+    },
+    {
+      "node_id": 58,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "apache",
+        "path": "main/java/org/apache"
+      }
+    },
+    {
+      "node_id": 59,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "kafka",
+        "path": "main/java/org/apache/kafka"
+      }
+    },
+    {
+      "node_id": 60,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "common",
+        "path": "main/java/org/apache/kafka/common"
+      }
+    },
+    {
+      "node_id": 61,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "requests",
+        "path": "main/java/org/apache/kafka/common/requests"
+      }
+    },
+    {
+      "node_id": 62,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": ".DS_Store"
+      }
+    },
+    {
+      "node_id": 63,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115455_36166726.log",
+        "path": ".tmp/session_20250914_115455_36166726.log"
+      }
+    },
+    {
+      "node_id": 64,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115005_5d2f5737.log",
+        "path": ".tmp/session_20250914_115005_5d2f5737.log"
+      }
+    },
+    {
+      "node_id": 65,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_114647_8f4a0ca2.log",
+        "path": ".tmp/session_20250914_114647_8f4a0ca2.log"
+      }
+    },
+    {
+      "node_id": 66,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_130348_8bb97440.log",
+        "path": ".tmp/session_20250914_130348_8bb97440.log"
+      }
+    },
+    {
+      "node_id": 67,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115637_ef116e6e.log",
+        "path": ".tmp/session_20250914_115637_ef116e6e.log"
+      }
+    },
+    {
+      "node_id": 68,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_130441_b480d4d6.log",
+        "path": ".tmp/session_20250914_130441_b480d4d6.log"
+      }
+    },
+    {
+      "node_id": 69,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/.DS_Store"
+      }
+    },
+    {
+      "node_id": 70,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/.DS_Store"
+      }
+    },
+    {
+      "node_id": 71,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/.DS_Store"
+      }
+    },
+    {
+      "node_id": 72,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/.DS_Store"
+      }
+    },
+    {
+      "node_id": 73,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/kafka/.DS_Store"
+      }
+    },
+    {
+      "node_id": 74,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/kafka/common/.DS_Store"
+      }
+    },
+    {
+      "node_id": 75,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".java",
+        "name": "AbstractResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/AbstractResponse.java"
+      }
+    },
+    {
+      "node_id": 76,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".java",
+        "name": "UpdateMetadataResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java"
+      }
+    },
+    {
+      "node_id": 77,
+      "labels": [
+        "Module"
+      ],
+      "properties": {
+        "name": "AbstractResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "qualified_name": "src.main.java.org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 78,
+      "labels": [
+        "Module"
+      ],
+      "properties": {
+        "name": "UpdateMetadataResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "qualified_name": "src.main.java.org.apache.kafka.common.requests.UpdateMetadataResponse"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": 53,
+      "to_id": 54,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 53,
+      "to_id": 55,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 55,
+      "to_id": 56,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 56,
+      "to_id": 57,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 57,
+      "to_id": 58,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 58,
+      "to_id": 59,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 59,
+      "to_id": 60,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 60,
+      "to_id": 61,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 53,
+      "to_id": 62,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 63,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 64,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 65,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 66,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 67,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 54,
+      "to_id": 68,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 55,
+      "to_id": 69,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 56,
+      "to_id": 70,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 57,
+      "to_id": 71,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 58,
+      "to_id": 72,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 59,
+      "to_id": 73,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 60,
+      "to_id": 74,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 61,
+      "to_id": 75,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 61,
+      "to_id": 76,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 61,
+      "to_id": 77,
+      "type": "CONTAINS_MODULE",
+      "properties": {}
+    },
+    {
+      "from_id": 61,
+      "to_id": 78,
+      "type": "CONTAINS_MODULE",
+      "properties": {}
+    }
+  ],
+  "metadata": {
+    "total_nodes": 26,
+    "total_relationships": 25,
+    "exported_at": "2025-09-14T05:33:21.962777+00:00"
+  }
+}

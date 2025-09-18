@@ -4,6 +4,7 @@ import re
 import shlex
 import shutil
 import sys
+import traceback
 import uuid
 from pathlib import Path
 from typing import Any
@@ -390,8 +391,8 @@ async def run_chat_loop(
             '''
 
             # DEBUG: 固定用户输入
-            question = "这是一条测试问题"
-
+            question = "介绍这个repo的结构、功能、内容"
+            # question = "这是一个测试问题"
             if question.lower() in ["exit", "quit"]:
                 break
             if not question.strip():
@@ -477,6 +478,7 @@ async def run_chat_loop(
         except Exception as e:
             logger.error("An unexpected error occurred: {}", e, exc_info=True)
             console.print(f"[bold red]An unexpected error occurred: {e}[/bold red]")
+            traceback.print_exc()
 
 
 def _export_graph_to_file(ingestor: MemgraphIngestor, output: str) -> bool:
@@ -584,17 +586,17 @@ def start(
             None, "--repo-path", help="Path to the target repository for code retrieval"
         ),
         update_graph: bool = typer.Option(
-            False,
+            True,
             "--update-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
         clean: bool = typer.Option(
-            False,
+            True,
             "--clean",
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            None,
+            "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/output.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
