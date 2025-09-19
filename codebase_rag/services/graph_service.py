@@ -1,7 +1,7 @@
 from collections import defaultdict
 from datetime import UTC, datetime
 from typing import Any
-
+from codebase_rag.enre.relation_type import RelationType
 import mgclient
 from loguru import logger
 
@@ -17,15 +17,16 @@ class MemgraphIngestor:
         self.node_buffer: list[tuple[str, dict[str, Any]]] = []
         self.relationship_buffer: list[tuple[tuple, str, tuple, dict | None]] = []
         self.unique_constraints = {
-            "Project": "name",
-            "Package": "qualified_name",
-            "Folder": "path",
-            "Module": "qualified_name",
-            "Class": "qualified_name",
-            "Function": "qualified_name",
-            "Method": "qualified_name",
-            "File": "path",
-            "ExternalPackage": "name",
+            "Enum": "id",
+            "TypeParameter": "id",
+            "Variable": "id",
+            "Annotation Member": "id",
+            "Class": "id",
+            "Package": "id",
+            "Method": "id",
+            "File": "id",
+            "Interface": "id",
+            "Annotation": "id",
         }
 
     def __enter__(self) -> "MemgraphIngestor":
@@ -36,7 +37,7 @@ class MemgraphIngestor:
         return self
 
     def __exit__(
-        self, exc_type: type | None, exc_val: Exception | None, exc_tb: Any
+            self, exc_type: type | None, exc_val: Exception | None, exc_tb: Any
     ) -> None:
         if exc_type:
             logger.error(
@@ -62,8 +63,8 @@ class MemgraphIngestor:
             return [dict(zip(column_names, row)) for row in cursor.fetchall()]
         except Exception as e:
             if (
-                "already exists" not in str(e).lower()
-                and "constraint" not in str(e).lower()
+                    "already exists" not in str(e).lower()
+                    and "constraint" not in str(e).lower()
             ):
                 logger.error(f"!!! Cypher Error: {e}")
                 logger.error(f"    Query: {query}")
@@ -94,13 +95,17 @@ class MemgraphIngestor:
         logger.info("--- Database cleaned. ---")
 
     def ensure_constraints(self) -> None:
+        """Ensure unique constraints for all node labels in Memgraph."""
         logger.info("Ensuring constraints...")
         for label, prop in self.unique_constraints.items():
+            # 将标签中的空格替换为下划线，生成合法 Cypher 标签名
+            safe_label = label.replace(" ", "_")
             try:
                 self._execute_query(
-                    f"CREATE CONSTRAINT ON (n:{label}) ASSERT n.{prop} IS UNIQUE;"
+                    f"CREATE CONSTRAINT ON (n:{safe_label}) ASSERT n.{prop} IS UNIQUE;"
                 )
             except Exception:
+                # 已存在的约束会抛异常，可以忽略
                 pass
         logger.info("Constraints checked/created.")
 
@@ -109,11 +114,11 @@ class MemgraphIngestor:
         self.node_buffer.append((label, properties))
 
     def ensure_relationship_batch(
-        self,
-        from_spec: tuple[str, str, Any],
-        rel_type: str,
-        to_spec: tuple[str, str, Any],
-        properties: dict[str, Any] | None = None,
+            self,
+            from_spec: tuple[str, str, Any],
+            rel_type: str,
+            to_spec: tuple[str, str, Any],
+            properties: dict[str, Any] | None = None,
     ) -> None:
         """Adds a relationship to the buffer."""
         from_label, from_key, from_val = from_spec
@@ -128,53 +133,47 @@ class MemgraphIngestor:
         )
 
     def flush_nodes(self) -> None:
-        """Flushes the buffered nodes to the database."""
+        """Flushes buffered nodes (from ENRE JSON) to Memgraph."""
         if not self.node_buffer:
             return
 
         nodes_by_label = defaultdict(list)
         for label, props in self.node_buffer:
             nodes_by_label[label].append(props)
+
         for label, props_list in nodes_by_label.items():
             if not props_list:
                 continue
-            id_key = self.unique_constraints.get(label)
-            if not id_key:
-                logger.warning(
-                    f"No unique constraint defined for label '{label}'. Skipping flush."
-                )
-                continue
 
-            prop_keys = list(props_list[0].keys())
+            id_key = "id"  # 用 id 做唯一标识
+
+            # 生成 SET 子句时排除 id
+            prop_keys = [key for key in props_list[0].keys() if key != id_key]
             set_clause = ", ".join([f"n.{key} = row.{key}" for key in prop_keys])
             query = (
                 f"MERGE (n:{label} {{{id_key}: row.{id_key}}}) "
                 f"ON CREATE SET {set_clause} ON MATCH SET {set_clause}"
             )
             self._execute_batch(query, props_list)
+
         logger.info(f"Flushed {len(self.node_buffer)} nodes.")
         self.node_buffer.clear()
 
     def flush_relationships(self) -> None:
+        """Flushes buffered relationships (from ENRE JSON) to Memgraph."""
         if not self.relationship_buffer:
             return
 
-        rels_by_pattern = defaultdict(list)
+        # 直接创建每条关系，不做合并
         for from_node, rel_type, to_node, props in self.relationship_buffer:
-            pattern = (from_node[0], from_node[1], rel_type, to_node[0], to_node[1])
-            rels_by_pattern[pattern].append(
-                {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
-            )
-        for pattern, params_list in rels_by_pattern.items():
-            from_label, from_key, rel_type, to_label, to_key = pattern
             query = (
-                f"MATCH (a:{from_label} {{{from_key}: row.from_val}}), "
-                f"(b:{to_label} {{{to_key}: row.to_val}})\n"
-                f"MERGE (a)-[r:{rel_type}]->(b)"
+                f"MATCH (a {{id: $from_val}}), (b {{id: $to_val}}) "
+                f"CREATE (a)-[r:{rel_type}]->(b) "
+                f"SET r += $props"
             )
-            if any(p["props"] for p in params_list):
-                query += "\nSET r += row.props"
-            self._execute_batch(query, params_list)
+            params = {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
+            self._execute_query(query, params)
+
         logger.info(f"Flushed {len(self.relationship_buffer)} relationships.")
         self.relationship_buffer.clear()
 

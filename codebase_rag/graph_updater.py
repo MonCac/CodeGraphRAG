@@ -4,19 +4,16 @@ Refactored GraphUpdater with modular architecture.
 This is the new modular version that maintains all functionality while
 splitting the monolithic class into logical components.
 """
-
 import sys
 from collections import OrderedDict, defaultdict
 from collections.abc import ItemsView, KeysView
 from pathlib import Path
-from typing import Any
+from typing import Any, List, Dict
 
 from loguru import logger
 from tree_sitter import Node, Parser
 
-from .config import IGNORE_PATTERNS
-from .language_config import get_language_config
-from .parsers.factory import ProcessorFactory
+from .enre.loader import ENRELoader
 from .services.graph_service import MemgraphIngestor
 
 
@@ -226,186 +223,56 @@ class BoundedASTCache:
 
 
 class GraphUpdater:
-    """Parses code using Tree-sitter and updates the graph."""
+    """Updates the graph from ENRE JSON files."""
 
-    def __init__(
-        self,
-        ingestor: MemgraphIngestor,
-        repo_path: Path,
-        parsers: dict[str, Parser],
-        queries: dict[str, Any],
-    ):
+    def __init__(self, ingestor: MemgraphIngestor, repo_path: Path | str):
         self.ingestor = ingestor
         self.repo_path = repo_path
-        self.parsers = parsers
-        self.queries = self._prepare_queries_with_parsers(queries, parsers)
         self.project_name = repo_path.name
-        self.function_registry = FunctionRegistryTrie()
-        self.simple_name_lookup: dict[str, set[str]] = defaultdict(set)
-        self.ast_cache = BoundedASTCache(max_entries=1000, max_memory_mb=500)
-        self.ignore_dirs = IGNORE_PATTERNS
-
-        # Create processor factory with all dependencies
-        self.factory = ProcessorFactory(
-            ingestor=self.ingestor,
-            repo_path_getter=lambda: self.repo_path,
-            project_name_getter=lambda: self.project_name,
-            queries=self.queries,
-            function_registry=self.function_registry,
-            simple_name_lookup=self.simple_name_lookup,
-            ast_cache=self.ast_cache,
-        )
-
-    def _is_dependency_file(self, file_name: str, filepath: Path) -> bool:
-        """Check if a file is a dependency file that should be processed for external dependencies."""
-        dependency_files = {
-            "pyproject.toml",
-            "requirements.txt",
-            "package.json",
-            "cargo.toml",
-            "go.mod",
-            "gemfile",
-            "composer.json",
-        }
-
-        # Check by filename
-        if file_name.lower() in dependency_files:
-            return True
-
-        # Check by extension (for .csproj files)
-        if filepath.suffix.lower() == ".csproj":
-            return True
-
-        return False
-
-    def _prepare_queries_with_parsers(
-        self, queries: dict[str, Any], parsers: dict[str, Parser]
-    ) -> dict[str, Any]:
-        """Add parser references to query objects for processors."""
-        updated_queries = {}
-        for lang, query_data in queries.items():
-            if lang in parsers:
-                updated_queries[lang] = {**query_data, "parser": parsers[lang]}
-            else:
-                updated_queries[lang] = query_data
-        return updated_queries
+        self.enre_loader: ENRELoader | None = None
 
     def run(self) -> None:
-        """Orchestrates the parsing and ingestion process."""
+        """Main entry point: loads ENRE JSON and writes nodes & relationships to Memgraph."""
+        # 1. Ensure Project node
         self.ingestor.ensure_node_batch("Project", {"name": self.project_name})
         logger.info(f"Ensuring Project: {self.project_name}")
 
-        logger.info("--- Pass 1: Identifying Packages and Folders ---")
-        self.factory.structure_processor.identify_structure()
+        # 2. Load ENRE JSON
+        self.enre_loader = ENRELoader(self.repo_path)
+        nodes, relationships = self.enre_loader.get_nodes_and_relationships()
+        logger.info(f"Loaded {len(nodes)} nodes and {len(relationships)} relationships from ENRE JSON")
 
-        logger.info(
-            "\n--- Pass 2: Processing Files, Caching ASTs, and Collecting Definitions ---"
-        )
-        self._process_files()
+        # 3. Write nodes
+        self._write_nodes(nodes)
 
-        logger.info(
-            f"\n--- Found {len(self.function_registry)} functions/methods in codebase ---"
-        )
-        logger.info("--- Pass 3: Processing Function Calls from AST Cache ---")
-        self._process_function_calls()
+        # 4. Write relationships
+        self._write_relationships(relationships)
 
-        # Process method overrides after all definitions are collected
-        self.factory.definition_processor.process_all_method_overrides()
-
-        logger.info("\n--- Analysis complete. Flushing all data to database... ---")
+        # 5. Flush all
         self.ingestor.flush_all()
+        logger.info("Graph update from ENRE JSON complete.")
 
-    def remove_file_from_state(self, file_path: Path) -> None:
-        """Removes all state associated with a file from the updater's memory."""
-        logger.debug(f"Removing in-memory state for: {file_path}")
-
-        # Clear AST cache
-        if file_path in self.ast_cache:
-            del self.ast_cache[file_path]
-            logger.debug("  - Removed from ast_cache")
-
-        # Determine the module qualified name prefix for the file
-        relative_path = file_path.relative_to(self.repo_path)
-        if file_path.name == "__init__.py":
-            module_qn_prefix = ".".join(
-                [self.project_name] + list(relative_path.parent.parts)
-            )
-        else:
-            module_qn_prefix = ".".join(
-                [self.project_name] + list(relative_path.with_suffix("").parts)
+    def _write_nodes(self, nodes: List[Dict[str, Any]]) -> None:
+        """Write all nodes to Memgraph."""
+        for node in nodes:
+            # Each node: {"id": ..., "label": ..., "properties": {...}}
+            self.ingestor.ensure_node_batch(
+                label=node["labels"][0],
+                properties={"id": node["node_id"], **node["properties"]},
             )
 
-        # We need to find all qualified names that belong to this file/module
-        qns_to_remove = set()
+    def _write_relationships(self, relationships: List[Dict[str, Any]]) -> None:
+        """Write all relationships to Memgraph using correct node labels."""
+        # 建立 id -> label 的映射
+        id_to_label = {node["node_id"]: node["labels"][0] for node in self.enre_loader.nodes}
 
-        # Clean function_registry and collect qualified names to remove
-        for qn in list(self.function_registry.keys()):
-            if qn.startswith(module_qn_prefix + ".") or qn == module_qn_prefix:
-                qns_to_remove.add(qn)
-                del self.function_registry[qn]
+        for rel in relationships:
+            from_label = id_to_label.get(rel["from_id"], "Unknown")
+            to_label = id_to_label.get(rel["to_id"], "Unknown")
 
-        if qns_to_remove:
-            logger.debug(
-                f"  - Removing {len(qns_to_remove)} QNs from function_registry"
-            )
-
-        # Clean simple_name_lookup
-        for simple_name, qn_set in self.simple_name_lookup.items():
-            original_count = len(qn_set)
-            new_qn_set = qn_set - qns_to_remove
-            if len(new_qn_set) < original_count:
-                self.simple_name_lookup[simple_name] = new_qn_set
-                logger.debug(f"  - Cleaned simple_name '{simple_name}'")
-
-    def _process_files(self) -> None:
-        """Second pass: Efficiently processes all files, parses them, and caches their ASTs."""
-
-        def should_skip_path(path: Path) -> bool:
-            """Check if file path should be skipped based on ignore patterns."""
-            return any(
-                part in self.ignore_dirs
-                for part in path.relative_to(self.repo_path).parts
-            )
-
-        # Use pathlib.rglob for more efficient file iteration
-        for filepath in self.repo_path.rglob("*"):
-            if filepath.is_file() and not should_skip_path(filepath):
-                # Check if this file type is supported for parsing
-                lang_config = get_language_config(filepath.suffix)
-                if lang_config and lang_config.name in self.parsers:
-                    # Parse as Module and cache AST
-                    result = self.factory.definition_processor.process_file(
-                        filepath,
-                        lang_config.name,
-                        self.queries,
-                        self.factory.structure_processor.structural_elements,
-                    )
-                    if result:
-                        root_node, language = result
-                        self.ast_cache[filepath] = (root_node, language)
-
-                    # Also create CONTAINS_FILE relationship for parseable files
-                    self.factory.structure_processor.process_generic_file(
-                        filepath, filepath.name
-                    )
-
-                elif self._is_dependency_file(filepath.name, filepath):
-                    self.factory.definition_processor.process_dependencies(filepath)
-                    # Also create CONTAINS_FILE relationship for dependency files
-                    self.factory.structure_processor.process_generic_file(
-                        filepath, filepath.name
-                    )
-                else:
-                    # Use StructureProcessor to handle generic files
-                    self.factory.structure_processor.process_generic_file(
-                        filepath, filepath.name
-                    )
-
-    def _process_function_calls(self) -> None:
-        """Third pass: Process function calls using the cached ASTs."""
-        # Create a copy of items to prevent "OrderedDict mutated during iteration" errors
-        ast_cache_items = list(self.ast_cache.items())
-        for file_path, (root_node, language) in ast_cache_items:
-            self.factory.call_processor.process_calls_in_file(
-                file_path, root_node, language, self.queries
+            self.ingestor.ensure_relationship_batch(
+                from_spec=(from_label, "id", rel["from_id"]),
+                rel_type=rel["type"],
+                to_spec=(to_label, "id", rel["to_id"]),
+                properties=rel["properties"],
             )

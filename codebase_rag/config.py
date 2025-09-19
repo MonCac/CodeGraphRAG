@@ -127,6 +127,7 @@ settings = AppConfig()
 # Directories and files to ignore during codebase scanning and real-time updates.
 IGNORE_PATTERNS = {
     ".git",
+    ".log",
     "venv",
     ".venv",
     "__pycache__",

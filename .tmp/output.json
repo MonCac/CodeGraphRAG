@@ -1,7 +1,7 @@
 {
   "nodes": [
     {
-      "node_id": 53,
+      "node_id": 7888,
       "labels": [
         "Project"
       ],
@@ -10,428 +10,3193 @@
       }
     },
     {
-      "node_id": 54,
+      "node_id": 7889,
       "labels": [
-        "Folder"
+        "Package"
       ],
       "properties": {
-        "name": ".tmp",
-        "path": ".tmp"
-      }
-    },
-    {
-      "node_id": 55,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "main",
-        "path": "main"
-      }
-    },
-    {
-      "node_id": 56,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "java",
-        "path": "main/java"
-      }
-    },
-    {
-      "node_id": 57,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "org",
-        "path": "main/java/org"
-      }
-    },
-    {
-      "node_id": 58,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "apache",
-        "path": "main/java/org/apache"
-      }
-    },
-    {
-      "node_id": 59,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "kafka",
-        "path": "main/java/org/apache/kafka"
-      }
-    },
-    {
-      "node_id": 60,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
-        "name": "common",
-        "path": "main/java/org/apache/kafka/common"
-      }
-    },
-    {
-      "node_id": 61,
-      "labels": [
-        "Folder"
-      ],
-      "properties": {
+        "external": false,
+        "id": 0,
         "name": "requests",
-        "path": "main/java/org/apache/kafka/common/requests"
+        "parentId": 1,
+        "qualifiedName": "org.apache.kafka.common.requests"
       }
     },
     {
-      "node_id": 62,
+      "node_id": 7890,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 1,
+        "name": "common",
+        "parentId": 2,
+        "qualifiedName": "org.apache.kafka.common"
+      }
+    },
+    {
+      "node_id": 7891,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 2,
+        "name": "kafka",
+        "parentId": 3,
+        "qualifiedName": "org.apache.kafka"
+      }
+    },
+    {
+      "node_id": 7892,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 3,
+        "name": "apache",
+        "parentId": 4,
+        "qualifiedName": "org.apache"
+      }
+    },
+    {
+      "node_id": 7893,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 4,
+        "name": "org",
+        "parentId": -1,
+        "qualifiedName": "org"
+      }
+    },
+    {
+      "node_id": 7894,
       "labels": [
         "File"
       ],
       "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": ".DS_Store"
-      }
-    },
-    {
-      "node_id": 63,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_115455_36166726.log",
-        "path": ".tmp/session_20250914_115455_36166726.log"
-      }
-    },
-    {
-      "node_id": 64,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_115005_5d2f5737.log",
-        "path": ".tmp/session_20250914_115005_5d2f5737.log"
-      }
-    },
-    {
-      "node_id": 65,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_114647_8f4a0ca2.log",
-        "path": ".tmp/session_20250914_114647_8f4a0ca2.log"
-      }
-    },
-    {
-      "node_id": 66,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_130348_8bb97440.log",
-        "path": ".tmp/session_20250914_130348_8bb97440.log"
-      }
-    },
-    {
-      "node_id": 67,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_115637_ef116e6e.log",
-        "path": ".tmp/session_20250914_115637_ef116e6e.log"
-      }
-    },
-    {
-      "node_id": 68,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".log",
-        "name": "session_20250914_130441_b480d4d6.log",
-        "path": ".tmp/session_20250914_130441_b480d4d6.log"
-      }
-    },
-    {
-      "node_id": 69,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/.DS_Store"
-      }
-    },
-    {
-      "node_id": 70,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/java/.DS_Store"
-      }
-    },
-    {
-      "node_id": 71,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/java/org/.DS_Store"
-      }
-    },
-    {
-      "node_id": 72,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/java/org/apache/.DS_Store"
-      }
-    },
-    {
-      "node_id": 73,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/java/org/apache/kafka/.DS_Store"
-      }
-    },
-    {
-      "node_id": 74,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": "",
-        "name": ".DS_Store",
-        "path": "main/java/org/apache/kafka/common/.DS_Store"
-      }
-    },
-    {
-      "node_id": 75,
-      "labels": [
-        "File"
-      ],
-      "properties": {
-        "extension": ".java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "id": 5,
         "name": "AbstractResponse.java",
-        "path": "main/java/org/apache/kafka/common/requests/AbstractResponse.java"
+        "parentId": 0,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.java"
       }
     },
     {
-      "node_id": 76,
+      "node_id": 7895,
       "labels": [
         "File"
       ],
       "properties": {
-        "extension": ".java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "id": 53,
         "name": "UpdateMetadataResponse.java",
-        "path": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java"
+        "parentId": 0,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.java"
       }
     },
     {
-      "node_id": 77,
+      "node_id": 7896,
       "labels": [
-        "Module"
+        "Class"
       ],
       "properties": {
-        "name": "AbstractResponse.java",
-        "path": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
-        "qualified_name": "src.main.java.org.apache.kafka.common.requests.AbstractResponse"
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "id": 6,
+        "location": {
+          "endColumn": 0,
+          "endLine": 332,
+          "startColumn": 0,
+          "startLine": 33
+        },
+        "modifiers": "public abstract",
+        "name": "AbstractResponse",
+        "parentId": 5,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
       }
     },
     {
-      "node_id": 78,
+      "node_id": 7897,
       "labels": [
-        "Module"
+        "Class"
       ],
       "properties": {
-        "name": "UpdateMetadataResponse.java",
-        "path": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
-        "qualified_name": "src.main.java.org.apache.kafka.common.requests.UpdateMetadataResponse"
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "id": 54,
+        "location": {
+          "endColumn": 0,
+          "endLine": 64,
+          "startColumn": 0,
+          "startLine": 27
+        },
+        "modifiers": "public",
+        "name": "UpdateMetadataResponse",
+        "parentId": 53,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse",
+        "rawType": "org.apache.kafka.common.requests.UpdateMetadataResponse"
+      }
+    },
+    {
+      "node_id": 7898,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": true,
+        "id": 7,
+        "location": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        },
+        "modifiers": "public static final",
+        "name": "DEFAULT_THROTTLE_TIME",
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.DEFAULT_THROTTLE_TIME",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 7899,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": true,
+        "id": 8,
+        "location": {
+          "endColumn": 31,
+          "endLine": 36,
+          "startColumn": 26,
+          "startLine": 36
+        },
+        "modifiers": "private final",
+        "name": "apiKey",
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiKey",
+        "rawType": "org.apache.kafka.common.requests.ApiKeys"
+      }
+    },
+    {
+      "node_id": 7900,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 10,
+        "location": {
+          "endColumn": 44,
+          "endLine": 38,
+          "startColumn": 31,
+          "startLine": 38
+        },
+        "name": "apiKey",
+        "parentId": 9,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 7901,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 12,
+        "location": {
+          "endColumn": 49,
+          "endLine": 42,
+          "startColumn": 29,
+          "startLine": 42
+        },
+        "name": "header",
+        "parentId": 11,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend.header",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 7902,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 13,
+        "location": {
+          "endColumn": 64,
+          "endLine": 42,
+          "startColumn": 52,
+          "startLine": 42
+        },
+        "name": "version",
+        "parentId": 11,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7903,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 15,
+        "location": {
+          "endColumn": 61,
+          "endLine": 49,
+          "startColumn": 41,
+          "startLine": 49
+        },
+        "name": "header",
+        "parentId": 14,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader.header",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 7904,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 16,
+        "location": {
+          "endColumn": 76,
+          "endLine": 49,
+          "startColumn": 64,
+          "startLine": 49
+        },
+        "name": "version",
+        "parentId": 14,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7905,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 18,
+        "location": {
+          "endColumn": 43,
+          "endLine": 54,
+          "startColumn": 31,
+          "startLine": 54
+        },
+        "name": "version",
+        "parentId": 17,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serialize.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7906,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 21,
+        "location": {
+          "endColumn": 58,
+          "endLine": 65,
+          "startColumn": 47,
+          "startLine": 65
+        },
+        "name": "error",
+        "parentId": 20,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 7907,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 23,
+        "location": {
+          "endColumn": 67,
+          "endLine": 69,
+          "startColumn": 47,
+          "startLine": 69
+        },
+        "name": "errors",
+        "parentId": 22,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errors",
+        "rawType": "java.util.stream.Stream<org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 7908,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 25,
+        "location": {
+          "endColumn": 71,
+          "endLine": 73,
+          "startColumn": 47,
+          "startLine": 73
+        },
+        "name": "errors",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errors",
+        "rawType": "java.util.Collection<org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 7909,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 26,
+        "location": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        },
+        "name": "errorCounts",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7910,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 27,
+        "location": {
+          "endColumn": 24,
+          "endLine": 75,
+          "startColumn": 13,
+          "startLine": 75
+        },
+        "name": "error",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 7911,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 29,
+        "location": {
+          "endColumn": 72,
+          "endLine": 80,
+          "startColumn": 50,
+          "startLine": 80
+        },
+        "name": "errors",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.errors",
+        "rawType": "java.util.Map<?,org.apache.kafka.common.requests.ApiError>"
+      }
+    },
+    {
+      "node_id": 7912,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 30,
+        "location": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        },
+        "name": "errorCounts",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7913,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 31,
+        "location": {
+          "endColumn": 29,
+          "endLine": 82,
+          "startColumn": 13,
+          "startLine": 82
+        },
+        "name": "apiError",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.apiError",
+        "rawType": "ApiError"
+      }
+    },
+    {
+      "node_id": 7914,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 33,
+        "location": {
+          "endColumn": 68,
+          "endLine": 87,
+          "startColumn": 37,
+          "startLine": 87
+        },
+        "name": "errorCounts",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7915,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 34,
+        "location": {
+          "endColumn": 82,
+          "endLine": 87,
+          "startColumn": 71,
+          "startLine": 87
+        },
+        "name": "error",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 7916,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 35,
+        "location": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        },
+        "name": "count",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.count",
+        "rawType": "java.lang.Integer"
+      }
+    },
+    {
+      "node_id": 7917,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 37,
+        "location": {
+          "endColumn": 65,
+          "endLine": 96,
+          "startColumn": 49,
+          "startLine": 96
+        },
+        "name": "buffer",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.buffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 7918,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 38,
+        "location": {
+          "endColumn": 94,
+          "endLine": 96,
+          "startColumn": 68,
+          "startLine": 96
+        },
+        "name": "requestHeader",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.requestHeader",
+        "rawType": "RequestHeader"
+      }
+    },
+    {
+      "node_id": 7919,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 39,
+        "location": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        },
+        "name": "apiKey",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 7920,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 40,
+        "location": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        },
+        "name": "apiVersion",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiVersion",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7921,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 41,
+        "location": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        },
+        "name": "responseHeader",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.responseHeader",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 7922,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 43,
+        "location": {
+          "endColumn": 62,
+          "endLine": 112,
+          "startColumn": 49,
+          "startLine": 112
+        },
+        "name": "apiKey",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 7923,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 44,
+        "location": {
+          "endColumn": 89,
+          "endLine": 112,
+          "startColumn": 65,
+          "startLine": 112
+        },
+        "name": "responseBuffer",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.responseBuffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 7924,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 45,
+        "location": {
+          "endColumn": 104,
+          "endLine": 112,
+          "startColumn": 92,
+          "startLine": 112
+        },
+        "name": "version",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7925,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 47,
+        "location": {
+          "endColumn": 52,
+          "endLine": 307,
+          "startColumn": 40,
+          "startLine": 307
+        },
+        "name": "version",
+        "parentId": 46,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.shouldClientThrottle.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7926,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 51,
+        "location": {
+          "endColumn": 65,
+          "endLine": 327,
+          "startColumn": 48,
+          "startLine": 327
+        },
+        "name": "throttleTimeMs",
+        "parentId": 50,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.maybeSetThrottleTimeMs.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 7927,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": true,
+        "id": 55,
+        "location": {
+          "endColumn": 48,
+          "endLine": 29,
+          "startColumn": 45,
+          "startLine": 29
+        },
+        "modifiers": "private final",
+        "name": "data",
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.data",
+        "rawType": "org.apache.kafka.common.requests.UpdateMetadataResponseData"
+      }
+    },
+    {
+      "node_id": 7928,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 57,
+        "location": {
+          "endColumn": 64,
+          "endLine": 31,
+          "startColumn": 34,
+          "startLine": 31
+        },
+        "name": "data",
+        "parentId": 56,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.UpdateMetadataResponse.data",
+        "rawType": "UpdateMetadataResponseData"
+      }
+    },
+    {
+      "node_id": 7929,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 62,
+        "location": {
+          "endColumn": 56,
+          "endLine": 51,
+          "startColumn": 39,
+          "startLine": 51
+        },
+        "name": "throttleTimeMs",
+        "parentId": 61,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.maybeSetThrottleTimeMs.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 7930,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 64,
+        "location": {
+          "endColumn": 63,
+          "endLine": 55,
+          "startColumn": 47,
+          "startLine": 55
+        },
+        "name": "buffer",
+        "parentId": 63,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.parse.buffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 7931,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "external": false,
+        "global": false,
+        "id": 65,
+        "location": {
+          "endColumn": 78,
+          "endLine": 55,
+          "startColumn": 66,
+          "startLine": 55
+        },
+        "name": "version",
+        "parentId": 63,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.parse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 7932,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": true,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 9,
+        "location": {
+          "endColumn": 4,
+          "endLine": 40,
+          "startColumn": 4,
+          "startLine": 38
+        },
+        "modifiers": "protected",
+        "name": "AbstractResponse",
+        "parameter": {
+          "names": "apiKey",
+          "types": "ApiKeys"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 7933,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 11,
+        "location": {
+          "endColumn": 4,
+          "endLine": 44,
+          "startColumn": 4,
+          "startLine": 42
+        },
+        "modifiers": "public final",
+        "name": "toSend",
+        "parameter": {
+          "names": "header version",
+          "types": "ResponseHeader short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend",
+        "rawType": "org.apache.kafka.common.requests.Send"
+      }
+    },
+    {
+      "node_id": 7934,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 14,
+        "location": {
+          "endColumn": 4,
+          "endLine": 51,
+          "startColumn": 4,
+          "startLine": 46
+        },
+        "modifiers": "final",
+        "name": "serializeWithHeader",
+        "parameter": {
+          "names": "header version",
+          "types": "ResponseHeader short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 7935,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 17,
+        "location": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        },
+        "modifiers": "final",
+        "name": "serialize",
+        "parameter": {
+          "names": "version",
+          "types": "short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serialize",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 7936,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 19,
+        "location": {
+          "endColumn": 54,
+          "endLine": 63,
+          "startColumn": 4,
+          "startLine": 58
+        },
+        "modifiers": "public abstract",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7937,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 20,
+        "location": {
+          "endColumn": 4,
+          "endLine": 67,
+          "startColumn": 4,
+          "startLine": 65
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "error",
+          "types": "Errors"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7938,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 22,
+        "location": {
+          "endColumn": 4,
+          "endLine": 71,
+          "startColumn": 4,
+          "startLine": 69
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.stream.Stream<org.apache.kafka.common.requests.Errors>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7939,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 24,
+        "location": {
+          "endColumn": 4,
+          "endLine": 78,
+          "startColumn": 4,
+          "startLine": 73
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.Collection<org.apache.kafka.common.requests.Errors>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7940,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 28,
+        "location": {
+          "endColumn": 4,
+          "endLine": 85,
+          "startColumn": 4,
+          "startLine": 80
+        },
+        "modifiers": "protected",
+        "name": "apiErrorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.Map<?,org.apache.kafka.common.requests.ApiError>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7941,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 32,
+        "location": {
+          "endColumn": 4,
+          "endLine": 90,
+          "startColumn": 4,
+          "startLine": 87
+        },
+        "modifiers": "protected",
+        "name": "updateErrorCounts",
+        "parameter": {
+          "names": "errorCounts error",
+          "types": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer> Errors"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 7942,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 36,
+        "location": {
+          "endColumn": 4,
+          "endLine": 110,
+          "startColumn": 4,
+          "startLine": 92
+        },
+        "modifiers": "public static",
+        "name": "parseResponse",
+        "parameter": {
+          "names": "buffer requestHeader",
+          "types": "java.nio.ByteBuffer RequestHeader"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 7943,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 42,
+        "location": {
+          "endColumn": 4,
+          "endLine": 300,
+          "startColumn": 4,
+          "startLine": 112
+        },
+        "modifiers": "public static",
+        "name": "parseResponse",
+        "parameter": {
+          "names": "apiKey responseBuffer version",
+          "types": "ApiKeys java.nio.ByteBuffer short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 7944,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 46,
+        "location": {
+          "endColumn": 4,
+          "endLine": 309,
+          "startColumn": 4,
+          "startLine": 302
+        },
+        "modifiers": "public",
+        "name": "shouldClientThrottle",
+        "parameter": {
+          "names": "version",
+          "types": "short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.shouldClientThrottle",
+        "rawType": "boolean"
+      }
+    },
+    {
+      "node_id": 7945,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 48,
+        "location": {
+          "endColumn": 4,
+          "endLine": 313,
+          "startColumn": 4,
+          "startLine": 311
+        },
+        "modifiers": "public",
+        "name": "apiKey",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiKey",
+        "rawType": "org.apache.kafka.common.requests.ApiKeys"
+      }
+    },
+    {
+      "node_id": 7946,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 49,
+        "location": {
+          "endColumn": 40,
+          "endLine": 319,
+          "startColumn": 4,
+          "startLine": 315
+        },
+        "modifiers": "public abstract",
+        "name": "throttleTimeMs",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 7947,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 50,
+        "location": {
+          "endColumn": 67,
+          "endLine": 327,
+          "startColumn": 4,
+          "startLine": 321
+        },
+        "modifiers": "public abstract",
+        "name": "maybeSetThrottleTimeMs",
+        "parameter": {
+          "names": "throttleTimeMs",
+          "types": "int"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.maybeSetThrottleTimeMs",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 7948,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 52,
+        "location": {
+          "endColumn": 4,
+          "endLine": 331,
+          "startColumn": 4,
+          "startLine": 329
+        },
+        "modifiers": "public",
+        "name": "toString",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toString",
+        "rawType": "java.lang.String"
+      }
+    },
+    {
+      "node_id": 7949,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": true,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 56,
+        "location": {
+          "endColumn": 4,
+          "endLine": 34,
+          "startColumn": 4,
+          "startLine": 31
+        },
+        "modifiers": "public",
+        "name": "UpdateMetadataResponse",
+        "parameter": {
+          "names": "data",
+          "types": "UpdateMetadataResponseData"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.UpdateMetadataResponse",
+        "rawType": "org.apache.kafka.common.requests.UpdateMetadataResponse.UpdateMetadataResponse"
+      }
+    },
+    {
+      "node_id": 7950,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 58,
+        "location": {
+          "endColumn": 4,
+          "endLine": 38,
+          "startColumn": 4,
+          "startLine": 36
+        },
+        "modifiers": "public",
+        "name": "error",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.error",
+        "rawType": "org.apache.kafka.common.requests.Errors"
+      }
+    },
+    {
+      "node_id": 7951,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 59,
+        "location": {
+          "endColumn": 4,
+          "endLine": 43,
+          "startColumn": 4,
+          "startLine": 40
+        },
+        "modifiers": "public",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 7952,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 60,
+        "location": {
+          "endColumn": 4,
+          "endLine": 48,
+          "startColumn": 4,
+          "startLine": 45
+        },
+        "modifiers": "public",
+        "name": "throttleTimeMs",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 7953,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 61,
+        "location": {
+          "endColumn": 4,
+          "endLine": 53,
+          "startColumn": 4,
+          "startLine": 50
+        },
+        "modifiers": "public",
+        "name": "maybeSetThrottleTimeMs",
+        "parameter": {
+          "names": "throttleTimeMs",
+          "types": "int"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.maybeSetThrottleTimeMs",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 7954,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 63,
+        "location": {
+          "endColumn": 4,
+          "endLine": 57,
+          "startColumn": 4,
+          "startLine": 55
+        },
+        "modifiers": "public static",
+        "name": "parse",
+        "parameter": {
+          "names": "buffer version",
+          "types": "java.nio.ByteBuffer short"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.parse",
+        "rawType": "org.apache.kafka.common.requests.UpdateMetadataResponse"
+      }
+    },
+    {
+      "node_id": 7955,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/RefactorRAG/Anti-PatternRAG/data/CH/kafka/commit_1000/6/before/clients/src"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": true,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 66,
+        "location": {
+          "endColumn": 4,
+          "endLine": 62,
+          "startColumn": 4,
+          "startLine": 59
+        },
+        "modifiers": "public",
+        "name": "data",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.UpdateMetadataResponse.data",
+        "rawType": "org.apache.kafka.common.requests.UpdateMetadataResponseData"
       }
     }
   ],
   "relationships": [
     {
-      "from_id": 53,
-      "to_id": 54,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7890,
+      "to_id": 7889,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 53,
-      "to_id": 55,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7891,
+      "to_id": 7890,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 55,
-      "to_id": 56,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7892,
+      "to_id": 7891,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 56,
-      "to_id": 57,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7893,
+      "to_id": 7892,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 57,
-      "to_id": 58,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7889,
+      "to_id": 7894,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 58,
-      "to_id": 59,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7889,
+      "to_id": 7895,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
     },
     {
-      "from_id": 59,
-      "to_id": 60,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7894,
+      "to_id": 7896,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 332,
+          "startColumn": 0,
+          "startLine": 33
+        }
+      }
     },
     {
-      "from_id": 60,
-      "to_id": 61,
-      "type": "CONTAINS_FOLDER",
-      "properties": {}
+      "from_id": 7897,
+      "to_id": 7896,
+      "type": "Inherit",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 64,
+          "startColumn": 0,
+          "startLine": 27
+        }
+      }
     },
     {
-      "from_id": 53,
-      "to_id": 62,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7895,
+      "to_id": 7897,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 64,
+          "startColumn": 0,
+          "startLine": 27
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 63,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7896,
+      "to_id": 7898,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 64,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7896,
+      "to_id": 7898,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 65,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7896,
+      "to_id": 7899,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 31,
+          "endLine": 36,
+          "startColumn": 26,
+          "startLine": 36
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 66,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7932,
+      "to_id": 7900,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 44,
+          "endLine": 38,
+          "startColumn": 31,
+          "startLine": 38
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 67,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7932,
+      "to_id": 7900,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 27,
+          "endLine": 39,
+          "startColumn": 8,
+          "startLine": 39
+        }
+      }
     },
     {
-      "from_id": 54,
-      "to_id": 68,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7932,
+      "to_id": 7900,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 18,
+          "endLine": 39,
+          "startColumn": 13,
+          "startLine": 39
+        }
+      }
     },
     {
-      "from_id": 55,
-      "to_id": 69,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7932,
+      "to_id": 7900,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 27,
+          "endLine": 39,
+          "startColumn": 22,
+          "startLine": 39
+        }
+      }
     },
     {
-      "from_id": 56,
-      "to_id": 70,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7933,
+      "to_id": 7901,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 49,
+          "endLine": 42,
+          "startColumn": 29,
+          "startLine": 42
+        }
+      }
     },
     {
-      "from_id": 57,
-      "to_id": 71,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7933,
+      "to_id": 7902,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 64,
+          "endLine": 42,
+          "startColumn": 52,
+          "startLine": 42
+        }
+      }
     },
     {
-      "from_id": 58,
-      "to_id": 72,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7934,
+      "to_id": 7903,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 61,
+          "endLine": 49,
+          "startColumn": 41,
+          "startLine": 49
+        }
+      }
     },
     {
-      "from_id": 59,
-      "to_id": 73,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7934,
+      "to_id": 7904,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 76,
+          "endLine": 49,
+          "startColumn": 64,
+          "startLine": 49
+        }
+      }
     },
     {
-      "from_id": 60,
-      "to_id": 74,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7935,
+      "to_id": 7905,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 43,
+          "endLine": 54,
+          "startColumn": 31,
+          "startLine": 54
+        }
+      }
     },
     {
-      "from_id": 61,
-      "to_id": 75,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7937,
+      "to_id": 7906,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 58,
+          "endLine": 65,
+          "startColumn": 47,
+          "startLine": 65
+        }
+      }
     },
     {
-      "from_id": 61,
-      "to_id": 76,
-      "type": "CONTAINS_FILE",
-      "properties": {}
+      "from_id": 7938,
+      "to_id": 7907,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 67,
+          "endLine": 69,
+          "startColumn": 47,
+          "startLine": 69
+        }
+      }
     },
     {
-      "from_id": 61,
-      "to_id": 77,
-      "type": "CONTAINS_MODULE",
-      "properties": {}
+      "from_id": 7939,
+      "to_id": 7908,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 71,
+          "endLine": 73,
+          "startColumn": 47,
+          "startLine": 73
+        }
+      }
     },
     {
-      "from_id": 61,
-      "to_id": 78,
-      "type": "CONTAINS_MODULE",
-      "properties": {}
+      "from_id": 7939,
+      "to_id": 7909,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 7939,
+      "to_id": 7909,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 7940,
+      "to_id": 7911,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 72,
+          "endLine": 80,
+          "startColumn": 50,
+          "startLine": 80
+        }
+      }
+    },
+    {
+      "from_id": 7940,
+      "to_id": 7912,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        }
+      }
+    },
+    {
+      "from_id": 7940,
+      "to_id": 7912,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        }
+      }
+    },
+    {
+      "from_id": 7941,
+      "to_id": 7914,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 68,
+          "endLine": 87,
+          "startColumn": 37,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 7941,
+      "to_id": 7915,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 82,
+          "endLine": 87,
+          "startColumn": 71,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 7941,
+      "to_id": 7916,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        }
+      }
+    },
+    {
+      "from_id": 7941,
+      "to_id": 7916,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7917,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 96,
+          "startColumn": 49,
+          "startLine": 96
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7918,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 94,
+          "endLine": 96,
+          "startColumn": 68,
+          "startLine": 96
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7919,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7919,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7920,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7920,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7921,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7921,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        }
+      }
+    },
+    {
+      "from_id": 7943,
+      "to_id": 7922,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 62,
+          "endLine": 112,
+          "startColumn": 49,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 7943,
+      "to_id": 7923,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 89,
+          "endLine": 112,
+          "startColumn": 65,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 7943,
+      "to_id": 7924,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 104,
+          "endLine": 112,
+          "startColumn": 92,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 7944,
+      "to_id": 7925,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 307,
+          "startColumn": 40,
+          "startLine": 307
+        }
+      }
+    },
+    {
+      "from_id": 7947,
+      "to_id": 7926,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 327,
+          "startColumn": 48,
+          "startLine": 327
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7927,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 48,
+          "endLine": 29,
+          "startColumn": 45,
+          "startLine": 29
+        }
+      }
+    },
+    {
+      "from_id": 7949,
+      "to_id": 7928,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 64,
+          "endLine": 31,
+          "startColumn": 34,
+          "startLine": 31
+        }
+      }
+    },
+    {
+      "from_id": 7949,
+      "to_id": 7928,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 23,
+          "endLine": 33,
+          "startColumn": 8,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 7949,
+      "to_id": 7928,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 16,
+          "endLine": 33,
+          "startColumn": 13,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 7949,
+      "to_id": 7928,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 23,
+          "endLine": 33,
+          "startColumn": 20,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 7953,
+      "to_id": 7929,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 56,
+          "endLine": 51,
+          "startColumn": 39,
+          "startLine": 51
+        }
+      }
+    },
+    {
+      "from_id": 7954,
+      "to_id": 7930,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 63,
+          "endLine": 55,
+          "startColumn": 47,
+          "startLine": 55
+        }
+      }
+    },
+    {
+      "from_id": 7954,
+      "to_id": 7931,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 78,
+          "endLine": 55,
+          "startColumn": 66,
+          "startLine": 55
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7932,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 40,
+          "startColumn": 4,
+          "startLine": 38
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7933,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 44,
+          "startColumn": 4,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7934,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 51,
+          "startColumn": 4,
+          "startLine": 46
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7935,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7936,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 54,
+          "endLine": 63,
+          "startColumn": 4,
+          "startLine": 58
+        }
+      }
+    },
+    {
+      "from_id": 7951,
+      "to_id": 7936,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 43,
+          "startColumn": 4,
+          "startLine": 40
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7937,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 67,
+          "startColumn": 4,
+          "startLine": 65
+        }
+      }
+    },
+    {
+      "from_id": 7951,
+      "to_id": 7937,
+      "type": "Call",
+      "properties": {
+        "arguments": "error()",
+        "loc": {
+          "endColumn": 34,
+          "endLine": 42,
+          "startColumn": 15,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7938,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 71,
+          "startColumn": 4,
+          "startLine": 69
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7939,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 78,
+          "startColumn": 4,
+          "startLine": 73
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7940,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 85,
+          "startColumn": 4,
+          "startLine": 80
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7941,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 90,
+          "startColumn": 4,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 7939,
+      "to_id": 7941,
+      "type": "Call",
+      "properties": {
+        "arguments": "errorCounts error",
+        "loc": {
+          "endColumn": 48,
+          "endLine": 76,
+          "startColumn": 12,
+          "startLine": 76
+        }
+      }
+    },
+    {
+      "from_id": 7940,
+      "to_id": 7941,
+      "type": "Call",
+      "properties": {
+        "arguments": "errorCounts apiError.error()",
+        "loc": {
+          "endColumn": 59,
+          "endLine": 83,
+          "startColumn": 12,
+          "startLine": 83
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7942,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 110,
+          "startColumn": 4,
+          "startLine": 92
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7943,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 300,
+          "startColumn": 4,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 7942,
+      "to_id": 7943,
+      "type": "Call",
+      "properties": {
+        "arguments": "apiKey buffer apiVersion",
+        "loc": {
+          "endColumn": 72,
+          "endLine": 109,
+          "startColumn": 15,
+          "startLine": 109
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7944,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 309,
+          "startColumn": 4,
+          "startLine": 302
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7945,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 313,
+          "startColumn": 4,
+          "startLine": 311
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7946,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 40,
+          "endLine": 319,
+          "startColumn": 4,
+          "startLine": 315
+        }
+      }
+    },
+    {
+      "from_id": 7952,
+      "to_id": 7946,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 48,
+          "startColumn": 4,
+          "startLine": 45
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7947,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 67,
+          "endLine": 327,
+          "startColumn": 4,
+          "startLine": 321
+        }
+      }
+    },
+    {
+      "from_id": 7953,
+      "to_id": 7947,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 53,
+          "startColumn": 4,
+          "startLine": 50
+        }
+      }
+    },
+    {
+      "from_id": 7896,
+      "to_id": 7948,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 331,
+          "startColumn": 4,
+          "startLine": 329
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7949,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 34,
+          "startColumn": 4,
+          "startLine": 31
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7950,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 38,
+          "startColumn": 4,
+          "startLine": 36
+        }
+      }
+    },
+    {
+      "from_id": 7951,
+      "to_id": 7950,
+      "type": "Call",
+      "properties": {
+        "loc": {
+          "endColumn": 33,
+          "endLine": 42,
+          "startColumn": 27,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7951,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 43,
+          "startColumn": 4,
+          "startLine": 40
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7952,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 48,
+          "startColumn": 4,
+          "startLine": 45
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7953,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 53,
+          "startColumn": 4,
+          "startLine": 50
+        }
+      }
+    },
+    {
+      "from_id": 7943,
+      "to_id": 7954,
+      "type": "Call",
+      "properties": {
+        "arguments": "responseBuffer version",
+        "loc": {
+          "endColumn": 75,
+          "endLine": 141,
+          "startColumn": 23,
+          "startLine": 141
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7954,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 57,
+          "startColumn": 4,
+          "startLine": 55
+        }
+      }
+    },
+    {
+      "from_id": 7897,
+      "to_id": 7955,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 62,
+          "startColumn": 4,
+          "startLine": 59
+        }
+      }
     }
   ],
   "metadata": {
-    "total_nodes": 26,
-    "total_relationships": 25,
-    "exported_at": "2025-09-14T05:33:21.962777+00:00"
+    "total_nodes": 68,
+    "total_relationships": 87,
+    "exported_at": "2025-09-19T13:30:22.315766+00:00"
   }
 }

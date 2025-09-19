@@ -647,7 +647,7 @@ def start(
             # Load parsers and queries
             parsers, queries = load_parsers()
 
-            updater = GraphUpdater(ingestor, repo_to_update, parsers, queries)
+            updater = GraphUpdater(ingestor, repo_to_update)
             updater.run()
 
             # Export graph if output file specified

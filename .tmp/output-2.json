@@ -1,0 +1,403 @@
+{
+  "nodes": [
+    {
+      "node_id": 229,
+      "labels": [
+        "Project"
+      ],
+      "properties": {
+        "name": "src"
+      }
+    },
+    {
+      "node_id": 230,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": ".tmp",
+        "path": ".tmp"
+      }
+    },
+    {
+      "node_id": 231,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "main",
+        "path": "main"
+      }
+    },
+    {
+      "node_id": 232,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "java",
+        "path": "main/java"
+      }
+    },
+    {
+      "node_id": 233,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "org",
+        "path": "main/java/org"
+      }
+    },
+    {
+      "node_id": 234,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "apache",
+        "path": "main/java/org/apache"
+      }
+    },
+    {
+      "node_id": 235,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "kafka",
+        "path": "main/java/org/apache/kafka"
+      }
+    },
+    {
+      "node_id": 236,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "common",
+        "path": "main/java/org/apache/kafka/common"
+      }
+    },
+    {
+      "node_id": 237,
+      "labels": [
+        "Folder"
+      ],
+      "properties": {
+        "name": "requests",
+        "path": "main/java/org/apache/kafka/common/requests"
+      }
+    },
+    {
+      "node_id": 238,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": ".DS_Store"
+      }
+    },
+    {
+      "node_id": 239,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115455_36166726.log",
+        "path": ".tmp/session_20250914_115455_36166726.log"
+      }
+    },
+    {
+      "node_id": 240,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115005_5d2f5737.log",
+        "path": ".tmp/session_20250914_115005_5d2f5737.log"
+      }
+    },
+    {
+      "node_id": 241,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_114647_8f4a0ca2.log",
+        "path": ".tmp/session_20250914_114647_8f4a0ca2.log"
+      }
+    },
+    {
+      "node_id": 242,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_130348_8bb97440.log",
+        "path": ".tmp/session_20250914_130348_8bb97440.log"
+      }
+    },
+    {
+      "node_id": 243,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_115637_ef116e6e.log",
+        "path": ".tmp/session_20250914_115637_ef116e6e.log"
+      }
+    },
+    {
+      "node_id": 244,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".log",
+        "name": "session_20250914_130441_b480d4d6.log",
+        "path": ".tmp/session_20250914_130441_b480d4d6.log"
+      }
+    },
+    {
+      "node_id": 245,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/.DS_Store"
+      }
+    },
+    {
+      "node_id": 246,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/.DS_Store"
+      }
+    },
+    {
+      "node_id": 247,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/.DS_Store"
+      }
+    },
+    {
+      "node_id": 248,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/.DS_Store"
+      }
+    },
+    {
+      "node_id": 249,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/kafka/.DS_Store"
+      }
+    },
+    {
+      "node_id": 250,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": "",
+        "name": ".DS_Store",
+        "path": "main/java/org/apache/kafka/common/.DS_Store"
+      }
+    },
+    {
+      "node_id": 251,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".java",
+        "name": "AbstractResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/AbstractResponse.java"
+      }
+    },
+    {
+      "node_id": 252,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "extension": ".java",
+        "name": "UpdateMetadataResponse.java",
+        "path": "main/java/org/apache/kafka/common/requests/UpdateMetadataResponse.java"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": 229,
+      "to_id": 230,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 229,
+      "to_id": 231,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 231,
+      "to_id": 232,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 232,
+      "to_id": 233,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 233,
+      "to_id": 234,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 234,
+      "to_id": 235,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 235,
+      "to_id": 236,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 236,
+      "to_id": 237,
+      "type": "CONTAINS_FOLDER",
+      "properties": {}
+    },
+    {
+      "from_id": 229,
+      "to_id": 238,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 239,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 240,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 241,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 242,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 243,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 230,
+      "to_id": 244,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 231,
+      "to_id": 245,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 232,
+      "to_id": 246,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 233,
+      "to_id": 247,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 234,
+      "to_id": 248,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 235,
+      "to_id": 249,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 236,
+      "to_id": 250,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 237,
+      "to_id": 251,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "from_id": 237,
+      "to_id": 252,
+      "type": "CONTAINS_FILE",
+      "properties": {}
+    }
+  ],
+  "metadata": {
+    "total_nodes": 24,
+    "total_relationships": 23,
+    "exported_at": "2025-09-19T06:50:31.206673+00:00"
+  }
+}
