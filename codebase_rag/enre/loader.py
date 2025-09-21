@@ -3,6 +3,7 @@ import datetime
 import shutil
 import subprocess
 from pathlib import Path
+from loguru import logger
 import json
 from typing import Any, List, Dict, Tuple
 from codebase_rag.enre.relation_type import RelationType
@@ -45,7 +46,7 @@ class ENRELoader:
         target_json = self.tmp_dir / f"{self.repo_name}-out.json"
         shutil.move(str(output_json), str(target_json))
         self.json_path = target_json
-        print(f"ENRE output moved to: {self.json_path}")
+        logger.info(f"ENRE output moved to: {self.json_path}")
 
         # 加载 JSON 数据
         self.data = self._load_json()
@@ -124,7 +125,7 @@ class ENRELoader:
         with output_path.open("w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
-        print(f"ENRE results saved to {output_path}")
+        logger.info(f"ENRE results saved to {output_path}")
         return str(output_path)
 
     def to_json_dict(self) -> Dict[str, Any]:
@@ -142,5 +143,4 @@ class ENRELoader:
                 "exported_at": datetime.datetime.now(datetime.timezone.utc).isoformat()
             },
         }
-
 
