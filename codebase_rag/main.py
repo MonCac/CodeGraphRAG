@@ -586,7 +586,7 @@ def start(
             None, "--repo-path", help="Path to the target repository for code retrieval"
         ),
         update_graph: bool = typer.Option(
-            True,
+            False,
             "--update-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
@@ -622,11 +622,11 @@ def start(
     target_repo_path = repo_path or settings.TARGET_REPO_PATH
 
     # Validate output option usage
-    if output and not update_graph:
-        console.print(
-            "[bold red]Error: --output/-o option requires --update-graph to be specified.[/bold red]"
-        )
-        raise typer.Exit(1)
+    # if output and not update_graph:
+    #     console.print(
+    #         "[bold red]Error: --output/-o option requires --update-graph to be specified.[/bold red]"
+    #     )
+    #     raise typer.Exit(1)
 
     _update_model_settings(orchestrator_model, cypher_model)
 

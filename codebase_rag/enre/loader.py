@@ -66,7 +66,7 @@ class ENRELoader:
                 continue
             node = {
                 "node_id": ent["id"],  # 改为 node_id
-                "labels": [ent["category"]],  # category 放到 labels 列表里
+                "labels": [ent["category"].replace(" ", "")],   # category 放到 labels 列表里并去掉空格，解决"Enum Constant"、"Type Parameter"无法存储 Memgraph 问题
                 "properties": {k: v for k, v in ent.items() if k not in ("id", "category")}
             }
             nodes.append(node)

@@ -81,6 +81,7 @@ class MemgraphIngestor:
         try:
             cursor = self.conn.cursor()
             batch_query = f"UNWIND $batch AS row\n{query}"
+            logger.debug(batch_query)
             cursor.execute(batch_query, {"batch": params_list})
         except Exception as e:
             if "already exists" not in str(e).lower():
@@ -160,20 +161,26 @@ class MemgraphIngestor:
         self.node_buffer.clear()
 
     def flush_relationships(self) -> None:
-        """Flushes buffered relationships (from ENRE JSON) to Memgraph."""
         if not self.relationship_buffer:
             return
 
-        # 直接创建每条关系，不做合并
+        rels_by_pattern = defaultdict(list)
         for from_node, rel_type, to_node, props in self.relationship_buffer:
-            query = (
-                f"MATCH (a {{id: $from_val}}), (b {{id: $to_val}}) "
-                f"CREATE (a)-[r:{rel_type}]->(b) "
-                f"SET r += $props"
+            pattern = (from_node[0], from_node[1], rel_type, to_node[0], to_node[1])
+            rels_by_pattern[pattern].append(
+                {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
             )
-            params = {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
-            self._execute_query(query, params)
+        for pattern, params_list in rels_by_pattern.items():
+            from_label, from_key, rel_type, to_label, to_key = pattern
+            query = (
+                f"MATCH (a:{from_label} {{{from_key}: row.from_val}}), "
+                f"(b:{to_label} {{{to_key}: row.to_val}})\n"
+                f"MERGE (a)-[r:{rel_type}]->(b)"
+            )
+            if any(p["props"] for p in params_list):
+                query += "\nSET r += row.props"
 
+            self._execute_batch(query, params_list)
         logger.info(f"Flushed {len(self.relationship_buffer)} relationships.")
         self.relationship_buffer.clear()
 
