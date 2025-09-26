@@ -16,8 +16,6 @@ docker pull memgraph/memgraph-platform
 docker run -it -p 7687:7687 -p 3000:3000 -p 7444:7444 -v mg_lib:/var/lib/memgraph memgraph/memgraph-platform
 ```
 
-
-
 Memgraph Lab
 
 ```bash
@@ -26,29 +24,7 @@ http://localhost:3000/
 # 查询所有 nodes 和 relations
 MATCH (n)-[r]->(m)
 RETURN n, r, m
-
-
-    def flush_relationships(self) -> None:
-        """Flushes buffered relationships (from ENRE JSON) to Memgraph."""
-        if not self.relationship_buffer:
-            return
-
-        # 直接创建每条关系，不做合并
-        for from_node, rel_type, to_node, props in self.relationship_buffer:
-            query = (
-                f"MATCH (a {{id: $from_val}}), (b {{id: $to_val}}) "
-                f"CREATE (a)-[r:{rel_type}]->(b) "
-                f"SET r += $props"
-            )
-            params = {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
-            self._execute_query(query, params)
-
-        logger.info(f"Flushed {len(self.relationship_buffer)} relationships.")
-        self.relationship_buffer.clear()
 ```
-
-
-
 
 
 ## Ollama

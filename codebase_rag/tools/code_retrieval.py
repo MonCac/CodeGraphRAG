@@ -16,20 +16,27 @@ class CodeRetriever:
         logger.info(f"CodeRetriever initialized with root: {self.project_root}")
 
     async def find_code_snippet(self, qualified_name: str) -> CodeSnippet:
-        """Finds a code snippet by querying the graph for its location."""
+        """Finds a code snippet by querying the graph for its location, handling all labels efficiently."""
         logger.info(f"[CodeRetriever] Searching for: {qualified_name}")
 
         query = """
-            MATCH (n) WHERE n.qualified_name = $qn
-            OPTIONAL MATCH (m:Module)-[*]-(n)
-            RETURN n.name AS name, n.start_line AS start, n.end_line AS end, m.path AS path, n.docstring AS docstring
+            MATCH (n)
+            WHERE n.qualifiedName = $qn
+            OPTIONAL MATCH (p) WHERE (n.location IS NULL OR n.location.startLine IS NULL OR n.location.endLine IS NULL) 
+            AND p.id = n.parentId
+            RETURN 
+                labels(n) AS labels,
+                n.name AS name,
+                coalesce(n.location.startLine, p.location.startLine) AS start,
+                coalesce(n.location.endLine, p.location.endLine) AS end,
+                coalesce(n.File, p.File) AS path,
+                n.parentId AS parentId
             LIMIT 1
         """
         params = {"qn": qualified_name}
-        try:
-            # Use the ingestor's public interface
-            results = self.ingestor.fetch_all(query, params)
 
+        try:
+            results = self.ingestor.fetch_all(query, params)
             if not results:
                 return CodeSnippet(
                     qualified_name=qualified_name,
@@ -42,27 +49,76 @@ class CodeRetriever:
                 )
 
             res = results[0]
+            labels = res.get("labels", [])
             file_path_str = res.get("path")
             start_line = res.get("start")
             end_line = res.get("end")
+
+            # 特殊处理
+            if "Package" in labels:
+                return CodeSnippet(
+                    qualified_name=qualified_name,
+                    source_code="",
+                    file_path="",
+                    line_start=0,
+                    line_end=0,
+                    found=False,
+                    error_message="Provided node is a Package, cannot extract code snippet.",
+                )
+
+            if "File" in labels:
+                # 返回整个文件
+                full_path = self.project_root / file_path_str
+                try:
+                    with full_path.open("r", encoding="utf-8") as f:
+                        source_code = f.read()
+                    return CodeSnippet(
+                        qualified_name=qualified_name,
+                        source_code=source_code,
+                        file_path=file_path_str,
+                        line_start=1,
+                        line_end=source_code.count("\n") + 1,
+                        docstring=None,
+                    )
+                except FileNotFoundError:
+                    return CodeSnippet(
+                        qualified_name=qualified_name,
+                        source_code="",
+                        file_path=file_path_str,
+                        line_start=0,
+                        line_end=0,
+                        found=False,
+                        error_message=f"File not found: {full_path}",
+                    )
 
             if not all([file_path_str, start_line, end_line]):
                 return CodeSnippet(
                     qualified_name=qualified_name,
                     source_code="",
                     file_path=file_path_str or "",
-                    line_start=0,
-                    line_end=0,
+                    line_start=start_line or 0,
+                    line_end=end_line or 0,
                     found=False,
                     error_message="Graph entry is missing location data.",
                 )
 
+            # 读取代码片段
             full_path = self.project_root / file_path_str
-            with full_path.open("r", encoding="utf-8") as f:
-                all_lines = f.readlines()
-
-            snippet_lines = all_lines[start_line - 1 : end_line]
-            source_code = "".join(snippet_lines)
+            try:
+                with full_path.open("r", encoding="utf-8") as f:
+                    all_lines = f.readlines()
+                snippet_lines = all_lines[start_line - 1: end_line]
+                source_code = "".join(snippet_lines)
+            except FileNotFoundError:
+                return CodeSnippet(
+                    qualified_name=qualified_name,
+                    source_code="",
+                    file_path=file_path_str,
+                    line_start=start_line,
+                    line_end=end_line,
+                    found=False,
+                    error_message=f"File not found: {full_path}",
+                )
 
             return CodeSnippet(
                 qualified_name=qualified_name,
@@ -70,8 +126,9 @@ class CodeRetriever:
                 file_path=file_path_str,
                 line_start=start_line,
                 line_end=end_line,
-                docstring=res.get("docstring"),
+                docstring=None,
             )
+
         except Exception as e:
             logger.error(f"[CodeRetriever] Error: {e}", exc_info=True)
             return CodeSnippet(
