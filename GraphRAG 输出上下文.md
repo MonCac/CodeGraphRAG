@@ -743,3 +743,10 @@ https://github.com/KnowledgeRAG4LLMVulD/KnowledgeRAG4LLMVulD
 4. 对于优化结果不好的情况，考虑多采用几种案例进行优化(RAGFix)
 5. 可采用 MANTRA 的对于代码检验的方法
 6. 对知识库中的内容进行进一步抽象，提取前后信息（Vul-RAG）
+
+
+
+
+
+
+
