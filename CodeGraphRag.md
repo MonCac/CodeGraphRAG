@@ -26,6 +26,57 @@ MATCH (n)-[r]->(m)
 RETURN n, r, m
 ```
 
+### 1️⃣ 后台运行容器（推荐）
+
+如果你希望 Memgraph 持续运行，同时可以继续使用终端：
+
+```
+docker run -d -p 7687:7687 -p 3000:3000 -p 7444:7444 -v mg_lib:/var/lib/memgraph --name memgraph memgraph/memgraph-platform
+```
+
+解释：
+
+- `-d` → 后台运行
+- `--name memgraph` → 给容器起名，方便管理
+- 其他参数同你之前的命令
+
+然后你可以用：
+
+```
+docker ps
+```
+
+查看容器是否在运行。
+
+------
+
+### 2️⃣ 进入正在运行的容器（可交互）
+
+如果你想连接到后台运行的容器进行操作（比如使用 `mgconsole` 或调试）：
+
+```
+docker exec -it memgraph mgconsole
+```
+
+或者进入 shell：
+
+```
+docker exec -it memgraph /bin/bash
+```
+
+这样不会停止容器。
+
+------
+
+### 3️⃣ 日志查看
+
+想看 Memgraph 或 Lab 的输出日志，可以用：
+
+```
+docker logs -f memgraph
+```
+
+`-f` 会实时跟踪输出。
 
 ## Ollama
 

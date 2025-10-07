@@ -590,6 +590,16 @@ def start(
             "--update-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
+        semantic_enhance: bool = typer.Option(
+            False,
+            "--semantic-enhance",
+            help="Generate semantic analyses and embeddings for entities after graph update.",
+        ),
+        hybrid_query: bool = typer.Option(
+            False,
+            "--hybrid-query",
+            help="Enable hybrid retrieval (graph + embedding) during query.",
+        ),
         clean: bool = typer.Option(
             True,
             "--clean",
