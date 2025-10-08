@@ -1,4 +1,4 @@
-# Code_retrieval
+# code_retrieval.py
 
 所有labels的处理方法
 
@@ -22,3 +22,22 @@
 
 目前对于 TypeParameter 和 Variable 的提取逻辑就是只提取当前行
 
+
+
+# embedding_builder.py
+
+| Labels           |
+| ---------------- |
+| Annotation       |
+| AnnotationMember |
+| Class            |
+| Enum             |
+| EnumConstant     |
+| File             |
+| Interface        |
+| Method           |
+| Module           |
+| Package          |
+| Record           |
+| TypeParameter    |
+| Variable         |

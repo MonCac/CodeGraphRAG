@@ -23,7 +23,7 @@ from rich.prompt import Confirm
 from rich.panel import Panel
 from rich.text import Text
 
-
+from codebase_rag.services.embedding_builder import EmbeddingBuilder
 from .config import (
     EDIT_INDICATORS,
     EDIT_REQUEST_KEYWORDS,
@@ -43,8 +43,6 @@ from .tools.file_editor import FileEditor, create_file_editor_tool
 from .tools.file_reader import FileReader, create_file_reader_tool
 from .tools.file_writer import FileWriter, create_file_writer_tool
 from .tools.shell_command import ShellCommander, create_shell_command_tool
-
-
 
 # Style constants
 confirm_edits_globally = True
@@ -73,7 +71,6 @@ console = Console(width=None, force_terminal=True)
 # Session logging
 session_log_file = None
 session_cancelled = False
-
 
 # Global flag to control edit confirmation
 confirm_edits = True
@@ -115,7 +112,7 @@ def is_edit_operation_request(question: str) -> bool:
 
 
 async def _handle_rejection(
-    rag_agent: Any, message_history: list[Any], console: Console
+        rag_agent: Any, message_history: list[Any], console: Console
 ) -> Any:
     """Handle user rejection of edits with agent acknowledgment."""
     rejection_message = "The user has rejected the changes that were made. Please acknowledge this and consider if any changes need to be reverted."
@@ -127,7 +124,7 @@ async def _handle_rejection(
         )
 
     if not (
-        isinstance(rejection_response, dict) and rejection_response.get("cancelled")
+            isinstance(rejection_response, dict) and rejection_response.get("cancelled")
     ):
         rejection_markdown = Markdown(rejection_response.output)
         console.print(
@@ -237,7 +234,7 @@ def _handle_chat_images(question: str, project_root: Path) -> str:
 
 
 async def run_with_cancellation(
-    console: Console, coro: Any, timeout: float | None = None
+        console: Console, coro: Any, timeout: float | None = None
 ) -> Any:
     """Run a coroutine with proper Ctrl+C cancellation that doesn't exit the program."""
     task = asyncio.create_task(coro)
@@ -278,10 +275,11 @@ def _setup_common_initialization(repo_path: str) -> Path:
 
     return project_root
 
+
 def _create_configuration_table(
-    repo_path: str,
-    title: str = "Graph-Code Initializing...",
-    language: str | None = None,
+        repo_path: str,
+        title: str = "Graph-Code Initializing...",
+        language: str | None = None,
 ) -> Table:
     """Create and return a configuration table."""
     table = Table(title=f"[bold green]{title}[/bold green]")
@@ -302,6 +300,10 @@ def _create_configuration_table(
     cypher_provider = detect_provider_from_model(cypher_model)
     table.add_row("Cypher Model", f"{cypher_model} ({cypher_provider})")
 
+    embedding_model = settings.active_embedding_model
+    embedding_provider = detect_provider_from_model(embedding_model)
+    table.add_row("Cypher Model", f"{embedding_model} ({embedding_provider})")
+
     # Show local endpoint if any model is using local provider
     if orchestrator_provider == "local" or cypher_provider == "local":
         table.add_row("Local Model Endpoint", str(settings.LOCAL_MODEL_ENDPOINT))
@@ -315,9 +317,11 @@ def _create_configuration_table(
 
     return table
 
+
 def _update_model_settings(
-    orchestrator_model: str | None,
-    cypher_model: str | None,
+        orchestrator_model: str | None,
+        cypher_model: str | None,
+        embedding_model: str | None,
 ) -> None:
     """Update model settings based on command-line arguments."""
     # Set orchestrator model if provided
@@ -327,6 +331,10 @@ def _update_model_settings(
     # Set cypher model if provided
     if cypher_model:
         settings.set_cypher_model(cypher_model)
+
+    # Set embedding model if provided
+    if embedding_model:
+        settings.set_embedding_model(embedding_model)
 
 
 def get_multiline_input(prompt_text: str = "Ask a question") -> str:
@@ -372,7 +380,7 @@ def get_multiline_input(prompt_text: str = "Ask a question") -> str:
 
 
 async def run_chat_loop(
-    rag_agent: Any, message_history: list[Any], project_root: Path
+        rag_agent: Any, message_history: list[Any], project_root: Path
 ) -> None:
     """Runs the main chat loop with proper edit confirmation."""
     global session_cancelled
@@ -420,13 +428,13 @@ async def run_chat_loop(
                     "\n[bold yellow]⚠️  This request might result in file modifications.[/bold yellow]"
                 )
                 if not Confirm.ask(
-                    "[bold cyan]Do you want to proceed with this request?[/bold cyan]"
+                        "[bold cyan]Do you want to proceed with this request?[/bold cyan]"
                 ):
                     console.print("[bold red]❌ Request cancelled by user.[/bold red]")
                     continue
 
             with console.status(
-                "[bold green]Thinking... (Press Ctrl+C to cancel)[/bold green]"
+                    "[bold green]Thinking... (Press Ctrl+C to cancel)[/bold green]"
             ):
                 response = await run_with_cancellation(
                     console,
@@ -457,7 +465,7 @@ async def run_chat_loop(
                 )
 
                 if not Confirm.ask(
-                    "[bold cyan]Do you want to keep these changes?[/bold cyan]"
+                        "[bold cyan]Do you want to keep these changes?[/bold cyan]"
                 ):
                     console.print("[bold red]❌ User rejected the changes.[/bold red]")
                     await _handle_rejection(rag_agent, message_history, console)
@@ -566,7 +574,7 @@ async def main_async(repo_path: str) -> None:
     console.print(table)
 
     with MemgraphIngestor(
-        host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
+            host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
     ) as ingestor:
         console.print("[bold green]Successfully connected to Memgraph.[/bold green]")
         console.print(
@@ -586,12 +594,12 @@ def start(
             None, "--repo-path", help="Path to the target repository for code retrieval"
         ),
         update_graph: bool = typer.Option(
-            False,
+            True,
             "--update-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
         semantic_enhance: bool = typer.Option(
-            False,
+            True,
             "--semantic-enhance",
             help="Generate semantic analyses and embeddings for entities after graph update.",
         ),
@@ -617,6 +625,9 @@ def start(
         cypher_model: str | None = typer.Option(
             None, "--cypher-model", help="Specify the Cypher generator model ID"
         ),
+        embedding_model: str | None = typer.Option(
+            None, "--embedding-model", help="Specify the Embedding generator model ID"
+        ),
         no_confirm: bool = typer.Option(
             False,
             "--no-confirm",
@@ -638,7 +649,7 @@ def start(
     #     )
     #     raise typer.Exit(1)
 
-    _update_model_settings(orchestrator_model, cypher_model)
+    _update_model_settings(orchestrator_model, cypher_model, embedding_model)
 
     if update_graph:
         repo_to_update = Path(target_repo_path)
@@ -654,11 +665,31 @@ def start(
                 ingestor.clean_database()
             ingestor.ensure_constraints()
 
-            # Load parsers and queries
-            parsers, queries = load_parsers()
+            # # Load parsers and queries
+            # parsers, queries = load_parsers()
+            #
+            # updater = GraphUpdater(ingestor, repo_to_update)
+            # updater.run()
 
-            updater = GraphUpdater(ingestor, repo_to_update)
-            updater.run()
+            if semantic_enhance:
+                console.print("[bold blue]Generating semantic embeddings...[/bold blue]")
+                # 本地测试用
+                json_path = Path("/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/net-graph.json")  # 替换为你的文件路径
+                if not json_path.exists():
+                    raise FileNotFoundError(f"文件不存在: {json_path}")
+
+                with open(json_path, "r", encoding="utf-8") as f:
+                    graph_data = json.load(f)
+
+                # 实际执行逻辑
+                # graph_data = ingestor.export_graph_to_dict()
+
+                output_file = Path(output)
+                output_dir = output_file.parent
+                embedding_builder = EmbeddingBuilder(output_dir=output_dir)
+                embedding_builder.build_hierarchical_embeddings(graph_data)
+
+                console.print("[bold green]Semantic embeddings generation completed![/bold green]")
 
             # Export graph if output file specified
             if output:

@@ -55,6 +55,7 @@ class AppConfig(BaseSettings):
     LOCAL_MODEL_ENDPOINT: AnyHttpUrl = AnyHttpUrl("http://localhost:11434/v1")
     LOCAL_ORCHESTRATOR_MODEL_ID: str = "llama3"
     LOCAL_CYPHER_MODEL_ID: str = "llama3"
+    LOCAL_EMBEDDING_MODEL_ID: str = "llama3"
     LOCAL_MODEL_API_KEY: str = "ollama"
 
     OPENAI_API_KEY: str | None = None
@@ -67,6 +68,7 @@ class AppConfig(BaseSettings):
     # Active models (set via CLI or defaults)
     _active_orchestrator_model: str | None = None
     _active_cypher_model: str | None = None
+    _active_embedding_model: str | None = None
 
     def validate_for_usage(self) -> None:
         """Validate that required API keys are set for the providers being used."""
@@ -75,9 +77,10 @@ class AppConfig(BaseSettings):
             self.active_orchestrator_model
         )
         cypher_provider = detect_provider_from_model(self.active_cypher_model)
+        embedding_provider = detect_provider_from_model(self.active_embedding_model)
 
         # Check required API keys for each provider being used
-        providers_in_use = {orchestrator_provider, cypher_provider}
+        providers_in_use = {orchestrator_provider, cypher_provider, embedding_provider}
 
         if "gemini" in providers_in_use:
             if self.GEMINI_PROVIDER == "gla" and not self.GEMINI_API_KEY:
@@ -112,6 +115,14 @@ class AppConfig(BaseSettings):
         # Default fallback to Gemini
         return self.LOCAL_CYPHER_MODEL_ID
 
+    @property
+    def active_embedding_model(self) -> str:
+        """Determines the active embedding model ID."""
+        if self._active_embedding_model:
+            return self._active_embedding_model
+        # Default fallback to Gemini
+        return self.LOCAL_EMBEDDING_MODEL_ID
+
     def set_orchestrator_model(self, model: str) -> None:
         """Set the active orchestrator model."""
         self._active_orchestrator_model = model
@@ -119,6 +130,10 @@ class AppConfig(BaseSettings):
     def set_cypher_model(self, model: str) -> None:
         """Set the active cypher model."""
         self._active_cypher_model = model
+
+    def set_embedding_model(self, model: str) -> None:
+        """Set the active embedding model."""
+        self._active_embedding_model = model
 
 
 settings = AppConfig()

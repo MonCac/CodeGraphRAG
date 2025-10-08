@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, Any
 
 from loguru import logger
 from pydantic_ai import Agent, Tool
@@ -10,6 +10,8 @@ from pydantic_ai.models.openai import (
 from pydantic_ai.providers.google_gla import GoogleGLAProvider
 from pydantic_ai.providers.google_vertex import GoogleVertexProvider, VertexAiRegion
 from pydantic_ai.providers.openai import OpenAIProvider
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain.embeddings.base import Embeddings
 
 from ..config import detect_provider_from_model, settings
 from ..prompts import (
@@ -173,3 +175,62 @@ def create_rag_orchestrator(tools: list[Tool]) -> Agent:
         )  # type: ignore
     except Exception as e:
         raise LLMGenerationError(f"Failed to initialize RAG Orchestrator: {e}") from e
+
+
+def create_semantic_model() -> Any:
+    """
+    返回用于生成语义摘要的 LLM client，支持 Gemini / OpenAI / local。
+    """
+    model_id = settings.active_embedding_model
+    provider = detect_provider_from_model(model_id)
+
+    if provider == "gemini":
+        if settings.GEMINI_PROVIDER == "vertex":
+            prov = GoogleVertexProvider(
+                project_id=settings.GCP_PROJECT_ID,
+                region=settings.GCP_REGION,
+                service_account_file=settings.GCP_SERVICE_ACCOUNT_FILE,
+            )
+        else:
+            prov = GoogleGLAProvider(api_key=settings.GEMINI_API_KEY)
+        return GeminiModel(model_id, provider=prov)
+
+    elif provider == "local":
+        return OpenAIModel(
+            model_id,
+            provider=OpenAIProvider(
+                api_key=settings.LOCAL_MODEL_API_KEY,
+                base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+            ),
+        )
+    else:  # openai
+        return OpenAIResponsesModel(
+            model_id,
+            provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+        )
+
+
+def create_embedding_model() -> Embeddings:
+    """
+    Factory function to create the embedding model based on configured provider.
+    Supports Gemini, OpenAI, and local models.
+    """
+    provider_type = detect_provider_from_model(settings.active_embedding_model)
+
+    if provider_type == "gemini":
+        # 如果未来有 Gemini 的 embedding 支持，可以在这里添加
+        raise NotImplementedError("Gemini embeddings not yet implemented.")
+    elif provider_type == "local":
+        # 例如使用 Ollama 本地服务，映射到 OpenAIEmbeddings 接口
+        llm_api_key = settings.LOCAL_MODEL_API_KEY
+        base_url = str(settings.LOCAL_MODEL_ENDPOINT)
+        return OpenAIEmbeddings(
+            model=settings.active_embedding_model,
+            openai_api_key=llm_api_key,
+            openai_api_base=base_url
+        )
+    else:  # 默认使用 OpenAI
+        return OpenAIEmbeddings(
+            model=settings.active_embedding_model,
+            openai_api_key=settings.OPENAI_API_KEY
+        )
