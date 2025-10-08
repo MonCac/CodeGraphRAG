@@ -59,3 +59,34 @@ export LD_LIBRARY_PATH="$HOME/openssl-3/lib64:$LD_LIBRARY_PATH"
 # 然后立即生效
 source ~/.bashrc
 ```
+
+
+
+# venv
+
+激活虚拟环境命令
+
+```bash
+source .venv/bin/activate
+```
+
+切换回全局python环境
+
+```bash
+deactivate
+```
+
+
+
+
+
+# uv
+
+更新 python 环境
+
+```bash
+uv python pin 3.11.12
+```
+
+
+
