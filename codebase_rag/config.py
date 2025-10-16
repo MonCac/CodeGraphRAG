@@ -63,6 +63,7 @@ class AppConfig(BaseSettings):
     OPENAI_CYPHER_MODEL_ID: str = "gpt-4o-mini"
 
     TARGET_REPO_PATH: str = "."
+    ANTIPATTERN_RELATION_PATH: str = "."
     SHELL_COMMAND_TIMEOUT: int = 30
 
     # Active models (set via CLI or defaults)
