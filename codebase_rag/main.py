@@ -23,7 +23,7 @@ from rich.prompt import Confirm
 from rich.panel import Panel
 from rich.text import Text
 
-from codebase_rag.services.embedding_builder import EmbeddingBuilder
+from codebase_rag.services.hierarchical_semantic_builder import HierarchicalSemanticBuilder
 from .config import (
     EDIT_INDICATORS,
     EDIT_REQUEST_KEYWORDS,
@@ -526,6 +526,47 @@ def _export_graph_to_file(ingestor: MemgraphIngestor, output: str) -> bool:
         return False
 
 
+def save_semantic_results(result: dict, save_dir: str) -> None:
+    """
+    将 build_node_semantics 的结果分别保存为 total_result.json 和 file_result.json。
+
+    Args:
+        result (dict): 包含 'texts', 'ids', 'metadatas'
+        save_dir (str): 保存的目录路径，例如 "D:/data/"
+    """
+    save_dir = Path(save_dir)
+    save_dir.mkdir(parents=True, exist_ok=True)
+
+    total_path = save_dir / "total_result.json"
+    file_path = save_dir / "file_result.json"
+
+    try:
+        # ✅ 保存 total_result.json
+        with open(total_path, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=4)
+        logger.success(f"✅ 总体语义结果已保存到: {total_path}")
+
+        # ✅ 筛选出 labels 包含 "File" 的节点
+        filtered_metadatas = [
+            m for m in result.get("metadatas", [])
+            if "File" in m.get("labels", [])
+        ]
+
+        # ✅ 构造仅包含 metadatas 的结果
+        file_result = {
+            "metadatas": filtered_metadatas
+        }
+
+        # ✅ 保存 file_result.json
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(file_result, f, ensure_ascii=False, indent=4)
+
+        logger.success(f"✅ 文件级语义结果已保存到: {file_path}（共 {len(filtered_metadatas)} 个文件节点）")
+
+    except Exception as e:
+        logger.error(f"❌ 保存语义结果失败: {e}")
+
+
 def _initialize_services_and_agent(repo_path: str, ingestor: MemgraphIngestor) -> Any:
     """Initializes all services and creates the RAG agent."""
     # Validate settings once before initializing any LLM services
@@ -593,13 +634,16 @@ def start(
         repo_path: str | None = typer.Option(
             None, "--repo-path", help="Path to the target repository for code retrieval"
         ),
+        antipattern_relation_path: str | None = typer.Option(
+            None, "--antipattern-relation-path", help="The path to the code information related to the anti-pattern"
+        ),
         update_graph: bool = typer.Option(
             True,
             "--update-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
         semantic_enhance: bool = typer.Option(
-            True,
+            False,
             "--semantic-enhance",
             help="Generate semantic analyses and embeddings for entities after graph update.",
         ),
@@ -614,7 +658,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/output.json",
+            "D:\\智能重构\\CodeGraphRAG\\.tmp\\output-kafka-1.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -641,6 +685,7 @@ def start(
     confirm_edits_globally = not no_confirm
 
     target_repo_path = repo_path or settings.TARGET_REPO_PATH
+    antipattern_relation_path = antipattern_relation_path or settings.ANTIPATTERN_RELATION_PATH
 
     # Validate output option usage
     # if output and not update_graph:
@@ -668,13 +713,13 @@ def start(
             # # Load parsers and queries
             # parsers, queries = load_parsers()
             #
-            # updater = GraphUpdater(ingestor, repo_to_update)
-            # updater.run()
+            updater = GraphUpdater(ingestor, repo_to_update)
+            updater.run()
 
             if semantic_enhance:
                 console.print("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # 本地测试用
-                json_path = Path("/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/net-graph.json")  # 替换为你的文件路径
+                json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 if not json_path.exists():
                     raise FileNotFoundError(f"文件不存在: {json_path}")
 
@@ -686,8 +731,9 @@ def start(
 
                 output_file = Path(output)
                 output_dir = output_file.parent
-                embedding_builder = EmbeddingBuilder(output_dir=output_dir)
-                embedding_builder.build_hierarchical_embeddings(graph_data)
+                hierarchical_semantic_builder = HierarchicalSemanticBuilder()
+                result = hierarchical_semantic_builder.build_node_semantics(graph_data)
+                save_semantic_results(result, "D:\\智能重构\\CodeGraphRAG\\.tmp")
 
                 console.print("[bold green]Semantic embeddings generation completed![/bold green]")
 
@@ -698,14 +744,13 @@ def start(
                     raise typer.Exit(1)
 
         console.print("[bold green]Graph update completed![/bold green]")
-        return
 
-    try:
-        asyncio.run(main_async(target_repo_path))
-    except KeyboardInterrupt:
-        console.print("\n[bold red]Application terminated by user.[/bold red]")
-    except ValueError as e:
-        console.print(f"[bold red]Startup Error: {e}[/bold red]")
+    # try:
+    #     asyncio.run(main_async(target_repo_path))
+    # except KeyboardInterrupt:
+    #     console.print("\n[bold red]Application terminated by user.[/bold red]")
+    # except ValueError as e:
+    #     console.print(f"[bold red]Startup Error: {e}[/bold red]")
 
 
 if __name__ == "__main__":

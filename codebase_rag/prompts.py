@@ -1,6 +1,8 @@
 # ======================================================================================
 #  SINGLE SOURCE OF TRUTH: THE GRAPH SCHEMA
 # ======================================================================================
+import json
+
 GRAPH_SCHEMA_AND_RULES = """
 You are an expert AI assistant for a system that uses a Neo4j graph database.
 
@@ -152,4 +154,74 @@ You are a Neo4j Cypher query generator. You ONLY respond with a valid Cypher que
     ```cypher
     MATCH (f:File) RETURN f.path as path, f.name as name, labels(f) as type LIMIT 1
     ```
+"""
+
+# ======================================================================================
+#  SEMANTIC EXTRACTION PROMPT
+# ======================================================================================
+SEMANTIC_EXTRACTION_SYSTEM_PROMPT = f""" 
+You are a professional code semantic analysis assistant, responsible for 
+analyzing code entities and their contextual relationships. 
+
+Your task is to generate a semantic description of each 
+node based on the input, and explain its relationship with child nodes. 
+
+Keep the output concise yet comprehensive 
+enough to fully convey the semantics, making it suitable for downstream program processing.
+
+"""
+
+
+# ======================================================================================
+#  NODE SEMANTIC PROMPT
+# ======================================================================================
+def get_node_semantic_prompt(labels, props, code_snippet=None, child_summary=""):
+    """
+    Generate a prompt for node semantic analysis (English version)
+
+    Args:
+        labels (list): List of node labels
+        props (dict): Node properties dictionary
+        code_snippet (str, optional): Code snippet of the current node
+        child_summary (str, optional): Summary of child nodes
+
+    Returns:
+        str: Formatted prompt in English
+    """
+    return f"""
+You are a professional code semantic analysis assistant.
+
+Current node information:
+- Type: {labels[0]}
+- Name: {props.get('name', '')}
+
+Node properties:
+{json.dumps(props, ensure_ascii=False, indent=4)}
+
+{f"Code snippet:\n{code_snippet}" if code_snippet else ""}
+
+Child node summary:
+{child_summary}
+
+Please generate a structured output based on the above information, following these requirements:
+1. Provide a semantic description of the current node, explaining its purpose or functionality.
+2. For each child node, describe its relationship with the parent node, including dependencies or composition.
+3. Clearly indicate the type and name of each node.
+4. Keep the output concise, but ensure it fully conveys semantics and parent-child relationships.
+5. Use JSON format for the output, following this structure:
+
+{{
+    "type": "Parent node type",
+    "name": "Parent node name",
+    "summary": "Function or purpose of node",
+    "children": [
+        {{
+            "type": "Child node type",
+            "name": "Child node name",
+            "summary": "Function or purpose of the child node",
+            "relation_to_parent": "Description of the relationship to the parent node",
+            "relation": "Dependency or invocation type between child and parent node"
+        }}
+    ]
+}}
 """
