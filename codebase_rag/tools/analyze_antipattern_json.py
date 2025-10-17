@@ -215,6 +215,12 @@ def analyze_antipattern_json_change_format(repo_out_path, antipattern_path, outp
 
     print(f"分析完成，结果已写入 {output_path}")
 
+
+
+
+
+
+
 if __name__ == "__main__":
     repo_out_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/kafka-out.json"
     antipattern_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/test1/20/kafka_20_ch_antipattern.json"

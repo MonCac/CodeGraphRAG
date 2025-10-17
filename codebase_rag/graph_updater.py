@@ -8,12 +8,13 @@ import sys
 from collections import OrderedDict, defaultdict
 from collections.abc import ItemsView, KeysView
 from pathlib import Path
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Tuple
 
 from loguru import logger
 from tree_sitter import Node, Parser
 
 from .enre.loader import ENRELoader
+from codebase_rag.enre.enre_graph_analyzer import ENREGraphAnalyzer
 from .services.graph_service import MemgraphIngestor
 
 
@@ -222,40 +223,45 @@ class BoundedASTCache:
             return len(self.cache) > self.max_entries * 0.8
 
 
-class GraphUpdater:
-    """Updates the graph from ENRE JSON files."""
+class BaseGraphUpdater:
+    """Base class for graph updaters (common logic for loading & writing)."""
 
     def __init__(self, ingestor: MemgraphIngestor, repo_path: Path | str):
         self.ingestor = ingestor
-        self.repo_path = repo_path
-        self.project_name = repo_path.name
-        self.enre_loader: ENRELoader | None = None
+        self.repo_path = Path(repo_path).resolve()
+        self.project_name = self.repo_path.name
+        self.nodes: List[Dict[str, Any]] = []
+        self.relationships: List[Dict[str, Any]] = []
 
     def run(self) -> None:
-        """Main entry point: loads ENRE JSON and writes nodes & relationships to Memgraph."""
-        # 1. Ensure Project node
+        """Main entry point: loads data and writes to Memgraph."""
+        # 1️⃣ Ensure Project node
         self.ingestor.ensure_node_batch("Project", {"name": self.project_name})
         logger.info(f"Ensuring Project: {self.project_name}")
 
-        # 2. Load ENRE JSON
-        self.enre_loader = ENRELoader(self.repo_path)
-        nodes, relationships = self.enre_loader.get_nodes_and_relationships()
-        logger.info(f"Loaded {len(nodes)} nodes and {len(relationships)} relationships from ENRE JSON")
+        # 2️⃣ Load graph data
+        self.nodes, self.relationships = self._load_data()
+        logger.info(f"Loaded {len(self.nodes)} nodes and {len(self.relationships)} relationships.")
 
-        # 3. Write nodes
-        self._write_nodes(nodes)
+        # 3️⃣ Write nodes
+        self._write_nodes(self.nodes)
 
-        # 4. Write relationships
-        self._write_relationships(relationships)
+        # 4️⃣ Write relationships
+        self._write_relationships(self.relationships)
 
-        # 5. Flush all
+        # 5️⃣ Flush all
         self.ingestor.flush_all()
-        logger.info("Graph update from ENRE JSON complete.")
+        logger.info(f"Graph update for {self.project_name} complete.")
 
+    # -------- Abstract methods to implement --------
+    def _load_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        """Load nodes & relationships from source (to be implemented by subclass)."""
+        raise NotImplementedError
+
+    # -------- Shared private methods --------
     def _write_nodes(self, nodes: List[Dict[str, Any]]) -> None:
         """Write all nodes to Memgraph."""
         for node in nodes:
-            # Each node: {"id": ..., "label": ..., "properties": {...}}
             self.ingestor.ensure_node_batch(
                 label=node["labels"][0],
                 properties={"id": node["node_id"], **node["properties"]},
@@ -263,8 +269,7 @@ class GraphUpdater:
 
     def _write_relationships(self, relationships: List[Dict[str, Any]]) -> None:
         """Write all relationships to Memgraph using correct node labels."""
-        # 建立 id -> label 的映射
-        id_to_label = {node["node_id"]: node["labels"][0] for node in self.enre_loader.nodes}
+        id_to_label = {node["node_id"]: node["labels"][0] for node in self.nodes}
 
         for rel in relationships:
             from_label = id_to_label.get(rel["from_id"], "Unknown")
@@ -276,3 +281,24 @@ class GraphUpdater:
                 to_spec=(to_label, "id", rel["to_id"]),
                 properties=rel["properties"],
             )
+
+
+class GraphProjectUpdater(BaseGraphUpdater):
+    """Updates the graph from a project's ENRE JSON files."""
+
+    def _load_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        enre_loader = ENRELoader(self.repo_path)
+        return enre_loader.get_nodes_and_relationships()
+
+
+class GraphAntipatternUpdater(BaseGraphUpdater):
+    """Updates the graph using ENREGraphAnalyzer (antipattern subgraph)."""
+
+    def __init__(self, ingestor: MemgraphIngestor, repo_path: Path | str, antipattern_path: Path | str):
+        super().__init__(ingestor, repo_path)
+        self.antipattern_path = Path(antipattern_path).resolve()
+
+    def _load_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+        analyzer = ENREGraphAnalyzer(self.repo_path, self.antipattern_path)
+        analyzer.generate_subgraph(max_depth=3)
+        return analyzer.get_nodes_and_relationships()

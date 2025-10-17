@@ -32,7 +32,7 @@ from .config import (
     detect_provider_from_model,
     settings,
 )
-from .graph_updater import GraphUpdater, MemgraphIngestor
+from .graph_updater import GraphProjectUpdater, MemgraphIngestor, GraphAntipatternUpdater
 from .parser_loader import load_parsers
 from .services.llm import CypherGenerator, create_rag_orchestrator
 from .tools.code_retrieval import CodeRetriever, create_code_retrieval_tool
@@ -637,13 +637,18 @@ def start(
         antipattern_relation_path: str | None = typer.Option(
             None, "--antipattern-relation-path", help="The path to the code information related to the anti-pattern"
         ),
-        update_graph: bool = typer.Option(
-            True,
-            "--update-graph",
+        update_project_graph: bool = typer.Option(
+            False,
+            "--update-project-graph",
             help="Update the knowledge graph by parsing the repository",
         ),
+        update_antipattern_graph: bool = typer.Option(
+            True,
+            "--update-antipattern-graph",
+            help="Update the knowledge graph by parsing the repository and antipattern files",
+        ),
         semantic_enhance: bool = typer.Option(
-            False,
+            True,
             "--semantic-enhance",
             help="Generate semantic analyses and embeddings for entities after graph update.",
         ),
@@ -696,7 +701,7 @@ def start(
 
     _update_model_settings(orchestrator_model, cypher_model, embedding_model)
 
-    if update_graph:
+    if update_project_graph:
         repo_to_update = Path(target_repo_path)
         console.print(
             f"[bold green]Updating knowledge graph for: {repo_to_update}[/bold green]"
@@ -713,7 +718,7 @@ def start(
             # # Load parsers and queries
             # parsers, queries = load_parsers()
             #
-            updater = GraphUpdater(ingestor, repo_to_update)
+            updater = GraphProjectUpdater(ingestor, repo_to_update)
             updater.run()
 
             if semantic_enhance:
@@ -744,6 +749,57 @@ def start(
                     raise typer.Exit(1)
 
         console.print("[bold green]Graph update completed![/bold green]")
+
+    if update_antipattern_graph:
+        repo_to_update = Path(target_repo_path)
+        antipattern_to_update = Path(antipattern_relation_path)
+        console.print(
+            f"[bold green]Updating knowledge graph for: {repo_to_update} \n and \n {antipattern_to_update}[/bold green]"
+        )
+
+        with MemgraphIngestor(
+                host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
+        ) as ingestor:
+            if clean:
+                console.print("[bold yellow]Cleaning database...[/bold yellow]")
+                ingestor.clean_database()
+            ingestor.ensure_constraints()
+
+            # # Load parsers and queries
+            # parsers, queries = load_parsers()
+            #
+            updater = GraphAntipatternUpdater(ingestor, repo_to_update, antipattern_to_update)
+            updater.run()
+
+            if semantic_enhance:
+                console.print("[bold blue]Generating semantic embeddings...[/bold blue]")
+                # # 本地测试用
+                # json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
+                # if not json_path.exists():
+                #     raise FileNotFoundError(f"文件不存在: {json_path}")
+                # with open(json_path, "r", encoding="utf-8") as f:
+                #     graph_data = json.load(f)
+
+                # 实际执行逻辑
+                graph_data = ingestor.export_graph_to_dict()
+
+                output_file = Path(output)
+                output_dir = output_file.parent
+                hierarchical_semantic_builder = HierarchicalSemanticBuilder()
+                result = hierarchical_semantic_builder.build_node_semantics(graph_data)
+                save_semantic_results(result, "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/codebase_rag"
+                                              "/enre/.tmp")
+
+                console.print("[bold green]Semantic embeddings generation completed![/bold green]")
+
+            # Export graph if output file specified
+            if output:
+                console.print(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
+                if not _export_graph_to_file(ingestor, output):
+                    raise typer.Exit(1)
+
+        console.print("[bold green]Graph update completed![/bold green]")
+
 
     # try:
     #     asyncio.run(main_async(target_repo_path))

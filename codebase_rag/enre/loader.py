@@ -4,7 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from loguru import logger
-import json
+import orjson, json
 from typing import Any, List, Dict, Tuple
 from codebase_rag.enre.relation_type import RelationType
 
@@ -47,6 +47,13 @@ class ENRELoader:
         shutil.move(str(output_json), str(target_json))
         self.json_path = target_json
         logger.info(f"ENRE output moved to: {self.json_path}")
+
+        # 如果原目录为空，则删除它
+        try:
+            output_folder.rmdir()  # 只能删除空文件夹
+            logger.info(f"Removed empty folder: {output_folder}")
+        except OSError:
+            logger.debug(f"Folder not empty, not removed: {output_folder}")
 
         # 加载 JSON 数据
         self.data = self._load_json()
@@ -119,11 +126,13 @@ class ENRELoader:
         """将 ENRE 结果保存为 JSON 文件，路径固定为 .tmp/{repo_name}-graph.json。"""
         data = self.to_json_dict()
         repo_name = self.repo_path.name
+        logger.info(f"start ENRE GRAPH SAVE JSON")
+
         output_path = Path(".tmp") / f"{repo_name}-graph.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with output_path.open("w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        with output_path.open("wb") as f:  # 注意是二进制写入
+            f.write(orjson.dumps(data, option=orjson.OPT_INDENT_2))
 
         logger.info(f"ENRE results saved to {output_path}")
         return str(output_path)
