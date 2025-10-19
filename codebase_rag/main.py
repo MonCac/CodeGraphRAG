@@ -127,7 +127,7 @@ async def _handle_rejection(
             isinstance(rejection_response, dict) and rejection_response.get("cancelled")
     ):
         rejection_markdown = Markdown(rejection_response.output)
-        console.print(
+        logger.info(
             Panel(
                 rejection_markdown,
                 title="[bold yellow]Response to Rejection[/bold yellow]",
@@ -247,7 +247,7 @@ async def run_with_cancellation(
             await task
         except asyncio.CancelledError:
             pass
-        console.print(
+        logger.info(
             f"\n[bold yellow]Operation timed out after {timeout} seconds.[/bold yellow]"
         )
         return {"cancelled": True, "timeout": True}
@@ -258,7 +258,7 @@ async def run_with_cancellation(
                 await task
             except asyncio.CancelledError:
                 pass
-        console.print("\n[bold yellow]Thinking cancelled.[/bold yellow]")
+        logger.info("\n[bold yellow]Thinking cancelled.[/bold yellow]")
         return {"cancelled": True}
 
 
@@ -424,13 +424,13 @@ async def run_chat_loop(
             # Check if this might be an edit operation and warn user upfront
             might_edit = is_edit_operation_request(question)
             if confirm_edits_globally and might_edit:
-                console.print(
+                logger.info(
                     "\n[bold yellow]⚠️  This request might result in file modifications.[/bold yellow]"
                 )
                 if not Confirm.ask(
                         "[bold cyan]Do you want to proceed with this request?[/bold cyan]"
                 ):
-                    console.print("[bold red]❌ Request cancelled by user.[/bold red]")
+                    logger.info("[bold red]❌ Request cancelled by user.[/bold red]")
                     continue
 
             with console.status(
@@ -450,7 +450,7 @@ async def run_chat_loop(
 
             # Display the response
             markdown_response = Markdown(response.output)
-            console.print(
+            logger.info(
                 Panel(
                     markdown_response,
                     title="[bold green]Assistant[/bold green]",
@@ -460,18 +460,18 @@ async def run_chat_loop(
 
             # Check if the response actually contains edit operations
             if confirm_edits_globally and is_edit_operation_response(response.output):
-                console.print(
+                logger.info(
                     "\n[bold yellow]⚠️  The assistant has performed file modifications.[/bold yellow]"
                 )
 
                 if not Confirm.ask(
                         "[bold cyan]Do you want to keep these changes?[/bold cyan]"
                 ):
-                    console.print("[bold red]❌ User rejected the changes.[/bold red]")
+                    logger.info("[bold red]❌ User rejected the changes.[/bold red]")
                     await _handle_rejection(rag_agent, message_history, console)
                     continue
                 else:
-                    console.print(
+                    logger.info(
                         "[bold green]✅ Changes accepted by user.[/bold green]"
                     )
 
@@ -485,7 +485,7 @@ async def run_chat_loop(
             break
         except Exception as e:
             logger.error("An unexpected error occurred: {}", e, exc_info=True)
-            console.print(f"[bold red]An unexpected error occurred: {e}[/bold red]")
+            logger.info(f"[bold red]An unexpected error occurred: {e}[/bold red]")
             traceback.print_exc()
 
 
@@ -512,16 +512,16 @@ def _export_graph_to_file(ingestor: MemgraphIngestor, output: str) -> bool:
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(graph_data, f, indent=2, ensure_ascii=False)
 
-        console.print(
+        logger.info(
             f"[bold green]Graph exported successfully to: {output_path.absolute()}[/bold green]"
         )
-        console.print(
+        logger.info(
             f"[bold cyan]Export contains {graph_data['metadata']['total_nodes']} nodes and {graph_data['metadata']['total_relationships']} relationships[/bold cyan]"
         )
         return True
 
     except Exception as e:
-        console.print(f"[bold red]Failed to export graph: {e}[/bold red]")
+        logger.info(f"[bold red]Failed to export graph: {e}[/bold red]")
         logger.error(f"Export error: {e}", exc_info=True)
         return False
 
@@ -612,13 +612,13 @@ async def main_async(repo_path: str) -> None:
     project_root = _setup_common_initialization(repo_path)
 
     table = _create_configuration_table(repo_path)
-    console.print(table)
+    logger.info(table)
 
     with MemgraphIngestor(
             host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
     ) as ingestor:
-        console.print("[bold green]Successfully connected to Memgraph.[/bold green]")
-        console.print(
+        logger.info("[bold green]Successfully connected to Memgraph.[/bold green]")
+        logger.info(
             Panel(
                 "[bold yellow]Ask questions about your codebase graph. Type 'exit' or 'quit' to end.[/bold yellow]",
                 border_style="yellow",
@@ -663,7 +663,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "D:\\智能重构\\CodeGraphRAG\\.tmp\\output-kafka-1.json",
+            "D:\\智能重构\\CodeGraphRAG\\.tmp\\output-kafka-graph-2.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -694,7 +694,7 @@ def start(
 
     # Validate output option usage
     # if output and not update_graph:
-    #     console.print(
+    #     logger.info(
     #         "[bold red]Error: --output/-o option requires --update-graph to be specified.[/bold red]"
     #     )
     #     raise typer.Exit(1)
@@ -703,7 +703,7 @@ def start(
 
     if update_project_graph:
         repo_to_update = Path(target_repo_path)
-        console.print(
+        logger.info(
             f"[bold green]Updating knowledge graph for: {repo_to_update}[/bold green]"
         )
 
@@ -711,7 +711,7 @@ def start(
                 host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
         ) as ingestor:
             if clean:
-                console.print("[bold yellow]Cleaning database...[/bold yellow]")
+                logger.info("[bold yellow]Cleaning database...[/bold yellow]")
                 ingestor.clean_database()
             ingestor.ensure_constraints()
 
@@ -722,7 +722,7 @@ def start(
             updater.run()
 
             if semantic_enhance:
-                console.print("[bold blue]Generating semantic embeddings...[/bold blue]")
+                logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # 本地测试用
                 json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 if not json_path.exists():
@@ -740,20 +740,20 @@ def start(
                 result = hierarchical_semantic_builder.build_node_semantics(graph_data)
                 save_semantic_results(result, "D:\\智能重构\\CodeGraphRAG\\.tmp")
 
-                console.print("[bold green]Semantic embeddings generation completed![/bold green]")
+                logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
             # Export graph if output file specified
             if output:
-                console.print(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
+                logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
                 if not _export_graph_to_file(ingestor, output):
                     raise typer.Exit(1)
 
-        console.print("[bold green]Graph update completed![/bold green]")
+        logger.info("[bold green]Graph update completed![/bold green]")
 
     if update_antipattern_graph:
         repo_to_update = Path(target_repo_path)
         antipattern_to_update = Path(antipattern_relation_path)
-        console.print(
+        logger.info(
             f"[bold green]Updating knowledge graph for: {repo_to_update} \n and \n {antipattern_to_update}[/bold green]"
         )
 
@@ -761,7 +761,7 @@ def start(
                 host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
         ) as ingestor:
             if clean:
-                console.print("[bold yellow]Cleaning database...[/bold yellow]")
+                logger.info("[bold yellow]Cleaning database...[/bold yellow]")
                 ingestor.clean_database()
             ingestor.ensure_constraints()
 
@@ -770,9 +770,19 @@ def start(
             #
             updater = GraphAntipatternUpdater(ingestor, repo_to_update, antipattern_to_update)
             updater.run()
+            _export_graph_to_file(ingestor, output)
+
+            # 与 LLM 交互，完成第一层文件的提取
+            # 仿照 run_chat_loop 构建 chat，完成对数据库的内容提取。输入是反模式的具体体现的文件，用它来构建 prompt。输出就是对知识图谱的提取结果，存储为 json
+            # 然后提供给 semantic_enhance。让 semantic_enhance 生成之后再存入数据库。
+
+            # 可能遇到的问题：
+            # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
+            # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。
+
 
             if semantic_enhance:
-                console.print("[bold blue]Generating semantic embeddings...[/bold blue]")
+                logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # # 本地测试用
                 # json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 # if not json_path.exists():
@@ -790,23 +800,23 @@ def start(
                 save_semantic_results(result, "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/codebase_rag"
                                               "/enre/.tmp")
 
-                console.print("[bold green]Semantic embeddings generation completed![/bold green]")
+                logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
             # Export graph if output file specified
             if output:
-                console.print(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
+                logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
                 if not _export_graph_to_file(ingestor, output):
                     raise typer.Exit(1)
 
-        console.print("[bold green]Graph update completed![/bold green]")
+        logger.info("[bold green]Graph update completed![/bold green]")
 
 
     # try:
     #     asyncio.run(main_async(target_repo_path))
     # except KeyboardInterrupt:
-    #     console.print("\n[bold red]Application terminated by user.[/bold red]")
+    #     logger.info("\n[bold red]Application terminated by user.[/bold red]")
     # except ValueError as e:
-    #     console.print(f"[bold red]Startup Error: {e}[/bold red]")
+    #     logger.info(f"[bold red]Startup Error: {e}[/bold red]")
 
 
 if __name__ == "__main__":

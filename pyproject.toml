@@ -25,4 +25,5 @@ dependencies = [
     "chromadb>=1.1.1",
     "langchain-openai>=0.3.35",
     "langchain-chroma>=0.2.6",
+    "chardet>=5.2.0",
 ]
