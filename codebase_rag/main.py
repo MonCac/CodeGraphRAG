@@ -780,7 +780,6 @@ def start(
             # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
             # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。
 
-
             if semantic_enhance:
                 logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # # 本地测试用
@@ -809,7 +808,6 @@ def start(
                     raise typer.Exit(1)
 
         logger.info("[bold green]Graph update completed![/bold green]")
-
 
     # try:
     #     asyncio.run(main_async(target_repo_path))
