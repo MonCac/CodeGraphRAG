@@ -776,6 +776,7 @@ def start(
             # 仿照 run_chat_loop 构建 chat，完成对数据库的内容提取。输入是反模式的具体体现的文件，用它来构建 prompt。输出就是对知识图谱的提取结果，存储为 json
             # 然后提供给 semantic_enhance。让 semantic_enhance 生成之后再存入数据库。
 
+
             # 可能遇到的问题：
             # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
             # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。

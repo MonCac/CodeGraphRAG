@@ -19,7 +19,7 @@ from ..prompts import (
     CYPHER_SYSTEM_PROMPT,
     LOCAL_CYPHER_SYSTEM_PROMPT,
     RAG_ORCHESTRATOR_SYSTEM_PROMPT,
-    SEMANTIC_EXTRACTION_SYSTEM_PROMPT,
+    SEMANTIC_EXTRACTION_SYSTEM_PROMPT, GRAPH_EXTRACTION_SYSTEM_PROMPT, GRAPH_EXTRACTION_RAG_ORCHESTRATOR_SYSTEM_PROMPT,
 )
 
 
@@ -80,7 +80,7 @@ class CypherGenerator:
                         api_key=settings.OPENAI_API_KEY,
                     ),
                 )
-                system_prompt = CYPHER_SYSTEM_PROMPT
+                system_prompt = GRAPH_EXTRACTION_SYSTEM_PROMPT
             else:  # local
                 llm = OpenAIModel(  # type: ignore
                     cypher_model_id,
@@ -108,8 +108,8 @@ class CypherGenerator:
         try:
             result = await self.agent.run(natural_language_query)
             if (
-                not isinstance(result.output, str)
-                or "MATCH" not in result.output.upper()
+                    not isinstance(result.output, str)
+                    or "MATCH" not in result.output.upper()
             ):
                 raise LLMGenerationError(
                     f"LLM did not generate a valid query. Output: {result.output}"
@@ -171,7 +171,7 @@ def create_rag_orchestrator(tools: list[Tool]) -> Agent:
 
         return Agent(
             model=llm,
-            system_prompt=RAG_ORCHESTRATOR_SYSTEM_PROMPT,
+            system_prompt=GRAPH_EXTRACTION_RAG_ORCHESTRATOR_SYSTEM_PROMPT,
             tools=tools,
             model_settings=model_settings,
         )  # type: ignore
