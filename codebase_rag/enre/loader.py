@@ -2,6 +2,7 @@
 import datetime
 import shutil
 import subprocess
+import chardet
 from pathlib import Path
 from loguru import logger
 import orjson, json
@@ -61,8 +62,18 @@ class ENRELoader:
     def _load_json(self) -> Dict[str, Any]:
         if not self.json_path.exists():
             raise FileNotFoundError(f"ENRE JSON file not found: {self.json_path}")
-        with self.json_path.open("r", encoding="utf-8") as f:
-            return json.load(f)
+
+        # 只读取前 4096 字节进行编码检测
+        with self.json_path.open("rb") as f:
+            head = f.read(4096)
+            detected = chardet.detect(head)
+            enc = detected.get("encoding") or "utf-8"
+
+        try:
+            with self.json_path.open("r", encoding=enc, errors="replace") as f:
+                return json.load(f)
+        except Exception as e:
+            raise ValueError(f"Failed to load JSON with detected encoding '{enc}': {e}") from e
 
     def parse_entities(self) -> List[Dict[str, Any]]:
         """Convert ENRE entities to node dicts: {node_id, labels, properties}."""

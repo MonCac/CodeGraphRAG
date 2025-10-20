@@ -21,7 +21,7 @@ class ENREGraphAnalyzer:
     def generate_subgraph(self, max_depth: int | None = None, max_nodes: int = 100000):
         """
         生成基于反模式节点的项目子图（保持原始 ENRE 节点/关系格式）。
-        同时在日志输出每层节点数量。
+        同时在日志输出每层节点数量，并去重关系。
 
         参数:
             max_depth: 最大递归层数（None 表示不限制，但内部硬限制为100）
@@ -77,10 +77,18 @@ class ENREGraphAnalyzer:
         # 5️⃣ 构建子图（原始节点和关系，不添加 depth 字段）
         project_node_map = {n["node_id"]: n for n in project_nodes}
         sub_nodes = [project_node_map[nid] for nid in visited if nid in project_node_map]
-        sub_rels = [
-            rel for rel in project_rels
-            if rel["from_id"] in visited and rel["to_id"] in visited
-        ]
+
+        # 5️⃣-1 去重关系
+        seen = set()
+        unique_sub_rels = []
+        for rel in project_rels:
+            if rel["from_id"] in visited and rel["to_id"] in visited:
+                key = (rel["from_id"], rel["to_id"], rel.get("type"))
+                if key not in seen:
+                    seen.add(key)
+                    unique_sub_rels.append(rel)
+
+        sub_rels = unique_sub_rels
 
         # 6️⃣ 打印每层节点数量
         from collections import Counter
@@ -112,6 +120,7 @@ class ENREGraphAnalyzer:
         )
 
         return result
+
 
     def save_subgraph(self, output_path: str | Path, **kwargs):
         """生成并保存子图 JSON"""

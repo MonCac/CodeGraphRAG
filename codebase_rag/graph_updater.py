@@ -300,5 +300,6 @@ class GraphAntipatternUpdater(BaseGraphUpdater):
 
     def _load_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
         analyzer = ENREGraphAnalyzer(self.repo_path, self.antipattern_path)
-        analyzer.generate_subgraph(max_depth=3)
+        # analyzer.generate_subgraph(max_depth=3)
+        analyzer.save_subgraph("D:\\智能重构\\CodeGraphRAG\\codebase_rag\\enre\\.tmp\\my_project_subgraph.json", max_depth=3)
         return analyzer.get_nodes_and_relationships()
