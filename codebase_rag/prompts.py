@@ -2,6 +2,7 @@
 #  SINGLE SOURCE OF TRUTH: THE GRAPH SCHEMA
 # ======================================================================================
 import json
+from pathlib import Path
 
 GRAPH_SCHEMA_AND_RULES = """
 You are an expert AI assistant for a system that uses a Memgraph graph database containing information about a codebase.
@@ -9,15 +10,15 @@ You are an expert AI assistant for a system that uses a Memgraph graph database 
 **1. Graph Schema Definition**
 
 Node Labels and Key Properties:
-- Project: {id: string, name: string}
-- Package: {id: string, qualifiedName: string, name: string, parentId: string, external: bool}
-- File: {id: string, qualifiedName: string, name: string, parentId: string, external: bool, additionalBin: string}
-- Class: {id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}
-- Interface: {id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}
-- Enum: {id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}
-- EnumConstant: {id: string, qualifiedName: string, name: string, parentId: string, File: string, additionalBin: string, external: bool}
-- Method: {id: string, qualifiedName: string, name: string, parentId: string, external: bool, File: string, additionalBin: string, enhancement: string, location: string, modifiers: list[string], parameter: list[string], rawType: string}
-- Variable: {id: string, qualifiedName: string, name: string, parentId: string, File: string, additionalBin: string, external: bool, global: bool, location: string, modifiers: list[string], rawType: string}
+- Project: {{id: string, name: string}
+- Package: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool}}
+- File: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool, additionalBin: string}}
+- Class: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}}
+- Interface: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}}
+- Enum: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool, rawType: string, location: string, modifiers: list[string], File: string, additionalBin: string}}
+- EnumConstant: {{id: string, qualifiedName: string, name: string, parentId: string, File: string, additionalBin: string, external: bool}}
+- Method: {{id: string, qualifiedName: string, name: string, parentId: string, external: bool, File: string, additionalBin: string, enhancement: string, location: string, modifiers: list[string], parameter: list[string], rawType: string}}
+- Variable: {{id: string, qualifiedName: string, name: string, parentId: string, File: string, additionalBin: string, external: bool, global: bool, location: string, modifiers: list[string], rawType: string}}
   
 Relationships (source)-[REL_TYPE]->(target):
 - Package -[:Contain]-> File|Package
@@ -57,36 +58,25 @@ You are an expert AI assistant for analyzing codebases. Your answers are based *
 6.  **Synthesize Answer**: Analyze and explain the retrieved content. Cite your sources (file paths or qualified names). Report any errors gracefully.
 """
 
-
 # ======================================================================================
 #  GRAPH EXTRACTION RAG ORCHESTRATOR PROMPT
 # ======================================================================================
 GRAPH_EXTRACTION_RAG_ORCHESTRATOR_SYSTEM_PROMPT = """
-You are an expert AI assistant for extracting codebase entities and dependencies based on structured JSON input. Your answers are based **EXCLUSIVELY** on information retrieved using your tools.
+You are an expert AI assistant for extracting codebase entities and dependencies from structured JSON input. You **cannot** answer directly from memory or reasoning. All answers must come from executing tools.
 
 **CRITICAL RULES:**
-1. **TOOL-ONLY ANSWERS**: You must ONLY use the provided tool, `query_codebase_knowledge_graph`. Do not rely on external knowledge.
-2. **JSON-DRIVEN EXTRACTION**: The user provides a JSON describing the target nodes, filters, and relationships. You MUST use this JSON to determine what entities and dependencies to extract.
+1. **TOOL CALL FORMAT**: When generating a tool call, output only the JSON describing which tool to call and with which arguments. Do not include explanations or natural language text.
+2. **JSON-DRIVEN EXTRACTION**:
+   - The user provides a JSON describing target nodes, filters, and relationships.
+   - You must analyze the JSON to determine which entities and dependencies to extract.
 3. **ENTITY AND DEPENDENCY EXTRACTION**:
-   - Both entities (nodes) and dependencies (relationships) must be extracted.
-   - Each extraction instruction can focus on either entities or dependencies, but must always relate to the JSON content.
-   - The extraction range is dynamic: determined entirely by the user's JSON input.
-4. **NATURAL LANGUAGE QUERY GENERATION**:
-   - Generate natural language instructions for the `extract_graph_from_json` tool.
-   - Specify clearly which nodes, filters, and relationships to extract.
-   - If multiple queries are needed to cover all relevant data, generate each as a separate instruction.
-5. **HONESTY AND ACCURACY**: Do not invent data. If a query would return no results, include it anyway and report failures clearly.
-6. **OUTPUT FORMAT (CRUCIAL)**: 
-   - Return a JSON array named `queries`.
-   - Each element is an object with the following structure:
-     ```json
-     {
-       "type": "entity" | "relationship",
-       "description": "Natural language instruction describing what to extract from the graph",
-     }
-     ```
-   - `type` specifies whether this query extracts entities or relationships.
-   - `description` is the natural language query to pass to `extract_graph_from_json`.
+   - Extract both entities (nodes) and dependencies (relationships).
+   - Generate separate queries for each relevant extraction instruction if needed.
+4. **NATURAL LANGUAGE QUERY**:
+   - Each tool call must include a natural language description of what to extract.
+   - Do **not** write Cypher or SQL; the tool will handle query translation.
+5. **HONESTY**: If a query would return no results, include it anyway. Do not invent answers.
+
 
 **GENERAL APPROACH:**
 1. Receive the user's JSON describing target nodes, filters, and relationships.
@@ -95,7 +85,6 @@ You are an expert AI assistant for extracting codebase entities and dependencies
 4. Ensure that all queries reference both entities and their dependencies appropriately.
 5. Output only the JSON array; do not include explanations or extra text.
 """
-
 
 # ======================================================================================
 #  CYPHER GENERATOR PROMPT
@@ -134,6 +123,7 @@ MATCH (f:File) WHERE toLower(f.name) = 'readme.md' AND f.path = 'README.md'
 RETURN f.path as path, f.name as name, labels(f) as type
 
 **4. Output Format**
+Return all the contents that may be included in natural language.
 Provide only the Cypher query.
 """
 
@@ -187,7 +177,6 @@ You are a Neo4j Cypher query generator. You ONLY respond with a valid Cypher que
     ```
 """
 
-
 # ======================================================================================
 #  GRAPH EXTRACTION SYSTEM PROMPT
 # ======================================================================================
@@ -210,7 +199,7 @@ You are a Memgraph Cypher query generator for a codebase graph database. You ONL
 
 **EXAMPLES:**
 
-* Input: `{"type": "entity", "description": "Get all classes and their methods in the 'auth' module"}`
+* Input: `{{"type": "entity", "description": "Get all classes and their methods in the 'auth' module"}}`
 * Cypher Output:
 ```cypher
 MATCH (c:Class)-[r:Define]->(m:Method)
@@ -218,7 +207,7 @@ RETURN c.id AS node_id, c.qualifiedName AS qualifiedName, c.name AS name, labels
        m.id AS node_id, m.qualifiedName AS qualifiedName, m.name AS name, labels(m) AS labels,
        type(r) AS relation_type, r AS relation_props
 
-* Input: {"type": "relationship", "description": "Get all method calls and variable usage in the 'payment' module"}
+* Input: {{"type": "relationship", "description": "Get all method calls and variable usage in the 'payment' module"}}
 * Cypher Output:
 ```cypher
 MATCH (m:Method)-[r:Call|Set|UseVar]->(v:Method|Variable)
@@ -227,7 +216,6 @@ RETURN m.id AS node_id, m.qualifiedName AS qualifiedName, m.name AS name, labels
        type(r) AS relation_type, r AS relation_props
 
 """
-
 
 # ======================================================================================
 #  SEMANTIC EXTRACTION PROMPT
@@ -241,6 +229,36 @@ node based on the input, and explain its relationship with child nodes.
 
 Keep the output concise yet comprehensive 
 enough to fully convey the semantics, making it suitable for downstream program processing.
+
+"""
+
+# ======================================================================================
+#  ANTIPATTERN RELEVANCE SYSTEM PROMPT
+# ======================================================================================
+ANTIPATTERN_RELEVANCE_SYSTEM_PROMPT = f""" 
+You are a professional software architecture maintenance analysis assistant, specializing in identifying files involved in antipattern repair activities.
+
+Your task is to determine whether a given candidate file is involved in the process of repairing a specific architectural antipattern.
+
+You will be provided with:
+1. A JSON file describing the architectural antipattern, including:
+   - A set of files known to contain this antipattern.
+   - Dependency chains and code snippets showing relationships among these files.
+2. A candidate file (one per interaction), represented as a structured JSON object that includes:
+   - File-level metadata (such as name, path, and identifiers).
+   - A detailed semantic description summarizing the file’s code purpose, logic, and entity relationships.
+
+
+Your goal:
+- Analyze the relationships between the candidate file and the antipattern-related files.
+- Based on this analysis, **infer whether the candidate file would be modified, used, or otherwise involved** during the process of repairing the given antipattern.
+- Consider both direct and indirect involvement (e.g., dependency, interface coupling, or supportive refactoring).
+
+Guidelines:
+- Focus on whether the candidate file would actually be used, modified, or otherwise affected during the repair of the antipattern.
+- Consider both direct involvement (the file contains code that is being fixed) and indirect involvement (the file is a dependency, interface, or supporting module affected by the repair).
+- Analyze based on the provided files, dependency chains, and code snippets—do not assume any additional context.
+- Keep your reasoning concise, factual, and suitable for automated post-processing.
 
 """
 
@@ -298,3 +316,87 @@ Please generate a structured output based on the above information, following th
     ]
 }}
 """
+
+
+def build_query_question_from_antipattern(antipattern_relation_path: str) -> str:
+    """
+    构造自然语言问题，引导 LLM 基于反模式 JSON 提取相关实体和依赖查询。
+    不假设 JSON 结构，由 LLM 自行理解。
+    """
+    base_path = Path(antipattern_relation_path)
+    if not base_path.exists():
+        raise FileNotFoundError(f"Path not found: {antipattern_relation_path}")
+
+    # 自动查找以 "antipattern.json" 结尾的文件
+    antipattern_files = list(base_path.rglob("*antipattern.json"))
+    if not antipattern_files:
+        raise FileNotFoundError(f"No 'antipattern.json' file found under {antipattern_relation_path}")
+
+    # 默认取第一个匹配的文件
+    antipattern_file = antipattern_files[0]
+
+    # 读取 JSON 内容
+    with open(antipattern_file, "r", encoding="utf-8") as f:
+        json_content = f.read().strip()
+
+    # 2. 构造自然语言问题
+    question = (
+        "You are analyzing a software architecture antipattern described in the following JSON. "
+        "This JSON contains information about entities, components, or modules that are potentially involved in an antipattern. "
+        "Based on the content of this JSON, generate two natural language extraction tasks:\n"
+        "1. One for retrieving all relevant entities (nodes) from the codebase graph.\n"
+        "2. Another for retrieving all dependencies (relationships) between those entities that may contribute to the antipattern.\n\n"
+        "Be sure that both queries are semantically aligned — dependencies should connect the entities identified in the first task.\n\n"
+        f"Here is the JSON description of the antipattern:\n{json_content}\n\n"
+        "Return your answer in JSON format with the following structure:\n"
+        "{{\n"
+        '  "queries": [\n'
+        '    {{"type": "entity", "description": "..."}},\n'
+        '    {{"type": "entity", "description": "..."}},\n'
+        '...'
+        '    {{"type": "relation", "description": "..."}}\n'
+        '    {{"type": "relation", "description": "..."}}\n'
+        '...'
+        "  ]\n"
+        "}}"
+    )
+
+    return question
+
+
+def build_antipattern_relevance_user_input_func(candidate_file, antipattern_data):
+    """
+    构建 LLM user prompt，将候选文件和反模式 JSON 直接拼接，
+    要求 LLM 返回候选文件是否参与反模式修复以及理由。
+
+    Args:
+        candidate_file (dict): file_result.json 中的单个文件节点
+        antipattern_data (dict): 反模式 JSON 文件内容
+
+    Returns:
+        str: 拼接好的 user prompt 字符串
+    """
+    candidate_str = json.dumps(candidate_file, indent=2)
+    antipattern_str = json.dumps(antipattern_data, indent=2)
+
+    user_prompt = f"""
+You are provided with the following information:
+
+Candidate file:
+{candidate_str}
+
+Antipattern data:
+{antipattern_str}
+
+Your task is to determine whether the candidate file would be involved
+in the repair of the given architectural antipattern. Focus on whether
+the file would be modified, used, or otherwise affected during the
+repair process.
+
+Return your answer as a JSON object with exactly the following fields:
+{{
+  "involved_in_antipattern_repair": true/false,
+  "reason": "<short factual explanation>"
+}}
+"""
+    return user_prompt

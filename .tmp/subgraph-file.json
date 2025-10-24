@@ -1,0 +1,3720 @@
+{
+  "nodes": [
+    {
+      "node_id": 130413,
+      "labels": [
+        "Project"
+      ],
+      "properties": {
+        "name": "20"
+      }
+    },
+    {
+      "node_id": 130414,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 0,
+        "name": "requests",
+        "parentId": 1,
+        "qualifiedName": "org.apache.kafka.common.requests"
+      }
+    },
+    {
+      "node_id": 130415,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 1,
+        "name": "common",
+        "parentId": 2,
+        "qualifiedName": "org.apache.kafka.common"
+      }
+    },
+    {
+      "node_id": 130416,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 2,
+        "name": "kafka",
+        "parentId": 3,
+        "qualifiedName": "org.apache.kafka"
+      }
+    },
+    {
+      "node_id": 130417,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 3,
+        "name": "apache",
+        "parentId": 4,
+        "qualifiedName": "org.apache"
+      }
+    },
+    {
+      "node_id": 130418,
+      "labels": [
+        "Package"
+      ],
+      "properties": {
+        "external": false,
+        "id": 4,
+        "name": "org",
+        "parentId": -1,
+        "qualifiedName": "org"
+      }
+    },
+    {
+      "node_id": 130419,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "id": 5,
+        "name": "AbstractResponse.java",
+        "parentId": 0,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.java"
+      }
+    },
+    {
+      "node_id": 130420,
+      "labels": [
+        "File"
+      ],
+      "properties": {
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "id": 53,
+        "name": "LeaderAndIsrResponse.java",
+        "parentId": 0,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.java"
+      }
+    },
+    {
+      "node_id": 130421,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "id": 6,
+        "location": {
+          "endColumn": 0,
+          "endLine": 332,
+          "startColumn": 0,
+          "startLine": 33
+        },
+        "modifiers": "public abstract",
+        "name": "AbstractResponse",
+        "parentId": 5,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 130422,
+      "labels": [
+        "Class"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "id": 54,
+        "location": {
+          "endColumn": 0,
+          "endLine": 121,
+          "startColumn": 0,
+          "startLine": 33
+        },
+        "modifiers": "public",
+        "name": "LeaderAndIsrResponse",
+        "parentId": 53,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrResponse"
+      }
+    },
+    {
+      "node_id": 130423,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": true,
+        "id": 7,
+        "location": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        },
+        "modifiers": "public static final",
+        "name": "DEFAULT_THROTTLE_TIME",
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.DEFAULT_THROTTLE_TIME",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 130424,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": true,
+        "id": 8,
+        "location": {
+          "endColumn": 31,
+          "endLine": 36,
+          "startColumn": 26,
+          "startLine": 36
+        },
+        "modifiers": "private final",
+        "name": "apiKey",
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiKey",
+        "rawType": "org.apache.kafka.common.requests.ApiKeys"
+      }
+    },
+    {
+      "node_id": 130425,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 10,
+        "location": {
+          "endColumn": 44,
+          "endLine": 38,
+          "startColumn": 31,
+          "startLine": 38
+        },
+        "name": "apiKey",
+        "parentId": 9,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 130426,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 12,
+        "location": {
+          "endColumn": 49,
+          "endLine": 42,
+          "startColumn": 29,
+          "startLine": 42
+        },
+        "name": "header",
+        "parentId": 11,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend.header",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 130427,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 13,
+        "location": {
+          "endColumn": 64,
+          "endLine": 42,
+          "startColumn": 52,
+          "startLine": 42
+        },
+        "name": "version",
+        "parentId": 11,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130428,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 15,
+        "location": {
+          "endColumn": 61,
+          "endLine": 49,
+          "startColumn": 41,
+          "startLine": 49
+        },
+        "name": "header",
+        "parentId": 14,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader.header",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 130429,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 16,
+        "location": {
+          "endColumn": 76,
+          "endLine": 49,
+          "startColumn": 64,
+          "startLine": 49
+        },
+        "name": "version",
+        "parentId": 14,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130430,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 18,
+        "location": {
+          "endColumn": 43,
+          "endLine": 54,
+          "startColumn": 31,
+          "startLine": 54
+        },
+        "name": "version",
+        "parentId": 17,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serialize.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130431,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 21,
+        "location": {
+          "endColumn": 58,
+          "endLine": 65,
+          "startColumn": 47,
+          "startLine": 65
+        },
+        "name": "error",
+        "parentId": 20,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 130432,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 23,
+        "location": {
+          "endColumn": 67,
+          "endLine": 69,
+          "startColumn": 47,
+          "startLine": 69
+        },
+        "name": "errors",
+        "parentId": 22,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errors",
+        "rawType": "java.util.stream.Stream<org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 130433,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 25,
+        "location": {
+          "endColumn": 71,
+          "endLine": 73,
+          "startColumn": 47,
+          "startLine": 73
+        },
+        "name": "errors",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errors",
+        "rawType": "java.util.Collection<org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 130434,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 26,
+        "location": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        },
+        "name": "errorCounts",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130435,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 27,
+        "location": {
+          "endColumn": 24,
+          "endLine": 75,
+          "startColumn": 13,
+          "startLine": 75
+        },
+        "name": "error",
+        "parentId": 24,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 130436,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 29,
+        "location": {
+          "endColumn": 72,
+          "endLine": 80,
+          "startColumn": 50,
+          "startLine": 80
+        },
+        "name": "errors",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.errors",
+        "rawType": "java.util.Map<?,org.apache.kafka.common.requests.ApiError>"
+      }
+    },
+    {
+      "node_id": 130437,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 30,
+        "location": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        },
+        "name": "errorCounts",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130438,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 31,
+        "location": {
+          "endColumn": 29,
+          "endLine": 82,
+          "startColumn": 13,
+          "startLine": 82
+        },
+        "name": "apiError",
+        "parentId": 28,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts.apiError",
+        "rawType": "ApiError"
+      }
+    },
+    {
+      "node_id": 130439,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 33,
+        "location": {
+          "endColumn": 68,
+          "endLine": 87,
+          "startColumn": 37,
+          "startLine": 87
+        },
+        "name": "errorCounts",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130440,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 34,
+        "location": {
+          "endColumn": 82,
+          "endLine": 87,
+          "startColumn": 71,
+          "startLine": 87
+        },
+        "name": "error",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 130441,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 35,
+        "location": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        },
+        "name": "count",
+        "parentId": 32,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts.count",
+        "rawType": "java.lang.Integer"
+      }
+    },
+    {
+      "node_id": 130442,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 37,
+        "location": {
+          "endColumn": 65,
+          "endLine": 96,
+          "startColumn": 49,
+          "startLine": 96
+        },
+        "name": "buffer",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.buffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 130443,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 38,
+        "location": {
+          "endColumn": 94,
+          "endLine": 96,
+          "startColumn": 68,
+          "startLine": 96
+        },
+        "name": "requestHeader",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.requestHeader",
+        "rawType": "RequestHeader"
+      }
+    },
+    {
+      "node_id": 130444,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 39,
+        "location": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        },
+        "name": "apiKey",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 130445,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 40,
+        "location": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        },
+        "name": "apiVersion",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiVersion",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130446,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 41,
+        "location": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        },
+        "name": "responseHeader",
+        "parentId": 36,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.responseHeader",
+        "rawType": "ResponseHeader"
+      }
+    },
+    {
+      "node_id": 130447,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 43,
+        "location": {
+          "endColumn": 62,
+          "endLine": 112,
+          "startColumn": 49,
+          "startLine": 112
+        },
+        "name": "apiKey",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.apiKey",
+        "rawType": "ApiKeys"
+      }
+    },
+    {
+      "node_id": 130448,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 44,
+        "location": {
+          "endColumn": 89,
+          "endLine": 112,
+          "startColumn": 65,
+          "startLine": 112
+        },
+        "name": "responseBuffer",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.responseBuffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 130449,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 45,
+        "location": {
+          "endColumn": 104,
+          "endLine": 112,
+          "startColumn": 92,
+          "startLine": 112
+        },
+        "name": "version",
+        "parentId": 42,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130450,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 47,
+        "location": {
+          "endColumn": 52,
+          "endLine": 307,
+          "startColumn": 40,
+          "startLine": 307
+        },
+        "name": "version",
+        "parentId": 46,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.shouldClientThrottle.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130451,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 51,
+        "location": {
+          "endColumn": 65,
+          "endLine": 327,
+          "startColumn": 48,
+          "startLine": 327
+        },
+        "name": "throttleTimeMs",
+        "parentId": 50,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.maybeSetThrottleTimeMs.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 130452,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": true,
+        "id": 55,
+        "location": {
+          "endColumn": 46,
+          "endLine": 41,
+          "startColumn": 43,
+          "startLine": 41
+        },
+        "modifiers": "private final",
+        "name": "data",
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.data",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrResponseData"
+      }
+    },
+    {
+      "node_id": 130453,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": true,
+        "id": 56,
+        "location": {
+          "endColumn": 30,
+          "endLine": 42,
+          "startColumn": 24,
+          "startLine": 42
+        },
+        "modifiers": "private final",
+        "name": "version",
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130454,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 58,
+        "location": {
+          "endColumn": 60,
+          "endLine": 44,
+          "startColumn": 32,
+          "startLine": 44
+        },
+        "name": "data",
+        "parentId": 57,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.LeaderAndIsrResponse.data",
+        "rawType": "LeaderAndIsrResponseData"
+      }
+    },
+    {
+      "node_id": 130455,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 59,
+        "location": {
+          "endColumn": 75,
+          "endLine": 44,
+          "startColumn": 63,
+          "startLine": 44
+        },
+        "name": "version",
+        "parentId": 57,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.LeaderAndIsrResponse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130456,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 63,
+        "location": {
+          "endColumn": 29,
+          "endLine": 60,
+          "startColumn": 15,
+          "startLine": 60
+        },
+        "name": "error",
+        "parentId": 62,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.errorCounts.error",
+        "rawType": "Errors"
+      }
+    },
+    {
+      "node_id": 130457,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 64,
+        "location": {
+          "endColumn": 34,
+          "endLine": 68,
+          "startColumn": 29,
+          "startLine": 68
+        },
+        "name": "errors",
+        "parentId": 62,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.errorCounts.errors",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130458,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 66,
+        "location": {
+          "endColumn": 82,
+          "endLine": 78,
+          "startColumn": 55,
+          "startLine": 78
+        },
+        "name": "topicNames",
+        "parentId": 65,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.partitionErrors.topicNames",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Uuid,java.lang.String>"
+      }
+    },
+    {
+      "node_id": 130459,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 67,
+        "location": {
+          "endColumn": 59,
+          "endLine": 79,
+          "startColumn": 36,
+          "startLine": 79
+        },
+        "name": "errors",
+        "parentId": 65,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.partitionErrors.errors",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.TopicPartition,org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 130460,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 68,
+        "location": {
+          "endColumn": 44,
+          "endLine": 85,
+          "startColumn": 17,
+          "startLine": 85
+        },
+        "name": "topic",
+        "parentId": 65,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.partitionErrors.topic",
+        "rawType": "LeaderAndIsrTopicError"
+      }
+    },
+    {
+      "node_id": 130461,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 69,
+        "location": {
+          "endColumn": 65,
+          "endLine": 86,
+          "startColumn": 23,
+          "startLine": 86
+        },
+        "name": "topicName",
+        "parentId": 65,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.partitionErrors.topicName",
+        "rawType": "java.lang.String"
+      }
+    },
+    {
+      "node_id": 130462,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 72,
+        "location": {
+          "endColumn": 56,
+          "endLine": 103,
+          "startColumn": 39,
+          "startLine": 103
+        },
+        "name": "throttleTimeMs",
+        "parentId": 71,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.maybeSetThrottleTimeMs.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 130463,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 74,
+        "location": {
+          "endColumn": 61,
+          "endLine": 107,
+          "startColumn": 45,
+          "startLine": 107
+        },
+        "name": "buffer",
+        "parentId": 73,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.parse.buffer",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 130464,
+      "labels": [
+        "Variable"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "external": false,
+        "global": false,
+        "id": 75,
+        "location": {
+          "endColumn": 76,
+          "endLine": 107,
+          "startColumn": 64,
+          "startLine": 107
+        },
+        "name": "version",
+        "parentId": 73,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.parse.version",
+        "rawType": "short"
+      }
+    },
+    {
+      "node_id": 130465,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": true,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 9,
+        "location": {
+          "endColumn": 4,
+          "endLine": 40,
+          "startColumn": 4,
+          "startLine": 38
+        },
+        "modifiers": "protected",
+        "name": "AbstractResponse",
+        "parameter": {
+          "names": "apiKey",
+          "types": "ApiKeys"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 130466,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 11,
+        "location": {
+          "endColumn": 4,
+          "endLine": 44,
+          "startColumn": 4,
+          "startLine": 42
+        },
+        "modifiers": "public final",
+        "name": "toSend",
+        "parameter": {
+          "names": "header version",
+          "types": "ResponseHeader short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toSend",
+        "rawType": "org.apache.kafka.common.requests.Send"
+      }
+    },
+    {
+      "node_id": 130467,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 14,
+        "location": {
+          "endColumn": 4,
+          "endLine": 51,
+          "startColumn": 4,
+          "startLine": 46
+        },
+        "modifiers": "final",
+        "name": "serializeWithHeader",
+        "parameter": {
+          "names": "header version",
+          "types": "ResponseHeader short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serializeWithHeader",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 130468,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 17,
+        "location": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        },
+        "modifiers": "final",
+        "name": "serialize",
+        "parameter": {
+          "names": "version",
+          "types": "short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.serialize",
+        "rawType": "java.nio.ByteBuffer"
+      }
+    },
+    {
+      "node_id": 130469,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 19,
+        "location": {
+          "endColumn": 54,
+          "endLine": 63,
+          "startColumn": 4,
+          "startLine": 58
+        },
+        "modifiers": "public abstract",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130470,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 20,
+        "location": {
+          "endColumn": 4,
+          "endLine": 67,
+          "startColumn": 4,
+          "startLine": 65
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "error",
+          "types": "Errors"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130471,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 22,
+        "location": {
+          "endColumn": 4,
+          "endLine": 71,
+          "startColumn": 4,
+          "startLine": 69
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.stream.Stream<org.apache.kafka.common.requests.Errors>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130472,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 24,
+        "location": {
+          "endColumn": 4,
+          "endLine": 78,
+          "startColumn": 4,
+          "startLine": 73
+        },
+        "modifiers": "protected",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.Collection<org.apache.kafka.common.requests.Errors>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130473,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 28,
+        "location": {
+          "endColumn": 4,
+          "endLine": 85,
+          "startColumn": 4,
+          "startLine": 80
+        },
+        "modifiers": "protected",
+        "name": "apiErrorCounts",
+        "parameter": {
+          "names": "errors",
+          "types": "java.util.Map<?,org.apache.kafka.common.requests.ApiError>"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiErrorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130474,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 32,
+        "location": {
+          "endColumn": 4,
+          "endLine": 90,
+          "startColumn": 4,
+          "startLine": 87
+        },
+        "modifiers": "protected",
+        "name": "updateErrorCounts",
+        "parameter": {
+          "names": "errorCounts error",
+          "types": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer> Errors"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.updateErrorCounts",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 130475,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 36,
+        "location": {
+          "endColumn": 4,
+          "endLine": 110,
+          "startColumn": 4,
+          "startLine": 92
+        },
+        "modifiers": "public static",
+        "name": "parseResponse",
+        "parameter": {
+          "names": "buffer requestHeader",
+          "types": "java.nio.ByteBuffer RequestHeader"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 130476,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 42,
+        "location": {
+          "endColumn": 4,
+          "endLine": 300,
+          "startColumn": 4,
+          "startLine": 112
+        },
+        "modifiers": "public static",
+        "name": "parseResponse",
+        "parameter": {
+          "names": "apiKey responseBuffer version",
+          "types": "ApiKeys java.nio.ByteBuffer short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.parseResponse",
+        "rawType": "org.apache.kafka.common.requests.AbstractResponse"
+      }
+    },
+    {
+      "node_id": 130477,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 46,
+        "location": {
+          "endColumn": 4,
+          "endLine": 309,
+          "startColumn": 4,
+          "startLine": 302
+        },
+        "modifiers": "public",
+        "name": "shouldClientThrottle",
+        "parameter": {
+          "names": "version",
+          "types": "short"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.shouldClientThrottle",
+        "rawType": "boolean"
+      }
+    },
+    {
+      "node_id": 130478,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 48,
+        "location": {
+          "endColumn": 4,
+          "endLine": 313,
+          "startColumn": 4,
+          "startLine": 311
+        },
+        "modifiers": "public",
+        "name": "apiKey",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.apiKey",
+        "rawType": "org.apache.kafka.common.requests.ApiKeys"
+      }
+    },
+    {
+      "node_id": 130479,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 49,
+        "location": {
+          "endColumn": 40,
+          "endLine": 319,
+          "startColumn": 4,
+          "startLine": 315
+        },
+        "modifiers": "public abstract",
+        "name": "throttleTimeMs",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 130480,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 50,
+        "location": {
+          "endColumn": 67,
+          "endLine": 327,
+          "startColumn": 4,
+          "startLine": 321
+        },
+        "modifiers": "public abstract",
+        "name": "maybeSetThrottleTimeMs",
+        "parameter": {
+          "names": "throttleTimeMs",
+          "types": "int"
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.maybeSetThrottleTimeMs",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 130481,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/AbstractResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": false,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 52,
+        "location": {
+          "endColumn": 4,
+          "endLine": 331,
+          "startColumn": 4,
+          "startLine": 329
+        },
+        "modifiers": "public",
+        "name": "toString",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 6,
+        "qualifiedName": "org.apache.kafka.common.requests.AbstractResponse.toString",
+        "rawType": "java.lang.String"
+      }
+    },
+    {
+      "node_id": 130482,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": true,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 57,
+        "location": {
+          "endColumn": 4,
+          "endLine": 48,
+          "startColumn": 4,
+          "startLine": 44
+        },
+        "modifiers": "public",
+        "name": "LeaderAndIsrResponse",
+        "parameter": {
+          "names": "data version",
+          "types": "LeaderAndIsrResponseData short"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.LeaderAndIsrResponse",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrResponse.LeaderAndIsrResponse"
+      }
+    },
+    {
+      "node_id": 130483,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 60,
+        "location": {
+          "endColumn": 4,
+          "endLine": 52,
+          "startColumn": 4,
+          "startLine": 50
+        },
+        "modifiers": "public",
+        "name": "topics",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.topics",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrTopicErrorCollection"
+      }
+    },
+    {
+      "node_id": 130484,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 61,
+        "location": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        },
+        "modifiers": "public",
+        "name": "error",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.error",
+        "rawType": "org.apache.kafka.common.requests.Errors"
+      }
+    },
+    {
+      "node_id": 130485,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 62,
+        "location": {
+          "endColumn": 4,
+          "endLine": 76,
+          "startColumn": 4,
+          "startLine": 58
+        },
+        "modifiers": "public",
+        "name": "errorCounts",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.errorCounts",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.Errors,java.lang.Integer>"
+      }
+    },
+    {
+      "node_id": 130486,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 65,
+        "location": {
+          "endColumn": 4,
+          "endLine": 95,
+          "startColumn": 4,
+          "startLine": 78
+        },
+        "modifiers": "public",
+        "name": "partitionErrors",
+        "parameter": {
+          "names": "topicNames",
+          "types": "java.util.Map<org.apache.kafka.common.requests.Uuid,java.lang.String>"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.partitionErrors",
+        "rawType": "java.util.Map<org.apache.kafka.common.requests.TopicPartition,org.apache.kafka.common.requests.Errors>"
+      }
+    },
+    {
+      "node_id": 130487,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 70,
+        "location": {
+          "endColumn": 4,
+          "endLine": 100,
+          "startColumn": 4,
+          "startLine": 97
+        },
+        "modifiers": "public",
+        "name": "throttleTimeMs",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.throttleTimeMs",
+        "rawType": "int"
+      }
+    },
+    {
+      "node_id": 130488,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 71,
+        "location": {
+          "endColumn": 4,
+          "endLine": 105,
+          "startColumn": 4,
+          "startLine": 102
+        },
+        "modifiers": "public",
+        "name": "maybeSetThrottleTimeMs",
+        "parameter": {
+          "names": "throttleTimeMs",
+          "types": "int"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.maybeSetThrottleTimeMs",
+        "rawType": "void"
+      }
+    },
+    {
+      "node_id": 130489,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 73,
+        "location": {
+          "endColumn": 4,
+          "endLine": 109,
+          "startColumn": 4,
+          "startLine": 107
+        },
+        "modifiers": "public static",
+        "name": "parse",
+        "parameter": {
+          "names": "buffer version",
+          "types": "java.nio.ByteBuffer short"
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.parse",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrResponse"
+      }
+    },
+    {
+      "node_id": 130490,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 76,
+        "location": {
+          "endColumn": 4,
+          "endLine": 114,
+          "startColumn": 4,
+          "startLine": 111
+        },
+        "modifiers": "public",
+        "name": "data",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.data",
+        "rawType": "org.apache.kafka.common.requests.LeaderAndIsrResponseData"
+      }
+    },
+    {
+      "node_id": 130491,
+      "labels": [
+        "Method"
+      ],
+      "properties": {
+        "File": "before/clients/src/main/java/org/apache/kafka/common/requests/LeaderAndIsrResponse.java",
+        "additionalBin": {
+          "binNum": 1,
+          "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/20"
+        },
+        "enhancement": {
+          "isAbstract": false,
+          "isConstructor": false,
+          "isDelegator": true,
+          "isGetter": false,
+          "isOverride": true,
+          "isPublic": true,
+          "isRecursive": false,
+          "isSetter": false,
+          "isStatic": false,
+          "isSynchronized": false
+        },
+        "external": false,
+        "id": 77,
+        "location": {
+          "endColumn": 4,
+          "endLine": 119,
+          "startColumn": 4,
+          "startLine": 116
+        },
+        "modifiers": "public",
+        "name": "toString",
+        "parameter": {
+          "names": "",
+          "types": ""
+        },
+        "parentId": 54,
+        "qualifiedName": "org.apache.kafka.common.requests.LeaderAndIsrResponse.toString",
+        "rawType": "java.lang.String"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from_id": 130415,
+      "to_id": 130414,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130416,
+      "to_id": 130415,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130417,
+      "to_id": 130416,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130418,
+      "to_id": 130417,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130414,
+      "to_id": 130419,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130414,
+      "to_id": 130420,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 0,
+          "startColumn": 0,
+          "startLine": 0
+        }
+      }
+    },
+    {
+      "from_id": 130419,
+      "to_id": 130421,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 332,
+          "startColumn": 0,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130421,
+      "type": "Inherit",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 121,
+          "startColumn": 0,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 130420,
+      "to_id": 130422,
+      "type": "Contain",
+      "properties": {
+        "loc": {
+          "endColumn": 0,
+          "endLine": 121,
+          "startColumn": 0,
+          "startLine": 33
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130423,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130423,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 34,
+          "startColumn": 28,
+          "startLine": 34
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130424,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 31,
+          "endLine": 36,
+          "startColumn": 26,
+          "startLine": 36
+        }
+      }
+    },
+    {
+      "from_id": 130465,
+      "to_id": 130425,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 44,
+          "endLine": 38,
+          "startColumn": 31,
+          "startLine": 38
+        }
+      }
+    },
+    {
+      "from_id": 130465,
+      "to_id": 130425,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 27,
+          "endLine": 39,
+          "startColumn": 8,
+          "startLine": 39
+        }
+      }
+    },
+    {
+      "from_id": 130466,
+      "to_id": 130426,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 49,
+          "endLine": 42,
+          "startColumn": 29,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 130466,
+      "to_id": 130427,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 64,
+          "endLine": 42,
+          "startColumn": 52,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 130467,
+      "to_id": 130428,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 61,
+          "endLine": 49,
+          "startColumn": 41,
+          "startLine": 49
+        }
+      }
+    },
+    {
+      "from_id": 130467,
+      "to_id": 130429,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 76,
+          "endLine": 49,
+          "startColumn": 64,
+          "startLine": 49
+        }
+      }
+    },
+    {
+      "from_id": 130468,
+      "to_id": 130430,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 43,
+          "endLine": 54,
+          "startColumn": 31,
+          "startLine": 54
+        }
+      }
+    },
+    {
+      "from_id": 130470,
+      "to_id": 130431,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 58,
+          "endLine": 65,
+          "startColumn": 47,
+          "startLine": 65
+        }
+      }
+    },
+    {
+      "from_id": 130471,
+      "to_id": 130432,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 67,
+          "endLine": 69,
+          "startColumn": 47,
+          "startLine": 69
+        }
+      }
+    },
+    {
+      "from_id": 130472,
+      "to_id": 130433,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 71,
+          "endLine": 73,
+          "startColumn": 47,
+          "startLine": 73
+        }
+      }
+    },
+    {
+      "from_id": 130472,
+      "to_id": 130434,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 130472,
+      "to_id": 130434,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 74,
+          "startColumn": 29,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 130473,
+      "to_id": 130436,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 72,
+          "endLine": 80,
+          "startColumn": 50,
+          "startLine": 80
+        }
+      }
+    },
+    {
+      "from_id": 130473,
+      "to_id": 130437,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        }
+      }
+    },
+    {
+      "from_id": 130473,
+      "to_id": 130437,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 81,
+          "startColumn": 29,
+          "startLine": 81
+        }
+      }
+    },
+    {
+      "from_id": 130474,
+      "to_id": 130439,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 68,
+          "endLine": 87,
+          "startColumn": 37,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 130474,
+      "to_id": 130440,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 82,
+          "endLine": 87,
+          "startColumn": 71,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 130474,
+      "to_id": 130441,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        }
+      }
+    },
+    {
+      "from_id": 130474,
+      "to_id": 130441,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 57,
+          "endLine": 88,
+          "startColumn": 16,
+          "startLine": 88
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130442,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 96,
+          "startColumn": 49,
+          "startLine": 96
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130443,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 94,
+          "endLine": 96,
+          "startColumn": 68,
+          "startLine": 96
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130444,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130444,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 46,
+          "endLine": 97,
+          "startColumn": 16,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130445,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130445,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 98,
+          "startColumn": 14,
+          "startLine": 98
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130446,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130446,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 109,
+          "endLine": 100,
+          "startColumn": 23,
+          "startLine": 100
+        }
+      }
+    },
+    {
+      "from_id": 130476,
+      "to_id": 130447,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 62,
+          "endLine": 112,
+          "startColumn": 49,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 130476,
+      "to_id": 130448,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 89,
+          "endLine": 112,
+          "startColumn": 65,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 130476,
+      "to_id": 130449,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 104,
+          "endLine": 112,
+          "startColumn": 92,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 130477,
+      "to_id": 130450,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 52,
+          "endLine": 307,
+          "startColumn": 40,
+          "startLine": 307
+        }
+      }
+    },
+    {
+      "from_id": 130480,
+      "to_id": 130451,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 327,
+          "startColumn": 48,
+          "startLine": 327
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130452,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 46,
+          "endLine": 41,
+          "startColumn": 43,
+          "startLine": 41
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130453,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 30,
+          "endLine": 42,
+          "startColumn": 24,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 130482,
+      "to_id": 130454,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 60,
+          "endLine": 44,
+          "startColumn": 32,
+          "startLine": 44
+        }
+      }
+    },
+    {
+      "from_id": 130482,
+      "to_id": 130454,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 23,
+          "endLine": 46,
+          "startColumn": 8,
+          "startLine": 46
+        }
+      }
+    },
+    {
+      "from_id": 130482,
+      "to_id": 130455,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 75,
+          "endLine": 44,
+          "startColumn": 63,
+          "startLine": 44
+        }
+      }
+    },
+    {
+      "from_id": 130482,
+      "to_id": 130455,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 29,
+          "endLine": 47,
+          "startColumn": 8,
+          "startLine": 47
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130456,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 29,
+          "endLine": 60,
+          "startColumn": 15,
+          "startLine": 60
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130456,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 29,
+          "endLine": 60,
+          "startColumn": 15,
+          "startLine": 60
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130457,
+      "type": "UseVar",
+      "properties": {
+        "loc": {
+          "endColumn": 31,
+          "endLine": 74,
+          "startColumn": 26,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130457,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 34,
+          "endLine": 68,
+          "startColumn": 29,
+          "startLine": 68
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130457,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 104,
+          "endLine": 70,
+          "startColumn": 12,
+          "startLine": 70
+        }
+      }
+    },
+    {
+      "from_id": 130486,
+      "to_id": 130458,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 82,
+          "endLine": 78,
+          "startColumn": 55,
+          "startLine": 78
+        }
+      }
+    },
+    {
+      "from_id": 130486,
+      "to_id": 130459,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 59,
+          "endLine": 79,
+          "startColumn": 36,
+          "startLine": 79
+        }
+      }
+    },
+    {
+      "from_id": 130486,
+      "to_id": 130459,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 59,
+          "endLine": 79,
+          "startColumn": 36,
+          "startLine": 79
+        }
+      }
+    },
+    {
+      "from_id": 130486,
+      "to_id": 130461,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 86,
+          "startColumn": 23,
+          "startLine": 86
+        }
+      }
+    },
+    {
+      "from_id": 130486,
+      "to_id": 130461,
+      "type": "Set",
+      "properties": {
+        "loc": {
+          "endColumn": 65,
+          "endLine": 86,
+          "startColumn": 23,
+          "startLine": 86
+        }
+      }
+    },
+    {
+      "from_id": 130488,
+      "to_id": 130462,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 56,
+          "endLine": 103,
+          "startColumn": 39,
+          "startLine": 103
+        }
+      }
+    },
+    {
+      "from_id": 130489,
+      "to_id": 130463,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 61,
+          "endLine": 107,
+          "startColumn": 45,
+          "startLine": 107
+        }
+      }
+    },
+    {
+      "from_id": 130489,
+      "to_id": 130464,
+      "type": "Parameter",
+      "properties": {
+        "loc": {
+          "endColumn": 76,
+          "endLine": 107,
+          "startColumn": 64,
+          "startLine": 107
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130465,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 40,
+          "startColumn": 4,
+          "startLine": 38
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130466,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 44,
+          "startColumn": 4,
+          "startLine": 42
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130467,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 51,
+          "startColumn": 4,
+          "startLine": 46
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130468,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130469,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 54,
+          "endLine": 63,
+          "startColumn": 4,
+          "startLine": 58
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130469,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 76,
+          "startColumn": 4,
+          "startLine": 58
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130470,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 67,
+          "startColumn": 4,
+          "startLine": 65
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130470,
+      "type": "Call",
+      "properties": {
+        "arguments": "data.partitionErrors().stream().map(l -> Errors.forCode(l.errorCode()))",
+        "loc": {
+          "endColumn": 104,
+          "endLine": 70,
+          "startColumn": 21,
+          "startLine": 70
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130471,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 71,
+          "startColumn": 4,
+          "startLine": 69
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130472,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 78,
+          "startColumn": 4,
+          "startLine": 73
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130473,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 85,
+          "startColumn": 4,
+          "startLine": 80
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130474,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 90,
+          "startColumn": 4,
+          "startLine": 87
+        }
+      }
+    },
+    {
+      "from_id": 130472,
+      "to_id": 130474,
+      "type": "Call",
+      "properties": {
+        "arguments": "errorCounts error",
+        "loc": {
+          "endColumn": 48,
+          "endLine": 76,
+          "startColumn": 12,
+          "startLine": 76
+        }
+      }
+    },
+    {
+      "from_id": 130473,
+      "to_id": 130474,
+      "type": "Call",
+      "properties": {
+        "arguments": "errorCounts apiError.error()",
+        "loc": {
+          "endColumn": 59,
+          "endLine": 83,
+          "startColumn": 12,
+          "startLine": 83
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130474,
+      "type": "Call",
+      "properties": {
+        "arguments": "errors Errors.NONE",
+        "loc": {
+          "endColumn": 45,
+          "endLine": 74,
+          "startColumn": 8,
+          "startLine": 74
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130475,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 110,
+          "startColumn": 4,
+          "startLine": 92
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130476,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 300,
+          "startColumn": 4,
+          "startLine": 112
+        }
+      }
+    },
+    {
+      "from_id": 130475,
+      "to_id": 130476,
+      "type": "Call",
+      "properties": {
+        "arguments": "apiKey buffer apiVersion",
+        "loc": {
+          "endColumn": 72,
+          "endLine": 109,
+          "startColumn": 15,
+          "startLine": 109
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130477,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 309,
+          "startColumn": 4,
+          "startLine": 302
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130478,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 313,
+          "startColumn": 4,
+          "startLine": 311
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130479,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 40,
+          "endLine": 319,
+          "startColumn": 4,
+          "startLine": 315
+        }
+      }
+    },
+    {
+      "from_id": 130487,
+      "to_id": 130479,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 100,
+          "startColumn": 4,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130480,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 67,
+          "endLine": 327,
+          "startColumn": 4,
+          "startLine": 321
+        }
+      }
+    },
+    {
+      "from_id": 130488,
+      "to_id": 130480,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 105,
+          "startColumn": 4,
+          "startLine": 102
+        }
+      }
+    },
+    {
+      "from_id": 130421,
+      "to_id": 130481,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 331,
+          "startColumn": 4,
+          "startLine": 329
+        }
+      }
+    },
+    {
+      "from_id": 130491,
+      "to_id": 130481,
+      "type": "Override",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 119,
+          "startColumn": 4,
+          "startLine": 116
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130482,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 48,
+          "startColumn": 4,
+          "startLine": 44
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130483,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 52,
+          "startColumn": 4,
+          "startLine": 50
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130484,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 56,
+          "startColumn": 4,
+          "startLine": 54
+        }
+      }
+    },
+    {
+      "from_id": 130485,
+      "to_id": 130484,
+      "type": "Call",
+      "properties": {
+        "loc": {
+          "endColumn": 29,
+          "endLine": 60,
+          "startColumn": 23,
+          "startLine": 60
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130485,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 76,
+          "startColumn": 4,
+          "startLine": 58
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130486,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 95,
+          "startColumn": 4,
+          "startLine": 78
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130487,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 100,
+          "startColumn": 4,
+          "startLine": 97
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130488,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 105,
+          "startColumn": 4,
+          "startLine": 102
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130489,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 109,
+          "startColumn": 4,
+          "startLine": 107
+        }
+      }
+    },
+    {
+      "from_id": 130476,
+      "to_id": 130489,
+      "type": "Call",
+      "properties": {
+        "arguments": "responseBuffer version",
+        "loc": {
+          "endColumn": 73,
+          "endLine": 143,
+          "startColumn": 23,
+          "startLine": 143
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130490,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 114,
+          "startColumn": 4,
+          "startLine": 111
+        }
+      }
+    },
+    {
+      "from_id": 130422,
+      "to_id": 130491,
+      "type": "Define",
+      "properties": {
+        "loc": {
+          "endColumn": 4,
+          "endLine": 119,
+          "startColumn": 4,
+          "startLine": 116
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "total_nodes": 79,
+    "total_relationships": 101,
+    "exported_at": "2025-10-24T10:42:23.442592+00:00"
+  }
+}

@@ -1,361 +1,130 @@
 {
     "metadatas": [
         {
-            "node_id": 1,
+            "node_id": 129313,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_001.java",
-                "name": "No_01_001.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 5,
+                "name": "AbortTransactionOptions.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AbortTransactionOptions.java"
             },
-            "semantic_description": "```json\n{\n    \"type\": \"File\",\n    \"name\": \"No_01_001.java\",\n    \"summary\": \"Implements string space replacement functionality for Java code.\",\n    \"children\": []\n}\n```"
+            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"org.apache.kafka.clients.admin.AbortTransactionOptions.java\",\n  \"summary\": \"Manages Kafka administrator configuration for abort transaction timeouts.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"timeoutMs\",\n      \"summary\": \"A protected field of type java.lang.Integer that holds the timeout value in the Kafka administrator configuration.\",\n      \"relation_to_parent\": \"Dependency or invocation type\",\n      \"relation\": \"Dependency or invocation type\"\n    }\n  ]\n}\n```"
         },
         {
-            "node_id": 7,
+            "node_id": 129314,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_002.java",
-                "name": "No_01_002.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 8,
+                "name": "AbortTransactionResult.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AbortTransactionResult.java"
             },
-            "semantic_description": "```json\n{\n    \"type\": \"Class node\",\n    \"name\": \"algorithm.No_01_002\",\n    \"summary\": \"A class representing linked list operations, with a public method reversePrint that initializes nodes via setting 'val' field.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_002.ListNode.val\",\n            \"summary\": \"Stores an integer value representing the content of a linked list node\",\n            \"relation_to_parent\": \"Dependency\",\n            \"relation\": \"No child nodes available\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_002.ListNode.next\",\n            \"summary\": \"Accesses or retrieves the next pointer of a list node\",\n            \"relation_to_parent\": \"Circular reference to the parent node 9 (internal data reference)\",\n            \"relation\": \"Dependency\"\n        }\n    ]\n}\n```"
+            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"org.apache.kafka.clients.admin.AbortTransactionResult.java\",\n    \"summary\": \"Handles transaction result operations by returning a map of TopicPartitions to KafkaFuture<Void> operations\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"KafkaFuture<Void>\",\n            \"summary\": \"The future object representing the result of an abort transaction operation.\",\n            \"relation_to_parent\": \"Dependency: invocation of the all() method\",\n            \"relation\": \"Dependency\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"topicPartitions\",\n            \"summary\": \"A collection of TopicPartition entries composed of KafkaFuture<Void> instances.\",\n            \"relation_to_parent\": \"Composition of Map entries\",\n            \"relation\": \"composition\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"futures\",\n            \"summary\": \"A Map storing Kafka future objects for Void, representing transaction abort operations.\",\n            \"relation_to_parent\": \"Depends on the 'futures' child variable\",\n            \"relation\": \"Dependency\"\n        }\n    ]\n}\n```"
         },
         {
-            "node_id": 19,
+            "node_id": 129315,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_003.java",
-                "name": "No_01_003.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 14,
+                "name": "AbortTransactionSpec.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AbortTransactionSpec.java"
             },
-            "semantic_description": "```json\n{\n    \"type\": \"Class\",\n    \"name\": \"No_01_003\",\n    \"summary\": \"A class that initializes two Stack<Integer> variables (A and B) as part of a queue operation, facilitating pop operations by pushing elements into A and storing them in B.\",\n    \"children\": [\n        {\n            \"type\": \"Variable\",\n            \"name\": \"A\",\n            \"summary\": \"A Stack<java.lang.Integer> variable storing integer values with type definition.\",\n            \"relation_to_parent\": \"None\",\n            \"relation\": \"None\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"B\",\n            \"summary\": \"A Stack<java.lang.Integer> that stores integers in the Java class.\",\n            \"relation_to_parent\": \"None\",\n            \"relation\": \"None\"\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"deleteHead\",\n            \"summary\": \"Handles delete head operations on a queue by popping elements from A and storing the result after processing remaining elements via a temporary container 'B'.\",\n            \"children\": [\n                {\n                    \"type\": \"Variable node\",\n                    \"name\": \"result\",\n                    \"summary\": \"Stores the final value returned by processing 'B' (a queue) during delete head operations, which is the destination of the operations.\",\n                    \"relation_to_parent\": \"Dependency / invocation: result is a local variable holding the final output of the delete-head operation on 'B'.\",\n                    \"relation\": \"Property / containment\"\n                }\n            ]\n        }\n    ]\n}\n```"
+            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"org.apache.kafka.clients.admin.AbortTransactionSpec.java\",\n  \"summary\": \"A class managing transaction specifications in Kafka, defining parameters like TopicPartition, producer identifier, and transaction epoch tracking.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"topicPartition\",\n      \"summary\": \"Represents a TopicPartition within a transaction specification, defining a specific partition of a Kafka topic.\",\n      \"relation_to_parent\": \"None\",\n      \"relation\": \"None\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"producerId\",\n      \"summary\": \"A private final field storing a Kafka producer ID, used to represent admin configuration parameters.\",\n      \"relation_to_parent\": \"Reference to the producerId method's return value\",\n      \"relation\": \"Invocational\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"producerEpoch\",\n      \"summary\": \"Keeps a timestamp value representing the producer epoch state in transaction management.\",\n      \"relation_to_parent\": \"Configurable parameter\",\n      \"relation\": \"Dependency\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"coordinatorEpoch\",\n      \"summary\": \"Stores a parameter used in coordinating transaction processing in Kafka systems.\",\n      \"relation_to_parent\": \"None\",\n      \"relation\": \"None\"\n    }\n  ]\n}\n```"
         },
         {
-            "node_id": 28,
+            "node_id": 129316,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_005.java",
-                "name": "No_01_005.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 34,
+                "name": "AbstractOptions.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AbstractOptions.java"
             },
-            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"algorithm.No_01_005\",\n    \"summary\": \"A class defining a linked list node storing an integer value in the algorithm component, serving as a foundational structure for linked list operations.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_005.ListNode.val\",\n            \"summary\": \"Stores the value of a linked list node in the algorithm logic, representing an attribute defined by the ListNode class constructor.\",\n            \"relation_to_parent\": \"Dependency on the ListNode class constructor that initializes the 'val' field\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_005.ListNode.next\",\n            \"summary\": \"Stores the next node in the ListNode structure, defining the linked list attribute, which is a loop-to-parent dependency\",\n            \"relation_to_parent\": \"Dependency: Loop to parent node for list node storage\"\n        }\n    ]\n}\n```"
+            "semantic_description": "```json\n{\n    \"type\": \"file\",\n    \"name\": \"AbstractOptions.java\",\n    \"summary\": \"Returns the timeout in milliseconds for this operation or null if the default API timeout is used.\",\n    \"children\": [\n        {\n            \"type\": \"field\",\n            \"name\": \"timeoutMs\",\n            \"summary\": \"A protected field of type java.lang.Integer that holds the timeout value in the Kafka administrator configuration.\",\n            \"relation_to_parent\": \"No children relationships exist in the structure.\",\n            \"relation\": \"Dependency or invocation type between child and parent node\"\n        }\n    ]\n}\n```"
         },
         {
-            "node_id": 40,
+            "node_id": 129317,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_006.java",
-                "name": "No_01_006.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 41,
+                "name": "AddRaftVoterOptions.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AddRaftVoterOptions.java"
             },
-            "semantic_description": "{\n    \"type\": \"Class node\",\n    \"name\": \"No_01_006\",\n    \"summary\": \"A class that initializes a stack to store integers in the global scope as a variable.\",\n    \"children\": [\n        {\n            \"type\": \"Variable node\",\n            \"name\": \"A\",\n            \"summary\": \"A represents a stack of integers stored in the global scope as a variable.\",\n            \"relation_to_parent\": \"Composition of the stack storage interface\",\n            \"relation\": \"Invoked by A (as a method or instance)\"\n        },\n        {\n            \"type\": \"Variable node\",\n            \"name\": \"B\",\n            \"summary\": \"B is a stack instance representing a specific element of the stack storage.\",\n            \"relation_to_parent\": \"Compositional dependency of the stack storage interface\",\n            \"relation\": \"Used within the stack context\"\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"push\",\n            \"summary\": \"Stores elements in A and validates against B to prevent bounds.\",\n            \"children\": [\n                {\n                    \"type\": \"Parameter node\",\n                    \"name\": \"x\",\n                    \"summary\": \"A variable used to store data (int) in the algorithm's logic.\",\n                    \"relation_to_parent\": \"Dependency or invocation type between child and parent node\",\n                    \"relation\": \"Variable parameter in the 'push' method\"\n                }\n            ]\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"pop\",\n            \"summary\": \"Manages the pop operation from a stack or list structure, ensuring elements are removed according to the defined rules.\",\n            \"children\": [\n                {\n                    \"type\": \"Child node type\",\n                    \"name\": \"B.pop\",\n                    \"summary\": \"Invokes a method for popping elements from a data structure (stack), which is a direct dependency of the main pop() method for performing the operation.\",\n                    \"relation_to_parent\": \"Inheritance/Dependency: B.pop() is a delegate of the main pop() method for performing the operation.\"\n                }\n            ]\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"top\",\n            \"summary\": \"Returns the value from A.peek() with public method signature.\",\n            \"relation_to_parent\": \"No explicit dependency or invocation relationship to the parent node.\"\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"min\",\n            \"summary\": \"References B.peek() with no further specified dependencies or invocations.\",\n            \"relation_to_parent\": \"No explicit dependency or invocation relationship to the parent node.\"\n        }\n    ]\n}"
+            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"AddRaftVoterOptions.java\",\n    \"summary\": \"Optionally stores Kafka cluster identifier for Raft voter configuration.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"timeoutMs\",\n            \"summary\": \"A protected field storing the timeout value in Kafka administrator settings.\",\n            \"relation_to_parent\": \"Dependency or invocation type between child and parent node\",\n            \"relation\": \"Composition of cluster ID management logic\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"clusterId\",\n            \"summary\": \"Private field used to store Kafka cluster identifier in the AddRaftVoterOptions class.\",\n            \"relation_to_parent\": \"Getter method composition\",\n            \"relation\": \"Dependency on the field\"\n        }\n    ]\n}\n```"
         },
         {
-            "node_id": 50,
+            "node_id": 129318,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_007.java",
-                "name": "No_01_007.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
+                "external": false,
+                "id": 47,
+                "name": "AddRaftVoterResult.java",
+                "parentId": 0,
+                "qualifiedName": "org.apache.kafka.clients.admin.AddRaftVoterResult.java"
             },
-            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"No_01_007.java\",\n  \"summary\": \"A class representing an algorithmic object containing numerical values and random pointers (cycle and random) for computational logic and dependencies.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"Node\",\n      \"summary\": \"A class storing numerical values and random pointers (cycle and random), forming a linked list structure for algorithmic dependencies.\",\n      \"relation_to_parent\": \"Dependencies: The 'node' class is a composition of the parent structure for logical cycles and data dependencies.\",\n      \"relation\": \"Dependency or invocation type between child and parent node\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"val\",\n      \"summary\": \"A direct dependency used to store numerical values in the parent node's logic flow.\",\n      \"relation_to_parent\": \"Used as a direct dependency in the parent node's logic flow\",\n      \"relation\": \"Dependency or invocation type between child and parent node\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"cycle\",\n      \"summary\": \"A dependency to node 52, indicating that it is a child of the algorithm node representing the cycle structure.\",\n      \"relation_to_parent\": \"Dependencies: The 'cycle' node is a composition of the parent structure for logical cycles\",\n      \"relation\": \"Dependency or invocation type between child and parent node\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"random\",\n      \"summary\": \"A reference to a Node instance representing a computational link or dependency\",\n      \"relation_to_parent\": \"Dependency or invocation type between child and parent node\",\n      \"relation\": \"Dependency or invocation type between child and parent node\"\n    }\n  ]\n}\n```"
+            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"AddRaftVoterResult.java\",\n    \"summary\": \"Stores the result of RaftVoterResult execution using a KafkaFuture<java.lang.Void> as a parameter\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"AddRaftVoterResult\",\n            \"summary\": \"Stores the result of a Raft voter method call, used as a parameter to another method.\",\n            \"relation_to_parent\": \"Direct return value of the method call\",\n            \"relation\": \"Method invocation dependency between the constructor and the parent node\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"result\",\n            \"summary\": \"Stores the result of a Raft voter method call, used as a parameter to another method.\",\n            \"relation_to_parent\": \"Depends on a KafkaFuture<Void> method call, representing a dependency or invocation.\",\n            \"relation\": \"Dependency or invocation type between child and parent node\"\n        }\n    ]\n}\n```"
         },
         {
-            "node_id": 62,
+            "node_id": 129319,
             "labels": [
                 "File"
             ],
             "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_008.java",
-                "name": "No_01_008.java",
-                "parentId": 0,
                 "additionalBin": {
                     "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n  \"type\": \"File\",\n  \"name\": \"No_01_008.java\",\n  \"summary\": \"Define a method to reverse the left part of a string by concatenating reversed substrings.\",\n  \"children\": [\n    {\n      \"type\": \"Method node\",\n      \"name\": \"reverseLeftWords\",\n      \"summary\": \"Define a method to reverse the left part of a string by concatenating reversed substrings.\",\n      \"relation_to_parent\": \"Dependency\",\n      \"relation\": \"invocation\"\n    },\n    {\n      \"type\": \"Variable node\",\n      \"name\": \"sb\",\n      \"summary\": \"Defined a variable to store the constructed StringBuffer by concatenating parts of the string s.\",\n      \"relation_to_parent\": \"No child nodes provided.\",\n      \"relation\": \"No child nodes provided.\"\n    },\n    {\n      \"type\": \"Variable node\",\n      \"name\": \"n\",\n      \"summary\": \"Used to reverse the left part of a string in the method\",\n      \"relation_to_parent\": \"Dependency\",\n      \"relation\": \"invocation\"\n    }\n  ]\n}"
-        },
-        {
-            "node_id": 68,
-            "labels": [
-                "File"
-            ],
-            "properties": {
+                    "binPath": "D:/智能重构/CodeGraphRAG/test-project/test1/kafka"
+                },
                 "external": false,
-                "qualifiedName": "algorithm.No_01_009.java",
-                "name": "No_01_009.java",
+                "id": 53,
+                "name": "Admin.java",
                 "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
+                "qualifiedName": "org.apache.kafka.clients.admin.Admin.java"
             },
-            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"algorithm.No_01_009\",\n    \"summary\": \"Initialize and implement the max sliding window algorithm to find the maximum of a subarray in an array of integers.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_009.maxSlidingWindow\",\n            \"summary\": \"Initialize and implement the max sliding window algorithm to find the maximum of a subarray in an array of integers.\",\n            \"relation_to_parent\": \"A dependent part of the algorithm logic (storage and processing of integers during iteration).\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_009.variableDeque\",\n            \"summary\": \"A variable storing a Deque<Integer> data structure for storing integers during iteration.\",\n            \"relation_to_parent\": \"A dependency in the for-loop iteration context, representing a dependency on the array iteration variables.\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_009.variableResult\",\n            \"summary\": \"Initializes an array of integers for a sliding window problem in the algorithm.\",\n            \"relation_to_parent\": \"A dependent part of the algorithm logic (result array initialized during the iteration phase).\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_01_009.variableIndex\",\n            \"summary\": \"A local variable used in a loop to iterate over an array, with type int\",\n            \"relation_to_parent\": \"A dependency in the for-loop iteration context, representing a dependency on the array iteration variables.\"\n        }\n    ]\n}\n```"
-        },
-        {
-            "node_id": 80,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_010.java",
-                "name": "No_01_010.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n  \"type\": \"File\",\n  \"name\": \"algorithm.No_01_010\",\n  \"summary\": \"Computes the maximum value based on the deque's contents in the current context.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"algorithm.No_01_010.max_value\",\n      \"summary\": \"Computes the maximum value based on the deque's contents in the current context.\",\n      \"relation_to_parent\": \"Composition\",\n      \"relation\": \"Dependency\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"push_back\",\n      \"summary\": \"Pushes an integer value to the algorithm framework queue, maintaining the order by removing smaller values.\",\n      \"relation_to_parent\": \"Dependency\",\n      \"relation\": \"Parameter\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"pop_front\",\n      \"summary\": \"Pop the front element from a deque data structure, returning its value.\",\n      \"relation_to_parent\": \"Dependency\",\n      \"relation\": \"Parameter\"\n    }\n  ]\n}"
-        },
-        {
-            "node_id": 89,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_01_011.java",
-                "name": "No_01_011.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n  \"type\": \"File\",\n  \"name\": \"No_01_011.java\",\n  \"summary\": \"Defined class for string-to-integer parsing in leetcode solutions, responsible for the method 'strToInt'.\",\n  \"children\": [\n    {\n      \"type\": \"Class\",\n      \"name\": \"No_01_011\",\n      \"summary\": \"Defined class for string-to-integer parsing in leetcode solutions, responsible for the method 'strToInt'.\",\n      \"relation_to_parent\": \"Direct child of root 'algorithm' class\",\n      \"relation\": \"Composition\"\n    }\n  ]\n}"
-        },
-        {
-            "node_id": 99,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_001.java",
-                "name": "No_02_001.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n    \"type\": \"File\",\n    \"name\": \"No_02_001.java\",\n    \"summary\": \"Computes the nth Fibonacci number using a loop. Uses variables a, b, ans, and i to store intermediate results.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"fib\",\n            \"summary\": \"Computes the nth Fibonacci number using a loop. Dependencies: a, b, ans, and i.\",\n            \"relation_to_parent\": \"Dependency\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"a\",\n            \"summary\": \"Stores a value of type long. Defined in 'No_02_001.java'.\",\n            \"relation_to_parent\": \"Part of the algorithm computation logic. Dependency: fib method.\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"b\",\n            \"summary\": \"Storing a long value for program execution purposes.\",\n            \"relation_to_parent\": \"Part of the algorithm computation logic. Dependency: fib method.\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"ans\",\n            \"summary\": \"Stores a long integer value initialized to 1.\",\n            \"relation_to_parent\": \"Intermediate value in Fibonacci computation. Dependency: fib method.\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"i\",\n            \"summary\": \"Variable holding the loop index from 2 to n.\",\n            \"relation_to_parent\": \"Loop index for iterative calculation. Dependency: fib method.\"\n        }\n    ]\n}\n```"
-        },
-        {
-            "node_id": 107,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_002.java",
-                "name": "No_02_002.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n    \"type\": \"File\",\n    \"name\": \"No_02_002.java\",\n    \"summary\": \"Calculates the number of ways to reach a certain value using dynamic programming principles.\",\n    \"children\": [\n        {\n            \"type\": \"Class\",\n            \"name\": \"No_02_002\",\n            \"summary\": \"Calculates the number of ways to reach a certain value using dynamic programming principles.\",\n            \"relation_to_parent\": \"Dependency (initialization value for computation)\",\n            \"relation\": \"Composition\"\n        },\n        {\n            \"type\": \"Method\",\n            \"name\": \"numWays\",\n            \"summary\": \"Calculates the number of ways to reach a certain value using dynamic programming principles.\",\n            \"relation_to_parent\": \"Dependency (initialization value of 1)\",\n            \"relation\": \"Composition\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"a\",\n            \"summary\": \"Stores the initialization value of 1\",\n            \"relation_to_parent\": \"Dependency (result of initial computation)\",\n            \"relation\": \"Composition\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"b\",\n            \"summary\": \"Stores the initial value of 2\",\n            \"relation_to_parent\": \"Dependency (result of initial computation)\",\n            \"relation\": \"Composition\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"ans\",\n            \"summary\": \"Stores the final computation result\",\n            \"relation_to_parent\": \"Composition (result of logical operation)\",\n            \"relation\": \"Dependency\"\n        },\n        {\n            \"type\": \"Variable\",\n            \"name\": \"i\",\n            \"summary\": \"Tracks the loop iteration index\",\n            \"relation_to_parent\": \"Dependency (loop condition)\",\n            \"relation\": \"Usage\"\n        }\n    ]\n}"
-        },
-        {
-            "node_id": 115,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_003.java",
-                "name": "No_02_003.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"Parent node name\",\n  \"summary\": \"Functionality to determine if a string matches a pattern using the provided parameters.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"Child node name\",\n      \"summary\": \"A boolean array used to store the logical conditions for matching operations\",\n      \"relation_to_parent\": \"Dependency (used to determine array size)\",\n      \"relation\": \"Dependency\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"Child node name\",\n      \"summary\": \"A variable storing the length of the input string $s$\",\n      \"relation_to_parent\": \"Dependency (used to determine array size)\",\n      \"relation\": \"Dependency\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"Child node name\",\n      \"summary\": \"A variable storing the length of the pattern $p$\",\n      \"relation_to_parent\": \"Dependency (used to determine array size)\",\n      \"relation\": \"Dependency\"\n    }\n  ]\n}\n```"
-        },
-        {
-            "node_id": 130,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_004.java",
-                "name": "No_02_004.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n    \"type\": \"File\",\n    \"name\": \"No_02_004.java\",\n    \"summary\": \"A Java algorithm class responsible for managing array inputs and performing subarray calculations.\",\n    \"children\": [\n        {\n            \"type\": \"Method node\",\n            \"name\": \"main\",\n            \"summary\": \"Stores an array of integers in Java (algorithm.No_02_004.java).\",\n            \"relation_to_parent\": \"Dependency: 'args' is a child of the main method's parameters, representing the array argument input to the algorithm.\",\n            \"relation\": \"Invocation\"\n        },\n        {\n            \"type\": \"Method node\",\n            \"name\": \"maxSubArray\",\n            \"summary\": \"Computes the maximum subarray sum from an array 'nums' using an O(n) algorithm\",\n            \"children\": [\n                {\n                    \"type\": \"Variable node\",\n                    \"name\": \"ans\",\n                    \"summary\": \"Stores an integer value derived from the array 'nums' by traversing the array elements\",\n                    \"relation_to_parent\": \"Dependency: ans is directly computed from 'nums' by traversing the array\",\n                    \"relation\": \"Direct computation\"\n                },\n                {\n                    \"type\": \"Variable node\",\n                    \"name\": \"i\",\n                    \"summary\": \"Tracks integer indices from 1 to the array length within a for loop\",\n                    \"relation_to_parent\": \"Dependency: 'i' is used as the index to iterate through array elements\",\n                    \"relation\": \"Invocation\"\n                },\n                {\n                    \"type\": \"Variable node\",\n                    \"name\": \"nums\",\n                    \"summary\": \"A Java integer array storing input elements for subarray calculations\",\n                    \"relation_to_parent\": \"Composition: 'nums' serves as the input array for the algorithm\",\n                    \"relation\": \"Composition\"\n                }\n            ]\n        }\n    ]\n}"
-        },
-        {
-            "node_id": 139,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_005.java",
-                "name": "No_02_005.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n  \"type\": \"Class\",\n  \"name\": \"No_02_005\",\n  \"summary\": \"Translates a number into a string in the given class.\",\n  \"children\": [\n    {\n      \"type\": \"Method\",\n      \"name\": \"translateNum\",\n      \"summary\": \"Translates a number into a string in the method's internal logic\",\n      \"relation_to_parent\": \"Invoked by variables 'x' and 'y' when processing the number\",\n      \"relation\": \"Dependency or invocation type between child and parent node\"\n    },\n    {\n      \"type\": \"Variable\",\n      \"name\": \"a\",\n      \"summary\": \"Stores the integer value of the input variable 'a'.\",\n      \"relation_to_parent\": \"Dependency or invocation type between child and parent node\"\n    },\n    {\n      \"type\": \"Variable\",\n      \"name\": \"b\",\n      \"summary\": \"Used as a variable to store numeric values in the method execution context.\",\n      \"relation_to_parent\": \"\"\n    },\n    {\n      \"type\": \"Variable\",\n      \"name\": \"x\",\n      \"summary\": \"Stores the value of 'num' modulo 10 and is a value in the method.\",\n      \"relation_to_parent\": \"Invokes method 'translateNum' to compute the modulo result\"\n    },\n    {\n      \"type\": \"Variable\",\n      \"name\": \"y\",\n      \"summary\": \"Stores the integer value returned after modulus operation.\",\n      \"relation_to_parent\": \"Invokes method 'translateNum' to perform the operation\"\n    }\n  ]\n}"
-        },
-        {
-            "node_id": 151,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_006.java",
-                "name": "No_02_006.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"No_02_006.java\",\n  \"summary\": \"Defines the function to calculate the maximum value in an array using a dynamic programming approach.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"len1\",\n      \"summary\": \"Stores the length of the grid variable, representing a primitive int value.\",\n      \"relation_to_parent\": \"Dependency: Parented to variable 153 in 'No_02_006.java' (file path: B:/leetcode/algorithm).\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"len2\",\n      \"summary\": \"Stores the length of grid[0] in an integer type, representing a length-value measurement.\",\n      \"relation_to_parent\": \"Dependency: Parented to variable 153 in 'No_02_006.java' (file path: B:/leetcode/algorithm).\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"dp\",\n      \"summary\": \"Initializes an array of integers (int[][]) for maxValue functionality.\",\n      \"relation_to_parent\": \"Dependency: Parented to variable 153 in 'No_02_006.java' (file path: B:/leetcode/algorithm).\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"i\",\n      \"summary\": \"Integer variable used as the loop counter in the algorithm.\",\n      \"relation_to_parent\": \"Dependency: Parented to variable 153 in 'No_02_006.java' (file path: B:/leetcode/algorithm).\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"j\",\n      \"summary\": \"A loop variable initialized to 0, iterating through the length of len2 to collect values.\",\n      \"relation_to_parent\": \"Dependency: Parented to variable 153 in 'No_02_006.java' (file path: B:/leetcode/algorithm).\"\n    },\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"grid\",\n      \"summary\": \"Variable to store an array of integers for grid processing in the method\",\n      \"relation_to_parent\": \"No child nodes provided.\"\n    }\n  ]\n}\n```"
-        },
-        {
-            "node_id": 161,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_007.java",
-                "name": "No_02_007.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"algorithm.No_02_007\",\n    \"summary\": \"Declares a void method used to invoke the algorithm for longest substring computation\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_02_007.lengthOfLongestSubstring.set\",\n            \"summary\": \"A Set<Character> variable declared to store characters during the longest substring calculation\",\n            \"relation_to_parent\": \"Dependency or invocation: The variable is defined in the parent node and later used to initialize a Set<Character> instance\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"algorithm.No_02_007.lengthOfLongestSubstring.set\",\n            \"summary\": \"A variable declaration of type Set<java.lang.Character> used in the code example\",\n            \"relation_to_parent\": \"Dependency or invocation: The variable is defined in the parent node and later used to initialize a Set<Character> instance\"\n        }\n    ]\n}\n```"
-        },
-        {
-            "node_id": 171,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_008.java",
-                "name": "No_02_008.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n  \"type\": \"File node\",\n  \"name\": \"algorithm.No_02_008.java\",\n  \"summary\": \"A class file containing the method to calculate the nth Ugly Number using an optimized dynamic programming approach.\",\n  \"children\": [\n    {\n      \"type\": \"Class node\",\n      \"name\": \"algorithm.No_02_008\",\n      \"summary\": \"Defined as a class containing the method to calculate the nth Ugly Number using an optimized dynamic programming approach.\",\n      \"children\": [\n        {\n          \"type\": \"Variable node\",\n          \"name\": \"c\",\n          \"summary\": \"Stores the value of algorithm's Ugly Number calculation, initialized to 0 during variable assignment.\",\n          \"relation_to_parent\": \"Dependency\"\n        },\n        {\n          \"type\": \"Variable node\",\n          \"name\": \"a\",\n          \"summary\": \"Used in loop logic to compute the Ugly Number, directly derived from variable 'c'. Value: 0.\",\n          \"relation_to_parent\": \"Dependency\"\n        },\n        {\n          \"type\": \"Variable node\",\n          \"name\": \"b\",\n          \"summary\": \"Used in loop logic to compute the Ugly Number, directly derived from variable 'c'. Value: 0.\",\n          \"relation_to_parent\": \"Dependency\"\n        },\n        {\n          \"type\": \"Variable node\",\n          \"name\": \"n\",\n          \"summary\": \"A variable storing the nth Ugly Number in an algorithmic context.\",\n          \"relation_to_parent\": \"Dependency\"\n        },\n        {\n          \"type\": \"Variable node\",\n          \"name\": \"i\",\n          \"summary\": \"A local integer variable storing the value for looping in the algorithm.\",\n          \"relation_to_parent\": \"Dependency\"\n        }\n      ]\n    }\n  ]\n}\n```"
-        },
-        {
-            "node_id": 183,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_009.java",
-                "name": "No_02_009.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n  \"type\": \"Parent node type\",\n  \"name\": \"algorithm\",\n  \"summary\": \"A class representing an algorithm for calculating dice probabilities, specifically for a given upper limit n.\",\n  \"children\": [\n    {\n      \"type\": \"Child node type\",\n      \"name\": \"No_02_009\",\n      \"summary\": \"A class representing an algorithm for calculating dice probabilities, specific to the No_02_009 implementation.\",\n      \"relation_to_parent\": \"Definition of the core algorithm\",\n      \"relation\": \"Explicit class definition\"\n    },\n    {\n      \"type\": \"Method\",\n      \"name\": \"main\",\n      \"summary\": \"Storing the Java array of arguments used for the dice probability calculation as a placeholder for the main method parameter usage.\",\n      \"relation_to_parent\": \"Dependency: This method holds the function signature parameters passed to the main method\",\n      \"relation\": \"Parameter reference\"\n    },\n    {\n      \"type\": \"Method\",\n      \"name\": \"dicesProbability\",\n      \"summary\": \"Calculates the dice probability by iterating through the range of possible outcomes and computing their probabilities.\",\n      \"children\": [\n        {\n          \"type\": \"Variable\",\n          \"name\": \"temp1\",\n          \"summary\": \"Stores a double array representing numeric data used during the probability computation.\",\n          \"relation_to_parent\": \"Dependency: This array is used as a numerical accumulator during the dice probability calculation\",\n          \"relation\": \"None\"\n        },\n        {\n          \"type\": \"Variable\",\n          \"name\": \"temp2\",\n          \"summary\": \"Stores data for computation in a double array format used during leetcode algorithm processing.\",\n          \"relation_to_parent\": \"Dependency: This double array is used to store intermediate results for probability calculations\",\n          \"relation\": \"None\"\n        },\n        {\n          \"type\": \"Variable\",\n          \"name\": \"flag\",\n          \"summary\": \"A boolean value used as a flag in conditional logic to determine the outcome of dice probability calculations.\",\n          \"relation_to_parent\": \"Dependency: This variable is defined within the dice probability method\",\n          \"relation\": \"None\"\n        }\n      ]\n    }\n  ]\n}\n```"
-        },
-        {
-            "node_id": 197,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_02_010.java",
-                "name": "No_02_010.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "{\n    \"type\": \"File node\",\n    \"name\": \"No_02_010.java\",\n    \"summary\": \"A method used to calculate the maximum profit from an array of prices, iterating through the input to determine the maximum difference between prices and the minimum value.\",\n    \"children\": [\n        {\n            \"type\": \"Variable node\",\n            \"name\": \"min\",\n            \"summary\": \"Sets the initialization value for the min variable in an algorithm context\",\n            \"relation_to_parent\": \"Dependency: Sets the initialization value for the min variable\"\n        },\n        {\n            \"type\": \"Variable node\",\n            \"name\": \"max\",\n            \"summary\": \"Stores the maximum value in the algorithm context\",\n            \"relation_to_parent\": \"No child relationships with parent\"\n        },\n        {\n            \"type\": \"Variable node\",\n            \"name\": \"ans\",\n            \"summary\": \"Stores the computed value of a function, initialized to 0 in the algorithm\",\n            \"relation_to_parent\": \"No child relationships with parent\"\n        }\n    ]\n}"
-        },
-        {
-            "node_id": 205,
-            "labels": [
-                "File"
-            ],
-            "properties": {
-                "external": false,
-                "qualifiedName": "algorithm.No_03_001.java",
-                "name": "No_03_001.java",
-                "parentId": 0,
-                "additionalBin": {
-                    "binNum": 1,
-                    "binPath": "B:/leetcode/algorithm"
-                }
-            },
-            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"No_03_001\",\n    \"summary\": \"Checks if a word exists on the board in the provided parameters.\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"board\",\n            \"summary\": \"Stores the board data (char[][]), used to determine if a word exists on the board.\",\n            \"relation_to_parent\": \"Dependency: stores the board structure required for the word search logic\",\n            \"relation\": \"Storage & inference\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"word\",\n            \"summary\": \"Stores a string value derived from the 'word' parameter in the 'exist' method.\",\n            \"relation_to_parent\": \"Dependency: stores the search term that defines the word to be matched\",\n            \"relation\": \"Input & computation\"\n        }\n    ]\n}\n```"
+            "semantic_description": "```json\n{\n    \"type\": \"Parent node type\",\n    \"name\": \"Admin.java\",\n    \"summary\": \"Creates and manages Kafka Admin clients with configuration options for topics\",\n    \"children\": [\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"create\",\n            \"summary\": \"Creates a new Kafka Admin client with a specified configuration\",\n            \"relation_to_parent\": \"Dependency: Invokes the Admin.create() method on the 'topics' object\",\n            \"relation\": \"Invocation between propertyspec and parent method\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"createTopics\",\n            \"summary\": \"Manages topic creation using `NewTopic` configuration\",\n            \"relation_to_parent\": \"Dependency: References the Admin.deleteTopics() method on the 'Topics' object\",\n            \"relation\": \"Invokes the Admin.deleteTopics() method on the 'Topics' variable\"\n        },\n        {\n            \"type\": \"Child node type\",\n            \"name\": \"deleteTopics\",\n            \"summary\": \"Deletes topics from a Kafka TopicCollection using default concurrency settings\",\n            \"relation_to_parent\": \"Dependency: References the Admin.deleteTopics() method on the 'Topics' object\",\n            \"relation\": \"Invokes the Admin.deleteTopics() method on the 'Topics' variable\"\n        }\n    ]\n}\n```"
         }
     ]
 }

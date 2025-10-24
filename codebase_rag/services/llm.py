@@ -20,6 +20,7 @@ from ..prompts import (
     LOCAL_CYPHER_SYSTEM_PROMPT,
     RAG_ORCHESTRATOR_SYSTEM_PROMPT,
     SEMANTIC_EXTRACTION_SYSTEM_PROMPT, GRAPH_EXTRACTION_SYSTEM_PROMPT, GRAPH_EXTRACTION_RAG_ORCHESTRATOR_SYSTEM_PROMPT,
+    ANTIPATTERN_RELEVANCE_SYSTEM_PROMPT,
 )
 
 
@@ -219,6 +220,91 @@ def create_semantic_model() -> Any:
         )  # type: ignore
     except Exception as e:
         raise LLMGenerationError(f"Failed to initialize RAG Orchestrator: {e}") from e
+
+
+def create_relevance_model() -> Any:
+    try:
+        """
+        返回用于生成语义摘要的 LLM client，支持 Gemini / OpenAI / local。
+        """
+        model_settings = None
+        model_id = settings.active_cypher_model
+        provider = detect_provider_from_model(model_id)
+
+        if provider == "gemini":
+            if settings.GEMINI_PROVIDER == "vertex":
+                prov = GoogleVertexProvider(
+                    project_id=settings.GCP_PROJECT_ID,
+                    region=settings.GCP_REGION,
+                    service_account_file=settings.GCP_SERVICE_ACCOUNT_FILE,
+                )
+            else:
+                prov = GoogleGLAProvider(api_key=settings.GEMINI_API_KEY)
+            llm = GeminiModel(model_id, provider=prov)
+
+        elif provider == "local":
+            llm = OpenAIChatModel(
+                model_id,
+                provider=OpenAIProvider(
+                    api_key=settings.LOCAL_MODEL_API_KEY,
+                    base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                ),
+            )
+        else:  # openai
+            llm = OpenAIResponsesModel(
+                model_id,
+                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+            )
+        return Agent(
+            model=llm,
+            system_prompt=ANTIPATTERN_RELEVANCE_SYSTEM_PROMPT,
+            model_settings=model_settings,
+        )  # type: ignore
+    except Exception as e:
+        raise LLMGenerationError(f"Failed to initialize RAG Orchestrator: {e}") from e
+
+
+def create_graph_extract_query_model() -> Any:
+    try:
+        """
+        返回用于生成语义摘要的 LLM client，支持 Gemini / OpenAI / local。
+        """
+        model_settings = None
+        model_id = settings.active_cypher_model
+        provider = detect_provider_from_model(model_id)
+
+        if provider == "gemini":
+            if settings.GEMINI_PROVIDER == "vertex":
+                prov = GoogleVertexProvider(
+                    project_id=settings.GCP_PROJECT_ID,
+                    region=settings.GCP_REGION,
+                    service_account_file=settings.GCP_SERVICE_ACCOUNT_FILE,
+                )
+            else:
+                prov = GoogleGLAProvider(api_key=settings.GEMINI_API_KEY)
+            llm = GeminiModel(model_id, provider=prov)
+
+        elif provider == "local":
+            llm = OpenAIChatModel(
+                model_id,
+                provider=OpenAIProvider(
+                    api_key=settings.LOCAL_MODEL_API_KEY,
+                    base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                ),
+            )
+        else:  # openai
+            llm = OpenAIResponsesModel(
+                model_id,
+                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+            )
+        return Agent(
+            model=llm,
+            system_prompt=CYPHER_SYSTEM_PROMPT,
+            model_settings=model_settings,
+        )  # type: ignore
+    except Exception as e:
+        raise LLMGenerationError(f"Failed to initialize RAG Orchestrator: {e}") from e
+
 
 
 def create_embedding_model() -> Embeddings:

@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 import re
 import shlex
 import shutil
@@ -23,7 +24,10 @@ from rich.prompt import Confirm
 from rich.panel import Panel
 from rich.text import Text
 
+from codebase_rag.prompts import build_query_question_from_antipattern
 from codebase_rag.services.hierarchical_semantic_builder import HierarchicalSemanticBuilder
+from codebase_rag.tools.analyze_antipattern_relevance_files import analyze_files_with_llm
+from codebase_rag.tools.graph_extract_query import create_graph_extract_query_tool, query_codebase_with_agent_batch
 from .config import (
     EDIT_INDICATORS,
     EDIT_REQUEST_KEYWORDS,
@@ -266,8 +270,11 @@ def _setup_common_initialization(repo_path: str) -> Path:
     """Common setup logic for both main and optimize functions."""
     # Logger initialization
     logger.remove()
-    logger.add(sys.stdout, format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {message}")
-
+    logger.add(
+        sys.stdout,
+        format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {message}",
+        colorize=True  # ✅ 关键，启用彩色解析
+    )
     # Temporary directory setup (keep existing .tmp if already present)
     project_root = Path(repo_path).resolve()
     tmp_dir = project_root / ".tmp"
@@ -567,6 +574,25 @@ def save_semantic_results(result: dict, save_dir: str) -> None:
         logger.error(f"❌ 保存语义结果失败: {e}")
 
 
+def save_antipattern_relevance_result(result, file_path):
+    """
+    保存反模式相关性结果到 JSON 文件
+
+    参数:
+        result: 可序列化为 JSON 的数据
+        file_path: 保存的目标路径
+    """
+    # 确保目录存在
+    dir_path = os.path.dirname(file_path)
+    os.makedirs(dir_path, exist_ok=True)
+
+    # 写入 JSON 文件
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+
+    logger.info(f"[bold green]保存成功:[/bold green] {file_path}")
+
+
 def _initialize_services_and_agent(repo_path: str, ingestor: MemgraphIngestor) -> Any:
     """Initializes all services and creates the RAG agent."""
     # Validate settings once before initializing any LLM services
@@ -602,6 +628,23 @@ def _initialize_services_and_agent(repo_path: str, ingestor: MemgraphIngestor) -
             shell_command_tool,
             directory_lister_tool,
             document_analyzer_tool,
+        ]
+    )
+    return rag_agent
+
+
+def _initialize_graph_extract_service_and_agent(ingestor: MemgraphIngestor) -> Any:
+    """Initializes graph extract service and creates the RAG agent."""
+    # Validate settings once before initializing any LLM services
+    settings.validate_for_usage()
+
+    cypher_generator = CypherGenerator()
+
+    query_codebase_knowledge_graph_tool = create_graph_extract_query_tool(ingestor, cypher_generator, console)
+
+    rag_agent = create_rag_orchestrator(
+        tools=[
+            query_codebase_knowledge_graph_tool,
         ]
     )
     return rag_agent
@@ -663,7 +706,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "D:\\智能重构\\CodeGraphRAG\\.tmp\\output-kafka-graph-2.json",
+            "D:\\智能重构\\CodeGraphRAG\\.tmp\\subgraph-file.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -775,8 +818,7 @@ def start(
             # 与 LLM 交互，完成第一层文件的提取
             # 仿照 run_chat_loop 构建 chat，完成对数据库的内容提取。输入是反模式的具体体现的文件，用它来构建 prompt。输出就是对知识图谱的提取结果，存储为 json
             # 然后提供给 semantic_enhance。让 semantic_enhance 生成之后再存入数据库。
-
-
+            # asyncio.run(run_multi_interaction(ingestor, antipattern_relation_path))
             # 可能遇到的问题：
             # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
             # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。
@@ -797,11 +839,21 @@ def start(
                 output_dir = output_file.parent
                 hierarchical_semantic_builder = HierarchicalSemanticBuilder()
                 result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                save_semantic_results(result, "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/codebase_rag"
-                                              "/enre/.tmp")
+                save_semantic_results(result, "D:\\智能重构\\CodeGraphRAG\\.tmp")
 
                 logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
+                # 编写一个与 llm 交互的函数。
+                # 输入是.tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
+                # 得到最终的files
+                result = analyze_files_with_llm(".tmp/file_result.json", antipattern_relation_path)
+                save_antipattern_relevance_result(result,
+                                                  "D:\\智能重构\\CodeGraphRAG\\.tmp\\antipattern_relevance_result.json")
+                # 构建最终的修复架构反模式的与 llm 交互的流程
+                # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
+                # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
+                # 3. Output 包含的内容：对反模式文件的具体代码修复，对其他相关文件的修复措施。
+                # 4. 多次交互，完善其他文件的代码具体内容
             # Export graph if output file specified
             if output:
                 logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
@@ -816,6 +868,59 @@ def start(
     #     logger.info("\n[bold red]Application terminated by user.[/bold red]")
     # except ValueError as e:
     #     logger.info(f"[bold red]Startup Error: {e}[/bold red]")
+
+
+async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation_path: str | None = None):
+    """Runs multi-turn LLM interaction where agent can autonomously call tools."""
+
+    # 初始化 agent，只注册工具
+    rag_agent = _initialize_graph_extract_service_and_agent(ingestor)
+
+    # 构造初始问题
+    try:
+        user_question = build_query_question_from_antipattern(antipattern_relation_path)
+    except FileNotFoundError:
+        user_question = "获取全部实体"
+    logger.info(f"[bold cyan]User question:[/bold cyan] {user_question}")
+
+    # 控制台
+    console = Console(width=None, force_terminal=True)
+
+    # 第一次交互：LLM生成自然语言查询
+    try:
+        console.print("[bold green]LLM generating query instruction...[/bold green]")
+        llm_response = await rag_agent.run(user_question)
+        # 兼容不同返回类型
+        query_instruction = getattr(llm_response, "output", str(llm_response)).strip()
+        console.print(
+            Panel(
+                Markdown(query_instruction),
+                title="[bold green]LLM Generated Instruction[/bold green]",
+                border_style="green",
+            )
+        )
+    except Exception as e:
+        console.print(f"[red]Error during LLM instruction generation:[/red] {e}")
+        traceback.print_exc()
+        return str(e)
+
+    # 第二次交互：调用 query_codebase_with_agent_batch 批量执行查询
+    try:
+        console.print("[bold green]Executing batch query with agent...[/bold green]")
+        results = await query_codebase_with_agent_batch(
+            user_input=query_instruction,
+            ingestor=ingestor,
+            console=console
+        )
+        console.print(f"[bold green]Batch query completed. {len(results)} results.[/bold green]")
+    except Exception as e:
+        console.print(f"[red]Error during batch query execution:[/red] {e}")
+        traceback.print_exc()
+        results = []
+
+    return results
+
+
 
 
 if __name__ == "__main__":

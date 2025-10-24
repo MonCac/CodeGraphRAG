@@ -47,7 +47,7 @@ class ENREGraphAnalyzer:
         queue = [(nid, 0) for nid in start_nodes]
 
         # 4️⃣ BFS 遍历，内部维护 depth，每个节点第一次访问就记录深度
-        MAX_ALLOWED_DEPTH = 3  # 硬限制，防止过深遍历
+        MAX_ALLOWED_DEPTH = 2  # 硬限制，防止过深遍历
         node_depths: dict[str, int] = {}  # node_id -> depth
 
         while queue:
@@ -121,7 +121,6 @@ class ENREGraphAnalyzer:
 
         return result
 
-
     def save_subgraph(self, output_path: str | Path, **kwargs):
         """生成并保存子图 JSON"""
         subgraph = self.generate_subgraph(**kwargs)
@@ -137,5 +136,3 @@ class ENREGraphAnalyzer:
     def get_nodes_and_relationships(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
         """返回当前分析器中的节点和关系"""
         return self.nodes, self.relationships
-
-
