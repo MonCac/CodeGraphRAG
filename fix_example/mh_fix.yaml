@@ -1,0 +1,110 @@
+antipattern_type: Multipath Hierarchy
+definition: This anti-pattern arises when there are multiple inheritance paths connecting subtypes with their super-types or a concrete class with their abstractions (abstract classes or interfaces)
+examples:
+  - example_id: "001"
+    description: |
+      This fix eliminates the multiple inheritance-like interface extension by converting 
+      NetworkTimeUpdateService from an interface that extended IBinder into a concrete class 
+      that directly extends Binder. This simplifies the inheritance hierarchy, removes 
+      redundant indirection, and clarifies the role of NetworkTimeUpdateService as a service 
+      implementation rather than an abstract interface.
+
+    before_code:
+      NewNetworkTimeUpdateService.java: |
+        /**
+         * If the user enables AUTO_TIME, it will check immediately for the network time, 
+         * if NITZ wasn't available.
+         */
+        public class NewNetworkTimeUpdateService extends Binder implements NetworkTimeUpdateService {
+
+            private static final String TAG = "NetworkTimeUpdateService";
+            private static final boolean DBG = false;
+
+            private static final int EVENT_AUTO_TIME_CHANGED = 1;
+            private static final int EVENT_POLL_NETWORK_TIME = 2;
+            private static final int EVENT_NETWORK_CHANGED = 3;
+        }
+
+      Binder.java: |
+        public class Binder implements IBinder {
+            /*
+             * Set this flag to true to detect anonymous, local or member classes
+             * that extend this Binder class and that are not static. These kind
+             * of classes can potentially create leaks.
+             */
+            private static final boolean FIND_POTENTIAL_LEAKS = false;
+            /** @hide */
+            public static final boolean CHECK_PARCEL_SIZE = false;
+            static final String TAG = "Binder";
+        }
+
+      IBinder.java: |
+        public interface IBinder {
+            /**
+             * The first transaction code available for user commands.
+             */
+            int FIRST_CALL_TRANSACTION  = 0x00000001;
+
+            /**
+             * The last transaction code available for user commands.
+             */
+            int LAST_CALL_TRANSACTION   = 0x00ffffff;
+
+            /**
+             * IBinder protocol transaction code: pingBinder().
+             */
+            int PING_TRANSACTION = ('_' << 24) | ('P' << 16) | ('N' << 8) | 'G';
+        }
+
+      NetworkTimeUpdateService.java: |
+        public interface NetworkTimeUpdateService extends IBinder {
+
+            /** Initialize the receivers and initiate the first NTP request */
+            void systemRunning();
+        }
+
+    after_code:
+      NetworkTimeUpdateService.java: |
+        public class NetworkTimeUpdateService extends Binder {
+
+            private static final String TAG = "NetworkTimeUpdateService";
+            private static final boolean DBG = false;
+
+            private static final int EVENT_AUTO_TIME_ENABLED = 1;
+            private static final int EVENT_POLL_NETWORK_TIME = 2;
+            private static final int EVENT_NETWORK_CHANGED = 3;
+
+            private static final String ACTION_POLL =
+                    "com.android.server.NetworkTimeUpdateService.action.POLL";
+        }
+
+      Binder.java: |
+        public class Binder implements IBinder {
+            /*
+             * Set this flag to true to detect anonymous, local or member classes
+             * that extend this Binder class and that are not static. These kind
+             * of classes can potentially create leaks.
+             */
+            private static final boolean FIND_POTENTIAL_LEAKS = false;
+            /** @hide */
+            public static final boolean CHECK_PARCEL_SIZE = false;
+            static final String TAG = "Binder";
+        }
+
+      IBinder.java: |
+        public interface IBinder {
+            /**
+             * The first transaction code available for user commands.
+             */
+            int FIRST_CALL_TRANSACTION  = 0x00000001;
+
+            /**
+             * The last transaction code available for user commands.
+             */
+            int LAST_CALL_TRANSACTION   = 0x00ffffff;
+
+            /**
+             * IBinder protocol transaction code: pingBinder().
+             */
+            int PING_TRANSACTION = ('_' << 24) | ('P' << 16) | ('N' << 8) | 'G';
+        }

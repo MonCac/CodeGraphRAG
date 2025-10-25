@@ -1,0 +1,65 @@
+antipattern_type: Abstraction without Decoupling
+definition: This anti-pattern describes a situation where a client class uses a service represented as an abstract type, but also a concrete implementation of this service.
+examples:
+  - example_id: "001"
+    description: |
+      This fix removes the direct dependency on the concrete implementation `FileLogger` in the `UserService` class. 
+      Instead, `UserService` now depends only on the `Logger` abstraction, allowing for better decoupling, easier testing, 
+      and future extensibility. The `Logger` implementation is injected into `UserService` via its constructor, supporting 
+      dependency inversion and reducing tight coupling to a specific logger implementation.
+
+    before_code:
+      UserService.java: |
+        public class UserService {
+
+            private final FileLogger logger = new FileLogger();
+
+            public void createUser(String username) {
+                // Business logic to create user
+                logger.log("User created: " + username);
+            }
+        }
+
+      Logger.java: |
+        public interface Logger {
+            void log(String message);
+        }
+
+      FileLogger.java: |
+        public class FileLogger implements Logger {
+            @Override
+            public void log(String message) {
+                // Write the message to a file (simplified)
+                System.out.println("Logging to file: " + message);
+            }
+        }
+
+    after_code:
+      UserService.java: |
+        public class UserService {
+
+            private final Logger logger;
+
+            public UserService(Logger logger) {
+                this.logger = logger;
+            }
+
+            public void createUser(String username) {
+                // Business logic to create user
+                logger.log("User created: " + username);
+            }
+        }
+
+      Logger.java: |
+        public interface Logger {
+            void log(String message);
+        }
+
+      FileLogger.java: |
+        public class FileLogger implements Logger {
+            @Override
+            public void log(String message) {
+                // Write the message to a file (simplified)
+                System.out.println("Logging to file: " + message);
+            }
+        }

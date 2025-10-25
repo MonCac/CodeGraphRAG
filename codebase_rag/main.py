@@ -24,7 +24,8 @@ from rich.prompt import Confirm
 from rich.panel import Panel
 from rich.text import Text
 
-from codebase_rag.prompts import build_query_question_from_antipattern
+from codebase_rag.prompts import build_query_question_from_antipattern, build_fix_system_prompt, \
+    build_first_fix_user_input, build_fix_user_input
 from codebase_rag.services.hierarchical_semantic_builder import HierarchicalSemanticBuilder
 from codebase_rag.tools.analyze_antipattern_relevance_files import analyze_files_with_llm
 from codebase_rag.tools.graph_extract_query import create_graph_extract_query_tool, query_codebase_with_agent_batch
@@ -38,7 +39,7 @@ from .config import (
 )
 from .graph_updater import GraphProjectUpdater, MemgraphIngestor, GraphAntipatternUpdater
 from .parser_loader import load_parsers
-from .services.llm import CypherGenerator, create_rag_orchestrator
+from .services.llm import CypherGenerator, create_rag_orchestrator, create_repair_code_model
 from .tools.code_retrieval import CodeRetriever, create_code_retrieval_tool
 from .tools.codebase_query import create_query_tool
 from .tools.directory_lister import DirectoryLister, create_directory_lister_tool
@@ -690,6 +691,11 @@ def start(
             "--update-antipattern-graph",
             help="Update the knowledge graph by parsing the repository and antipattern files",
         ),
+        antipattern_type: str = typer.Option(
+            "ch",
+            "--antipattern-type",
+            help="Enable hybrid retrieval (graph + embedding) during query.",
+        ),
         semantic_enhance: bool = typer.Option(
             True,
             "--semantic-enhance",
@@ -852,8 +858,9 @@ def start(
                 # 构建最终的修复架构反模式的与 llm 交互的流程
                 # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
                 # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
-                # 3. Output 包含的内容：对反模式文件的具体代码修复，对其他相关文件的修复措施。
+                # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
                 # 4. 多次交互，完善其他文件的代码具体内容
+                run_repair_code_llm(antipattern_type, antipattern_relation_path, related_files_json_path) # 第三个参数是上面生成的路径json，所以需要统一路径
             # Export graph if output file specified
             if output:
                 logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
@@ -870,7 +877,7 @@ def start(
     #     logger.info(f"[bold red]Startup Error: {e}[/bold red]")
 
 
-async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation_path: str | None = None):
+async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation_path: str):
     """Runs multi-turn LLM interaction where agent can autonomously call tools."""
 
     # 初始化 agent，只注册工具
@@ -921,6 +928,75 @@ async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation
     return results
 
 
+async def run_repair_code_llm(antipattern_type: str, antipattern_to_update: str, related_files_json_path: str):
+    """Runs multi-turn LLM interaction where agent can autonomously call tools."""
+
+    # 初始化 agent，只注册工具
+    rag_agent = create_repair_code_model(build_fix_system_prompt(antipattern_type))
+
+    # 构造初始问题
+    try:
+        user_question = build_first_fix_user_input(antipattern_to_update, related_files_json_path)
+    except FileNotFoundError:
+        user_question = ""
+    logger.info(f"[bold cyan]User question:[/bold cyan] {user_question}")
+
+    # 控制台
+    console = Console(width=None, force_terminal=True)
+
+    # 第一次交互：LLM生成自然语言查询
+    try:
+        console.print("[bold green]LLM generating first fix answer...[/bold green]")
+        llm_response = await rag_agent.run(user_question)
+        # 兼容不同返回类型
+        first_llm_output = getattr(llm_response, "output", str(llm_response)).strip()
+        console.print(
+            Panel(
+                Markdown(first_llm_output),
+                title="[bold green]LLM Generated Instruction[/bold green]",
+                border_style="green",
+            )
+        )
+    except Exception as e:
+        console.print(f"[red]Error during LLM instruction generation:[/red] {e}")
+        traceback.print_exc()
+        return str(e)
+
+    overall_desc = first_llm_output.get("overall_repair_description")
+    file_descriptions = first_llm_output.get("file_repair_descriptions", [])
+
+    results = []
+    # 第二次的多轮交互，生成总的代码修复结果
+    for file_entry in file_descriptions:
+        user_input = build_fix_user_input(overall_desc, file_entry)
+        try:
+            console.print("[bold green]LLM generating first fix answer...[/bold green]")
+            llm_response = await rag_agent.run(user_input)
+            # 兼容不同返回类型
+            second_llm_output = getattr(llm_response, "output", str(llm_response)).strip()
+            console.print(
+                Panel(
+                    Markdown(second_llm_output),
+                    title="[bold green]LLM Generated Instruction[/bold green]",
+                    border_style="green",
+                )
+            )
+            result_entry = {
+                "file": file_entry["file"],
+                "source": file_entry["source"],
+                "repair_description": file_entry["repair_description"],
+                "repair_code": second_llm_output
+            }
+            # 添加到结果列表
+            results.append(result_entry)
+
+        except Exception as e:
+            console.print(f"[red]Error during LLM instruction generation:[/red] {e}")
+            traceback.print_exc()
+        return str(e)
+        # 构建结果条目
+
+    return results
 
 
 if __name__ == "__main__":

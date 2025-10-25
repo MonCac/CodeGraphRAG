@@ -2,7 +2,10 @@
 #  SINGLE SOURCE OF TRUTH: THE GRAPH SCHEMA
 # ======================================================================================
 import json
+import os
 from pathlib import Path
+
+import yaml
 
 GRAPH_SCHEMA_AND_RULES = """
 You are an expert AI assistant for a system that uses a Memgraph graph database containing information about a codebase.
@@ -400,3 +403,189 @@ Return your answer as a JSON object with exactly the following fields:
 }}
 """
     return user_prompt
+
+
+def build_fix_system_prompt(antipattern_type: str):
+    """
+    根据反模式类型动态构建system_prompt
+
+    Args:
+        antipattern_type (str): 反模式类型
+
+    Returns:
+        str: 构建好的system_prompt
+    """
+
+    # 尝试加载对应的yaml文件
+    yaml_file_path = f"fix_example/{antipattern_type}_fix.yaml"
+    yaml_content = {}
+
+    try:
+        if os.path.exists(yaml_file_path):
+            with open(yaml_file_path, 'r', encoding='utf-8') as file:
+                yaml_content = yaml.safe_load(file)
+    except Exception as e:
+        print(f"Warning: Could not load YAML file {yaml_file_path}: {e}")
+
+    # 从YAML中提取内容，如果文件不存在则使用默认值
+    antipattern_definition = yaml_content.get('definition', '架构反模式描述待补充')
+    examples = yaml_content.get('examples', [])
+
+    system_prompt = f"""
+# 架构反模式修复专家
+
+## 背景
+您是一位专业的软件架构师，专门负责识别和修复架构反模式。架构反模式是软件系统中常见的、会导致技术债务、可维护性问题和性能问题的设计缺陷。
+
+## 当前反模式类型：{antipattern_type.upper()}
+
+## 反模式定义
+{antipattern_definition}
+
+## 修复案例
+{examples if examples else "暂无具体修复案例，请基于通用架构原则进行修复。"}
+
+请确保建议具体、可操作，并包含足够的代码示例。
+"""
+    return system_prompt
+
+
+def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
+    # ---------- 读取 antipattern.json ----------
+    antipattern_json_path = None
+    for name in os.listdir(antipattern_folder):
+        if name.endswith("antipattern.json"):
+            antipattern_json_path = os.path.join(antipattern_folder, name)
+            break
+    if not antipattern_json_path:
+        raise FileNotFoundError(f"在路径 {antipattern_folder} 下未找到 antipattern.json 文件。")
+
+    with open(antipattern_json_path, "r", encoding="utf-8") as f:
+        antipattern_data = json.load(f)
+
+    # ---------- 收集 antipattern_folder 下的所有 Java 文件 ----------
+    antipattern_java_files = []
+    for root, dirs, files in os.walk(antipattern_folder):
+        for file in files:
+            if file.endswith(".java"):
+                antipattern_java_files.append(os.path.join(root, file))
+
+    # ---------- 读取相关文件 JSON 并筛选参与修复的文件 ----------
+    with open(related_files_json_path, "r", encoding="utf-8") as f:
+        related_data = json.load(f)
+
+    repair_related_files = [
+        {
+            "file": item["file"],
+            "reason": item.get("reason", "")
+        }
+        for item in related_data
+        if item.get("involved_in_antipattern_repair", False)
+    ]
+
+    # ---------- 总体修复描述 ----------
+    overall_repair_description = (
+        f"针对反模式 antipattern_data：'{antipattern_data}'，"
+        "请首先修复核心文件的反模式逻辑，然后检查相关文件可能受影响的部分，确保整体系统逻辑一致。核心文件的 source 为 core，相关文件为 related"
+    )
+
+    # ---------- 每个文件修复描述 ----------
+    file_repair_descriptions = []
+
+    for path in antipattern_java_files:
+        file_repair_descriptions.append({
+            "file": path,
+            "source": "core",
+            "repair_description": (
+                f"核心文件，参考 antipattern_data"
+            )
+        })
+
+    for item in repair_related_files:
+        file_repair_descriptions.append({
+            "file": item["file"],
+            "source": "related",
+            "repair_description": item["reason"],
+        })
+
+    # ---------- LLM 输出规范 ----------
+    llm_output_format = {
+        "instructions": (
+            "请严格生成一个 JSON 对象，必须包含以下字段：\n"
+            "1. 'overall_repair_description': 对整个反模式的修复策略描述，包含对每个 core 文件的修复描述以及对每个 related 文件的修复描述\n"
+            "2. 'file_repair_descriptions': 一个数组，每个元素为一个字典，字段包括:\n"
+            "   - 'file': 文件完整路径\n"
+            "   - 'source': 'core' 或 'related'\n"
+            "   - 'repair_description': 对该文件的修复策略描述\n"
+            "注意：严格按照 JSON 格式返回，不要输出任何额外文本或注释。"
+        ),
+        "example": {
+            "overall_repair_description": "",
+            "file_repair_descriptions": [
+                {
+                    "file": "D:/项目路径/SomeFile.java",
+                    "source": "core",
+                    "repair_description": ""
+                }
+            ]
+        }
+    }
+
+    # ---------- 最终 user_input ----------
+    user_input = {
+        "overall_repair_description": overall_repair_description,
+        "file_repair_descriptions": file_repair_descriptions,
+        "llm_output_format": llm_output_format
+    }
+
+    return user_input
+
+
+def build_fix_user_input(overall_repair_description: str, file_repair_entry: dict):
+    """
+    构建第二次修复的 user_input，用于针对单个文件生成修复代码
+
+    参数：
+        overall_repair_description (str): 整体修复策略描述
+        file_repair_entry (dict): 单个文件条目，包含:
+            - file
+            - source
+            - repair_description
+
+    返回：
+        dict: 包含原始字段，并增加 repair_code 字段占位
+    """
+
+    file_path = file_repair_entry.get("file")
+    source = file_repair_entry.get("source")
+    repair_description = file_repair_entry.get("repair_description")
+
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"文件不存在: {file_path}")
+
+    # 读取文件原始内容
+    with open(file_path, "r", encoding="utf-8") as f:
+        original_code = f.read()
+
+    # 构建 user_input 结构
+    user_input = {
+        "overall_repair_description": overall_repair_description,
+        "file_repair_description": {
+            "file": file_path,
+            "source": source,
+            "repair_description": repair_description,
+            "original_code": original_code,
+            "repair_code": ""  # 占位，LLM 返回修复后的代码
+        },
+        "llm_output_format": {
+            "instructions": (
+                "请严格生成一个 JSON 对象，只包含字段 'repair_code：...' "
+                "repair_code 为修复后的完整代码。不要输出额外文本。"
+            ),
+            "example": {
+                "repair_code": "public class ... { ... }"
+            }
+        }
+    }
+
+    return user_input
