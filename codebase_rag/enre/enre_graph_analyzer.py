@@ -5,7 +5,7 @@ from typing import List, Dict, Any, Tuple
 
 from loguru import logger
 from codebase_rag.enre.loader import ENRELoader
-from codebase_rag.main import resolve_output_path
+from codebase_rag.config import resolve_output_path
 
 
 class ENREGraphAnalyzer:

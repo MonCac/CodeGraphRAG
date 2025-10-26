@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Literal
 from dotenv import load_dotenv
 from prompt_toolkit.styles import Style
@@ -220,3 +221,37 @@ EDIT_INDICATORS = frozenset(
 # --- UI Styles ---
 # Style for user input prompts in the terminal.
 ORANGE_STYLE = Style.from_dict({"": "#ff8c00"})
+
+
+def resolve_output_path(output: str) -> str:
+    """
+    解析 CLI 的输出路径，始终返回一个有效文件的绝对路径。
+
+    规则：
+      - 如果 output 是文件夹（无后缀名）：在该文件夹下创建 final-result.json。
+      - 如果 output 是文件路径（有后缀名）：
+          若只提供文件名 → 放入 .tmp 文件夹。
+      - 如果 output 是相对路径：基于当前工作目录解析。
+    """
+    output_path = Path(output).expanduser()
+
+    # 判断是否为单纯的文件名（没有目录部分）
+    if output_path.parent == Path('.'):
+        # 如果只给了文件名，则放入 .tmp 文件夹
+        output_path = Path('.tmp') / output_path
+
+    # 如果是相对路径 → 转成绝对路径
+    if not output_path.is_absolute():
+        output_path = (Path.cwd() / output_path).resolve()
+
+    # 判断是否为文件夹
+    if output_path.suffix == "":
+        # 无扩展名，视为文件夹
+        output_path.mkdir(parents=True, exist_ok=True)
+        output_path = output_path / "final-result.json"
+    else:
+        # 是文件，确保父目录存在
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    return str(output_path)
+

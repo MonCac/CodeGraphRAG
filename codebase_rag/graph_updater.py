@@ -235,21 +235,24 @@ class BaseGraphUpdater:
 
     def run(self) -> None:
         """Main entry point: loads data and writes to Memgraph."""
-        # 1️⃣ Ensure Project node
+        # 1 Ensure Project node
         self.ingestor.ensure_node_batch("Project", {"name": self.project_name})
         logger.info(f"Ensuring Project: {self.project_name}")
 
-        # 2️⃣ Load graph data
+        # 2 Load graph data
         self.nodes, self.relationships = self._load_data()
         logger.info(f"Loaded {len(self.nodes)} nodes and {len(self.relationships)} relationships.")
 
-        # 3️⃣ Write nodes
+        # 3 Clean database
+        self.ingestor.clean_database()
+
+        # 4 Write nodes
         self._write_nodes(self.nodes)
 
-        # 4️⃣ Write relationships
+        # 5 Write relationships
         self._write_relationships(self.relationships)
 
-        # 5️⃣ Flush all
+        # 6 Flush all
         self.ingestor.flush_all()
         logger.info(f"Graph update for {self.project_name} complete.")
 

@@ -1,3 +1,7 @@
+import os
+import shutil
+import subprocess
+import time
 from collections import defaultdict
 from datetime import UTC, datetime
 from typing import Any
@@ -90,7 +94,103 @@ class MemgraphIngestor:
             if cursor:
                 cursor.close()
 
-    def clean_database(self) -> None:
+    def clean_database(
+            self,
+            volume_name: str = "mg_lib",
+            max_retries: int = 10,
+            retry_interval: float = 1.0,
+    ) -> None:
+        """
+        完全清空 Docker Memgraph 数据库，并重置 node_id。
+        自动查找 Memgraph 容器、停止、清空卷内容、重启，并循环重连。
+        适合在 with 上下文中直接调用。
+
+        Args:
+            volume_name: Docker 卷名
+            max_retries: 最大重试连接次数
+            retry_interval: 每次重试等待秒数
+        """
+        logger.info("--- Cleaning Docker Memgraph database (node_id will reset) ---")
+
+        # 1️⃣ 关闭现有连接
+        if self.conn:
+            try:
+                self.conn.close()
+                logger.info("Closed current Memgraph connection.")
+            except Exception:
+                pass
+            self.conn = None
+
+        # 2️⃣ 查找 Memgraph 容器
+        try:
+            result = subprocess.run(
+                ["docker", "ps", "--filter", "ancestor=memgraph/memgraph-platform", "--format", "{{.Names}}"],
+                capture_output=True, text=True, check=True
+            )
+            containers = result.stdout.strip().splitlines()
+            if not containers:
+                logger.error("No running Memgraph container found.")
+                return
+            container_name = containers[0]
+            logger.info(f"Found Memgraph container: {container_name}")
+        except Exception as e:
+            logger.error(f"Failed to list Docker containers: {e}")
+            return
+
+        # 3️⃣ 停止容器
+        try:
+            subprocess.run(["docker", "stop", container_name], check=True)
+            logger.info(f"Container '{container_name}' stopped.")
+        except Exception as e:
+            logger.error(f"Failed to stop container: {e}")
+            return
+
+        # 4️⃣ 获取卷挂载路径并清空内容
+        try:
+            inspect = subprocess.run(
+                ["docker", "volume", "inspect", "--format", "{{.Mountpoint}}", volume_name],
+                capture_output=True, text=True, check=True
+            )
+            mount_path = inspect.stdout.strip()
+            if os.path.exists(mount_path):
+                # 清空卷内容
+                for entry in os.listdir(mount_path):
+                    entry_path = os.path.join(mount_path, entry)
+                    if os.path.isdir(entry_path):
+                        shutil.rmtree(entry_path)
+                    else:
+                        os.remove(entry_path)
+                logger.info(f"Cleared contents of Docker volume '{volume_name}' at '{mount_path}'.")
+            else:
+                logger.warning(f"Mount path '{mount_path}' does not exist. Volume may be empty.")
+        except Exception as e:
+            logger.error(f"Failed to clear Docker volume contents: {e}")
+            return
+
+        # 5️⃣ 启动容器
+        try:
+            subprocess.run(["docker", "start", container_name], check=True)
+            logger.info(f"Container '{container_name}' restarted.")
+        except Exception as e:
+            logger.error(f"Failed to restart container: {e}")
+            return
+
+        # 6️⃣ 循环重试连接
+        logger.info("Waiting for Memgraph to be ready...")
+        for attempt in range(1, max_retries + 1):
+            try:
+                self.conn = mgclient.connect(host=self._host, port=self._port)
+                self.conn.autocommit = True
+                logger.info(f"Reconnected to Memgraph on attempt {attempt}.")
+                break
+            except Exception:
+                logger.debug(f"Attempt {attempt} failed, retrying in {retry_interval}s...")
+                time.sleep(retry_interval)
+        else:
+            logger.error(f"Failed to reconnect to Memgraph after {max_retries} attempts.")
+            self.conn = None
+
+    def clean_database_before(self) -> None:
         logger.info("--- Cleaning database... ---")
         self._execute_query("MATCH (n) DETACH DELETE n;")
         logger.info("--- Database cleaned. ---")
