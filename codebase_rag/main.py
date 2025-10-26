@@ -534,7 +534,7 @@ def _export_graph_to_file(ingestor: MemgraphIngestor, output: str) -> bool:
         return False
 
 
-def save_semantic_results(result: dict, save_dir: str) -> None:
+def save_semantic_results(result: dict, save_dir: str = ".tmp") -> None:
     """
     将 build_node_semantics 的结果分别保存为 total_result.json 和 file_result.json。
 
@@ -545,14 +545,14 @@ def save_semantic_results(result: dict, save_dir: str) -> None:
     save_dir = Path(save_dir)
     save_dir.mkdir(parents=True, exist_ok=True)
 
-    total_path = save_dir / "total_result.json"
-    file_path = save_dir / "file_result.json"
+    semantic_total_path = save_dir / "semantic_total_result.json"
+    semantic_file_path = save_dir / "semantic_file_result.json"
 
     try:
         # ✅ 保存 total_result.json
-        with open(total_path, "w", encoding="utf-8") as f:
+        with open(semantic_total_path, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=4)
-        logger.success(f"✅ 总体语义结果已保存到: {total_path}")
+        logger.success(f"✅ 总体语义结果已保存到: {semantic_total_path}")
 
         # ✅ 筛选出 labels 包含 "File" 的节点
         filtered_metadatas = [
@@ -566,10 +566,10 @@ def save_semantic_results(result: dict, save_dir: str) -> None:
         }
 
         # ✅ 保存 file_result.json
-        with open(file_path, "w", encoding="utf-8") as f:
+        with open(semantic_file_path, "w", encoding="utf-8") as f:
             json.dump(file_result, f, ensure_ascii=False, indent=4)
 
-        logger.success(f"✅ 文件级语义结果已保存到: {file_path}（共 {len(filtered_metadatas)} 个文件节点）")
+        logger.success(f"✅ 文件级语义结果已保存到: {semantic_file_path}（共 {len(filtered_metadatas)} 个文件节点）")
 
     except Exception as e:
         logger.error(f"❌ 保存语义结果失败: {e}")
@@ -592,6 +592,41 @@ def save_antipattern_relevance_result(result, file_path):
         json.dump(result, f, ensure_ascii=False, indent=4)
 
     logger.info(f"[bold green]保存成功:[/bold green] {file_path}")
+
+    return file_path
+
+
+def resolve_output_path(output: str) -> str:
+    """
+    解析 CLI 的输出路径，始终返回一个有效文件的绝对路径。
+
+    规则：
+      - 如果 output 是文件夹（无后缀名）：在该文件夹下创建 final-result.json。
+      - 如果 output 是文件路径（有后缀名）：
+          若只提供文件名 → 放入 .tmp 文件夹。
+      - 如果 output 是相对路径：基于当前工作目录解析。
+    """
+    output_path = Path(output).expanduser()
+
+    # 判断是否为单纯的文件名（没有目录部分）
+    if output_path.parent == Path('.'):
+        # 如果只给了文件名，则放入 .tmp 文件夹
+        output_path = Path('.tmp') / output_path
+
+    # 如果是相对路径 → 转成绝对路径
+    if not output_path.is_absolute():
+        output_path = (Path.cwd() / output_path).resolve()
+
+    # 判断是否为文件夹
+    if output_path.suffix == "":
+        # 无扩展名，视为文件夹
+        output_path.mkdir(parents=True, exist_ok=True)
+        output_path = output_path / "final-result.json"
+    else:
+        # 是文件，确保父目录存在
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    return str(output_path)
 
 
 def _initialize_services_and_agent(repo_path: str, ingestor: MemgraphIngestor) -> Any:
@@ -712,7 +747,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "D:\\智能重构\\CodeGraphRAG\\.tmp\\subgraph-file.json",
+            "final-result.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -773,7 +808,7 @@ def start(
             if semantic_enhance:
                 logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # 本地测试用
-                json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
+                json_path = Path(".tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 if not json_path.exists():
                     raise FileNotFoundError(f"文件不存在: {json_path}")
 
@@ -787,15 +822,9 @@ def start(
                 output_dir = output_file.parent
                 hierarchical_semantic_builder = HierarchicalSemanticBuilder()
                 result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                save_semantic_results(result, "D:\\智能重构\\CodeGraphRAG\\.tmp")
+                save_semantic_results(result, "CodeGraphRAG\\.tmp")
 
                 logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
-
-            # Export graph if output file specified
-            if output:
-                logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
-                if not _export_graph_to_file(ingestor, output):
-                    raise typer.Exit(1)
 
         logger.info("[bold green]Graph update completed![/bold green]")
 
@@ -832,7 +861,7 @@ def start(
             if semantic_enhance:
                 logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # # 本地测试用
-                # json_path = Path("D:\\智能重构\\CodeGraphRAG\\.tmp\\algorithm-graph.json")  # 替换为你的文件路径
+                # json_path = Path(".tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 # if not json_path.exists():
                 #     raise FileNotFoundError(f"文件不存在: {json_path}")
                 # with open(json_path, "r", encoding="utf-8") as f:
@@ -845,31 +874,35 @@ def start(
                 output_dir = output_file.parent
                 hierarchical_semantic_builder = HierarchicalSemanticBuilder()
                 result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                save_semantic_results(result, "D:\\智能重构\\CodeGraphRAG\\.tmp")
+                save_semantic_results(result, ".tmp")
 
                 logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
                 # 编写一个与 llm 交互的函数。
                 # 输入是.tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
                 # 得到最终的files
-                result = analyze_files_with_llm(".tmp/file_result.json", antipattern_relation_path)
-                save_antipattern_relevance_result(result,
-                                                  "D:\\智能重构\\CodeGraphRAG\\.tmp\\antipattern_relevance_result.json")
+                result = analyze_files_with_llm(".tmp\\semantic_file_result.json", antipattern_relation_path)
+                related_files_json_path = save_antipattern_relevance_result(result, ".tmp"
+                                                                                    "\\antipattern_relevance_result.json")
                 # 构建最终的修复架构反模式的与 llm 交互的流程
                 # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
                 # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
                 # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
                 # 4. 多次交互，完善其他文件的代码具体内容
                 run_repair_code_llm(antipattern_type, antipattern_relation_path, related_files_json_path) # 第三个参数是上面生成的路径json，所以需要统一路径
-            # Export graph if output file specified
-            if output:
-                logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
-                if not _export_graph_to_file(ingestor, output):
-                    raise typer.Exit(1)
 
-        logger.info("[bold green]Graph update completed![/bold green]")
 
-    # try:
+
+    # Export graph if output file specified
+    if output:
+        output = resolve_output_path(output)
+        logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
+        if not _export_graph_to_file(ingestor, output):
+            raise typer.Exit(1)
+
+    logger.info("[bold green]Graph update completed![/bold green]")
+
+# try:
     #     asyncio.run(main_async(target_repo_path))
     # except KeyboardInterrupt:
     #     logger.info("\n[bold red]Application terminated by user.[/bold red]")

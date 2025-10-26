@@ -5,6 +5,7 @@ from typing import List, Dict, Any, Tuple
 
 from loguru import logger
 from codebase_rag.enre.loader import ENRELoader
+from codebase_rag.main import resolve_output_path
 
 
 class ENREGraphAnalyzer:
@@ -124,8 +125,8 @@ class ENREGraphAnalyzer:
     def save_subgraph(self, output_path: str | Path, **kwargs):
         """生成并保存子图 JSON"""
         subgraph = self.generate_subgraph(**kwargs)
+        output_path = resolve_output_path(output_path)
         output_path = Path(output_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
 
         with output_path.open("w", encoding="utf-8") as f:
             json.dump(subgraph, f, ensure_ascii=False, indent=2)
