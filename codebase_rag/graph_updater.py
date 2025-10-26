@@ -236,7 +236,6 @@ class BaseGraphUpdater:
     def run(self) -> None:
         """Main entry point: loads data and writes to Memgraph."""
         # 1 Ensure Project node
-        self.ingestor.ensure_node_batch("Project", {"name": self.project_name})
         logger.info(f"Ensuring Project: {self.project_name}")
 
         # 2 Load graph data
