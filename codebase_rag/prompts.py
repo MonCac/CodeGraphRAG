@@ -8,9 +8,7 @@ from pathlib import Path
 import yaml
 
 GRAPH_SCHEMA_AND_RULES = """
-You are an expert AI assistant for a system that uses a Memgraph graph database containing information about a codebase.
-
-**1. Graph Schema Definition**
+**Graph Schema Definition**
 
 Node Labels and Key Properties:
 - Project: {{id: string, name: string}
@@ -432,45 +430,45 @@ def build_fix_system_prompt(antipattern_type: str):
     examples = yaml_content.get('examples', [])
 
     system_prompt = f"""
-# 架构反模式修复专家
+    # Architecture Anti-Pattern Remediation Expert
 
-## 背景
-您是一位专业的软件架构师，专门负责识别和修复架构反模式。架构反模式是软件系统中常见的、会导致技术债务、可维护性问题和性能问题的设计缺陷。
+    ## Background
+    You are a professional software architect specializing in identifying and remediating architectural anti-patterns.  Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules and can lead to technical debt, maintainability issues, and performance problems.
 
-## 当前反模式类型：{antipattern_type.upper()}
+    ## Current Anti-Pattern Type: {antipattern_type.upper()}
 
-## 反模式定义
-{antipattern_definition}
+    ## Anti-Pattern Definition
+    {antipattern_definition}
 
-## 修复案例
-{examples if examples else "暂无具体修复案例，请基于通用架构原则进行修复。"}
+    ## Repair Examples
+    {examples if examples else "No specific repair examples are available.  Please provide solutions based on general architectural principles."}
 
-请确保建议具体、可操作，并包含足够的代码示例。
-"""
+    Please ensure your recommendations are concrete, actionable, and include complete code examples that cover all affected files or modules necessary for a full repair.
+    """
     return system_prompt
 
 
 def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
-    # ---------- 读取 antipattern.json ----------
+    # ---------- Read antipattern.json ----------
     antipattern_json_path = None
     for name in os.listdir(antipattern_folder):
         if name.endswith("antipattern.json"):
             antipattern_json_path = os.path.join(antipattern_folder, name)
             break
     if not antipattern_json_path:
-        raise FileNotFoundError(f"在路径 {antipattern_folder} 下未找到 antipattern.json 文件。")
+        raise FileNotFoundError(f"No antipattern.json file found in path {antipattern_folder}.")
 
     with open(antipattern_json_path, "r", encoding="utf-8") as f:
         antipattern_data = json.load(f)
 
-    # ---------- 收集 antipattern_folder 下的所有 Java 文件 ----------
+    # ---------- Collect all Java files under antipattern_folder ----------
     antipattern_java_files = []
     for root, dirs, files in os.walk(antipattern_folder):
         for file in files:
             if file.endswith(".java"):
                 antipattern_java_files.append(os.path.join(root, file))
 
-    # ---------- 读取相关文件 JSON 并筛选参与修复的文件 ----------
+    # ---------- Read related files JSON and filter files involved in repair ----------
     with open(related_files_json_path, "r", encoding="utf-8") as f:
         related_data = json.load(f)
 
@@ -483,22 +481,21 @@ def build_first_fix_user_input(antipattern_folder: str, related_files_json_path:
         if item.get("involved_in_antipattern_repair", False)
     ]
 
-    # ---------- 总体修复描述 ----------
+    # ---------- Overall repair description ----------
     overall_repair_description = (
-        f"针对反模式 antipattern_data：'{antipattern_data}'，"
-        "请首先修复核心文件的反模式逻辑，然后检查相关文件可能受影响的部分，确保整体系统逻辑一致。核心文件的 source 为 core，相关文件为 related"
+        f"For the antipattern data: '{antipattern_data}', "
+        "please first repair the anti-pattern logic in core files, then check the potentially affected related files to ensure overall system consistency. "
+        "Core files are marked as 'core', and related files are marked as 'related'."
     )
 
-    # ---------- 每个文件修复描述 ----------
+    # ---------- Repair description for each file ----------
     file_repair_descriptions = []
 
     for path in antipattern_java_files:
         file_repair_descriptions.append({
             "file": path,
             "source": "core",
-            "repair_description": (
-                f"核心文件，参考 antipattern_data"
-            )
+            "repair_description": "Core file, refer to antipattern_data"
         })
 
     for item in repair_related_files:
@@ -508,22 +505,22 @@ def build_first_fix_user_input(antipattern_folder: str, related_files_json_path:
             "repair_description": item["reason"],
         })
 
-    # ---------- LLM 输出规范 ----------
+    # ---------- LLM output specification ----------
     llm_output_format = {
         "instructions": (
-            "请严格生成一个 JSON 对象，必须包含以下字段：\n"
-            "1. 'overall_repair_description': 对整个反模式的修复策略描述，包含对每个 core 文件的修复描述以及对每个 related 文件的修复描述\n"
-            "2. 'file_repair_descriptions': 一个数组，每个元素为一个字典，字段包括:\n"
-            "   - 'file': 文件完整路径\n"
-            "   - 'source': 'core' 或 'related'\n"
-            "   - 'repair_description': 对该文件的修复策略描述\n"
-            "注意：严格按照 JSON 格式返回，不要输出任何额外文本或注释。"
+            "Please strictly generate a JSON object containing the following fields:\n"
+            "1. 'overall_repair_description': a description of the overall repair strategy for the antipattern, including repair details for each core file and related file.\n"
+            "2. 'file_repair_descriptions': an array where each element is a dictionary with the following fields:\n"
+            "   - 'file': full file path\n"
+            "   - 'source': 'core' or 'related'\n"
+            "   - 'repair_description': repair strategy for this file\n"
+            "Note: Return strictly in JSON format, without any extra text or comments."
         ),
         "example": {
             "overall_repair_description": "",
             "file_repair_descriptions": [
                 {
-                    "file": "D:/项目路径/SomeFile.java",
+                    "file": "D:/project_path/SomeFile.java",
                     "source": "core",
                     "repair_description": ""
                 }
@@ -531,7 +528,7 @@ def build_first_fix_user_input(antipattern_folder: str, related_files_json_path:
         }
     }
 
-    # ---------- 最终 user_input ----------
+    # ---------- Final user_input ----------
     user_input = {
         "overall_repair_description": overall_repair_description,
         "file_repair_descriptions": file_repair_descriptions,
@@ -543,17 +540,17 @@ def build_first_fix_user_input(antipattern_folder: str, related_files_json_path:
 
 def build_fix_user_input(overall_repair_description: str, file_repair_entry: dict):
     """
-    构建第二次修复的 user_input，用于针对单个文件生成修复代码
+    Build the second-stage repair user_input, used to generate the repair code for a single file.
 
-    参数：
-        overall_repair_description (str): 整体修复策略描述
-        file_repair_entry (dict): 单个文件条目，包含:
+    Parameters:
+        overall_repair_description (str): Description of the overall repair strategy.
+        file_repair_entry (dict): A single file entry containing:
             - file
             - source
             - repair_description
 
-    返回：
-        dict: 包含原始字段，并增加 repair_code 字段占位
+    Returns:
+        dict: Contains the original fields and adds a placeholder field 'repair_code'.
     """
 
     file_path = file_repair_entry.get("file")
@@ -561,13 +558,13 @@ def build_fix_user_input(overall_repair_description: str, file_repair_entry: dic
     repair_description = file_repair_entry.get("repair_description")
 
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"文件不存在: {file_path}")
+        raise FileNotFoundError(f"File not found: {file_path}")
 
-    # 读取文件原始内容
+    # Read the original file content
     with open(file_path, "r", encoding="utf-8") as f:
         original_code = f.read()
 
-    # 构建 user_input 结构
+    # Build the user_input structure
     user_input = {
         "overall_repair_description": overall_repair_description,
         "file_repair_description": {
@@ -575,12 +572,13 @@ def build_fix_user_input(overall_repair_description: str, file_repair_entry: dic
             "source": source,
             "repair_description": repair_description,
             "original_code": original_code,
-            "repair_code": ""  # 占位，LLM 返回修复后的代码
+            "repair_code": ""  # Placeholder to be filled by LLM with the repaired code
         },
         "llm_output_format": {
             "instructions": (
-                "请严格生成一个 JSON 对象，只包含字段 'repair_code：...' "
-                "repair_code 为修复后的完整代码。不要输出额外文本。"
+                "Strictly generate a JSON object containing only the field 'repair_code': ... "
+                "The repair_code must be the full repaired code for this file. "
+                "Do not output any additional text or comments."
             ),
             "example": {
                 "repair_code": "public class ... { ... }"
