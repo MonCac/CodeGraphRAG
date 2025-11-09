@@ -97,7 +97,7 @@ class MemgraphIngestor:
     def clean_database(
             self,
             volume_name: str = "mg_lib",
-            max_retries: int = 10,
+            max_retries: int = 30,
             retry_interval: float = 1.0,
     ) -> None:
         """

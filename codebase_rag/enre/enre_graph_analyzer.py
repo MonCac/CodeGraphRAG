@@ -19,6 +19,68 @@ class ENREGraphAnalyzer:
         self.nodes: List[Dict[str, Any]] = []
         self.relationships: List[Dict[str, Any]] = []
 
+    def map_antipattern_node_to_project(self, antinode, project_nodes,
+                                        exclude_keys={"id", "parentId", "external", "additionalBin", "File",
+                                                      "parameter", "rawType", "enhancement"}):
+        """
+        将单个 antipattern 节点映射到 project_nodes 中对应节点的 node_id。
+        匹配规则：
+            - labels 必须一致（顺序无关）
+            - properties 去除 exclude_keys 后递归比较一致
+
+        参数:
+            antipattern_node: dict，包含 'labels' 和 'properties'
+            project_nodes: list of dict，每个元素同样包含 'labels' 和 'properties'
+            exclude_keys: set，要排除的 properties 字段，默认排除 id, parentId, external
+
+        返回:
+            匹配的 project_nodes 中节点的 node_id，找不到返回 None
+        """
+
+        def deep_filter_properties(props):
+            """递归过滤 dict，去除 exclude_keys，支持嵌套 dict 和 list。"""
+            if isinstance(props, dict):
+                return {
+                    k: deep_filter_properties(v)
+                    for k, v in props.items()
+                    if k not in exclude_keys
+                }
+            elif isinstance(props, list):
+                return [deep_filter_properties(item) for item in props]
+            else:
+                return props
+
+        def deep_compare(a, b):
+            """递归比较两个结构是否相等。"""
+            if type(a) != type(b):
+                return False
+            if isinstance(a, dict):
+                if set(a.keys()) != set(b.keys()):
+                    return False
+                return all(deep_compare(a[k], b[k]) for k in a)
+            elif isinstance(a, list):
+                if len(a) != len(b):
+                    return False
+                return all(deep_compare(x, y) for x, y in zip(a, b))
+            else:
+                return a == b
+
+        alabels = tuple(sorted(antinode.get("labels", [])))
+        aprops = antinode.get("properties", {}) or {}
+        filtered_aprops = deep_filter_properties(aprops)
+
+        for pnode in project_nodes:
+            plabels = tuple(sorted(pnode.get("labels", [])))
+            if alabels != plabels:
+                continue
+            pprops = pnode.get("properties", {}) or {}
+            filtered_pprops = deep_filter_properties(pprops)
+
+            if deep_compare(filtered_aprops, filtered_pprops):
+                return pnode["node_id"]
+
+        return None
+
     def generate_subgraph(self, max_depth: int | None = None, max_nodes: int = 100000):
         """
         生成基于反模式节点的项目子图（保持原始 ENRE 节点/关系格式）。
@@ -42,8 +104,15 @@ class ENREGraphAnalyzer:
             adjacency.setdefault(rel["from_id"], set()).add(rel["to_id"])
             adjacency.setdefault(rel["to_id"], set()).add(rel["from_id"])
 
-        # 3️⃣ 确定起点节点（反模式节点）
-        start_nodes = {n["node_id"] for n in antipattern_nodes}
+        # 3️⃣ 映射 antipattern_nodes 到 project_nodes 的 node_id，构造起点节点集合
+        start_nodes = set()
+        for antinode in antipattern_nodes:
+            mapped_id = self.map_antipattern_node_to_project(antinode, project_nodes)
+            if mapped_id is not None:
+                start_nodes.add(mapped_id)
+            else:
+                logger.warning(f"Antipattern node {antinode.get('node_id')} 无法映射到 project 节点，跳过。")
+
         visited = set()
         queue = [(nid, 0) for nid in start_nodes]
 

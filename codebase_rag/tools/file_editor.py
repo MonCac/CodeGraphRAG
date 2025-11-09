@@ -56,10 +56,10 @@ class FileEditor:
         logger.info(f"FileEditor initialized with root: {self.project_root}")
 
     def _get_real_extension(self, file_path_obj: Path) -> str:
-        """Gets the file extension, looking past a .tmp suffix if present."""
+        """Gets the file extension, looking past a tmp suffix if present."""
         extension = file_path_obj.suffix
-        if extension == ".tmp":
-            # Get the extension before .tmp (e.g., test_file.py.tmp -> .py)
+        if extension == "tmp":
+            # Get the extension before tmp (e.g., test_file.pytmp -> .py)
             base_name = file_path_obj.stem
             if "." in base_name:
                 return "." + base_name.split(".")[-1]

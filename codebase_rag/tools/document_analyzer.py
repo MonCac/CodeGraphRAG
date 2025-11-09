@@ -60,17 +60,17 @@ class DocumentAnalyzer:
             f"[DocumentAnalyzer] Analyzing '{file_path}' with question: '{question}'"
         )
         try:
-            # Handle absolute paths by copying to .tmp folder
+            # Handle absolute paths by copying to tmp folder
             if Path(file_path).is_absolute():
                 source_path = Path(file_path)
                 if not source_path.is_file():
                     return f"Error: File not found at '{file_path}'."
 
-                # Create .tmp folder if it doesn't exist
-                tmp_dir = self.project_root / ".tmp"
+                # Create tmp folder if it doesn't exist
+                tmp_dir = self.project_root / "tmp"
                 tmp_dir.mkdir(exist_ok=True)
 
-                # Copy file to .tmp with a unique filename to avoid collisions
+                # Copy file to tmp with a unique filename to avoid collisions
                 tmp_file = tmp_dir / f"{uuid.uuid4()}-{source_path.name}"
                 shutil.copy2(source_path, tmp_file)
                 full_path = tmp_file

@@ -16,7 +16,7 @@ class ENRELoader:
     def __init__(self, repo_path: str | Path):
         self.repo_path = Path(repo_path).resolve()
         self.repo_name = self.repo_path.name
-        self.tmp_dir = Path(".tmp").resolve()
+        self.tmp_dir = Path("tmp").resolve()
         self.tmp_dir.mkdir(exist_ok=True)
         self.json_path: Path | None = None
         self.data: Dict[str, Any] = {}
@@ -43,7 +43,7 @@ class ENRELoader:
         if not output_json.exists():
             raise FileNotFoundError(f"Expected ENRE output JSON not found: {output_json}")
 
-        # 移动到 .tmp 目录
+        # 移动到 tmp 目录
         target_json = self.tmp_dir / f"{self.repo_name}-out.json"
         shutil.move(str(output_json), str(target_json))
         self.json_path = target_json
@@ -134,12 +134,12 @@ class ENRELoader:
         return self.nodes, self.relationships
 
     def save_json(self) -> str:
-        """将 ENRE 结果保存为 JSON 文件，路径固定为 .tmp/{repo_name}-graph.json。"""
+        """将 ENRE 结果保存为 JSON 文件，路径固定为 tmp/{repo_name}-graph.json。"""
         data = self.to_json_dict()
         repo_name = self.repo_path.name
         logger.info(f"start ENRE GRAPH SAVE JSON")
 
-        output_path = Path(".tmp") / f"{repo_name}-graph.json"
+        output_path = Path("tmp") / f"{repo_name}-graph.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         with output_path.open("wb") as f:  # 注意是二进制写入

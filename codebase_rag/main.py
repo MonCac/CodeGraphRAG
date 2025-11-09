@@ -1,4 +1,5 @@
 import asyncio
+import copy
 import json
 import os
 import re
@@ -84,7 +85,7 @@ confirm_edits = True
 def init_session_log(project_root: Path) -> Path:
     """Initialize session log file."""
     global session_log_file
-    log_dir = project_root / ".tmp"
+    log_dir = project_root / "tmp"
     log_dir.mkdir(exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     session_log_file = log_dir / f"session_{timestamp}_{uuid.uuid4().hex[:8]}.log"
@@ -188,7 +189,7 @@ def _handle_chat_images(question: str, project_root: Path) -> str:
         return question
 
     updated_question = question
-    tmp_dir = project_root / ".tmp"
+    tmp_dir = project_root / "tmp"
     tmp_dir.mkdir(exist_ok=True)
 
     for original_path_str in image_files:
@@ -276,9 +277,9 @@ def _setup_common_initialization(repo_path: str) -> Path:
         format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {message}",
         colorize=True  # ✅ 关键，启用彩色解析
     )
-    # Temporary directory setup (keep existing .tmp if already present)
+    # Temporary directory setup (keep existing tmp if already present)
     project_root = Path(repo_path).resolve()
-    tmp_dir = project_root / ".tmp"
+    tmp_dir = project_root / "tmp"
     tmp_dir.mkdir(exist_ok=True)
 
     return project_root
@@ -534,7 +535,7 @@ def _export_graph_to_file(ingestor: MemgraphIngestor, output: str) -> bool:
         return False
 
 
-def save_semantic_results(result: dict, save_dir: str = ".tmp") -> None:
+def save_semantic_results(result: dict, save_dir: str = "tmp") -> None:
     """
     将 build_node_semantics 的结果分别保存为 total_result.json 和 file_result.json。
 
@@ -554,13 +555,32 @@ def save_semantic_results(result: dict, save_dir: str = ".tmp") -> None:
             json.dump(result, f, ensure_ascii=False, indent=4)
         logger.success(f"✅ 总体语义结果已保存到: {semantic_total_path}")
 
-        # ✅ 筛选出 labels 包含 "File" 的节点
-        filtered_metadatas = [
-            m for m in result.get("metadatas", [])
-            if "File" in m.get("labels", [])
-        ]
+        metadatas = result.get("metadatas", [])
+        # 先筛选所有 labels 不含 File 的节点，方便匹配 parentId
+        other_nodes = [m for m in metadatas if "File" not in m.get("labels", [])]
 
-        # ✅ 构造仅包含 metadatas 的结果
+        filtered_metadatas = []
+        for file_node in [m for m in metadatas if "File" in m.get("labels", [])]:
+            file_id = file_node.get("properties", {}).get("id")
+            if file_id is None:
+                continue
+
+            # 找 parentId == file_id 且 labels 中含 File 的第一个节点
+            matched_file = None
+            for node in other_nodes:
+                if node.get("properties", {}).get("parentId") == file_id and "File" in node.get("properties", []):
+                    matched_file = node
+                    break
+
+            if matched_file:
+                new_node = copy.deepcopy(file_node)
+                # 只复制 matched_file["properties"]["File"] 的内容给 new_node["properties"]["File"]
+                file_value = matched_file.get("properties", {}).get("File")
+                if file_value is not None:
+                    new_node["properties"]["File"] = file_value
+                filtered_metadatas.append(new_node)
+            # 如果没找到匹配，跳过该节点，不添加
+
         file_result = {
             "metadatas": filtered_metadatas
         }
@@ -769,13 +789,13 @@ def start(
             # # Load parsers and queries
             # parsers, queries = load_parsers()
             #
-            updater = GraphProjectUpdater(ingestor, repo_to_update)
-            updater.run()
+            # updater = GraphProjectUpdater(ingestor, repo_to_update)
+            # updater.run()
 
             if semantic_enhance:
                 logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # 本地测试用
-                json_path = Path(".tmp\\algorithm-graph.json")  # 替换为你的文件路径
+                json_path = Path("tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 if not json_path.exists():
                     raise FileNotFoundError(f"文件不存在: {json_path}")
 
@@ -785,11 +805,11 @@ def start(
                 # 实际执行逻辑
                 # graph_data = ingestor.export_graph_to_dict()
 
-                output_file = Path(output)
-                output_dir = output_file.parent
-                hierarchical_semantic_builder = HierarchicalSemanticBuilder()
-                result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                save_semantic_results(result, "CodeGraphRAG\\.tmp")
+                # output_file = Path(output)
+                # output_dir = output_file.parent
+                # hierarchical_semantic_builder = HierarchicalSemanticBuilder()
+                # result = hierarchical_semantic_builder.build_node_semantics(graph_data)
+                # save_semantic_results(result, "CodeGraphRAG\\tmp")
 
                 logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
@@ -811,8 +831,8 @@ def start(
             ingestor.ensure_constraints()
 
             # # Load parsers and queries
-            # parsers, queries = load_parsers()
-            #
+            parsers, queries = load_parsers()
+
             updater = GraphAntipatternUpdater(ingestor, repo_to_update, antipattern_to_update)
             updater.run()
             _export_graph_to_file(ingestor, output)
@@ -828,7 +848,7 @@ def start(
             if semantic_enhance:
                 logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
                 # # 本地测试用
-                # json_path = Path(".tmp\\algorithm-graph.json")  # 替换为你的文件路径
+                # json_path = Path("tmp\\algorithm-graph.json")  # 替换为你的文件路径
                 # if not json_path.exists():
                 #     raise FileNotFoundError(f"文件不存在: {json_path}")
                 # with open(json_path, "r", encoding="utf-8") as f:
@@ -841,24 +861,31 @@ def start(
                 output_dir = output_file.parent
                 hierarchical_semantic_builder = HierarchicalSemanticBuilder()
                 result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                save_semantic_results(result, ".tmp")
+                save_semantic_results(result, "tmp")
 
                 logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
 
                 # 编写一个与 llm 交互的函数。
-                # 输入是.tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
+                # 输入是tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
                 # 得到最终的files
-                result = analyze_files_with_llm(".tmp\\semantic_file_result.json", antipattern_relation_path)
-                related_files_json_path = save_antipattern_relevance_result(result, ".tmp"
-                                                                                    "\\antipattern_relevance_result.json")
+                result = analyze_files_with_llm(
+                    os.path.join("tmp", "semantic_file_result.json"),
+                    antipattern_relation_path
+                )
+
+                related_files_json_path = save_antipattern_relevance_result(
+                    result,
+                    os.path.join("tmp", "antipattern_relevance_result.json")
+                )
                 # 构建最终的修复架构反模式的与 llm 交互的流程
                 # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
                 # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
                 # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
                 # 4. 多次交互，完善其他文件的代码具体内容
-                run_repair_code_llm(antipattern_type, antipattern_relation_path, related_files_json_path) # 第三个参数是上面生成的路径json，所以需要统一路径
+                result = asyncio.run(run_repair_code_llm(antipattern_type, antipattern_relation_path,
+                                                         "tmp/antipattern_relevance_result.json"))  # 第三个参数是上面生成的路径json，所以需要统一路径
 
-
+                save_repair_results_to_json(result, "./repair_outputs")
 
     # Export graph if output file specified
     if output:
@@ -869,12 +896,13 @@ def start(
 
     logger.info("[bold green]Graph update completed![/bold green]")
 
+
 # try:
-    #     asyncio.run(main_async(target_repo_path))
-    # except KeyboardInterrupt:
-    #     logger.info("\n[bold red]Application terminated by user.[/bold red]")
-    # except ValueError as e:
-    #     logger.info(f"[bold red]Startup Error: {e}[/bold red]")
+#     asyncio.run(main_async(target_repo_path))
+# except KeyboardInterrupt:
+#     logger.info("\n[bold red]Application terminated by user.[/bold red]")
+# except ValueError as e:
+#     logger.info(f"[bold red]Startup Error: {e}[/bold red]")
 
 
 async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation_path: str):
@@ -928,52 +956,80 @@ async def run_multi_interaction(ingestor: MemgraphIngestor, antipattern_relation
     return results
 
 
+async def async_run_with_retry(func, *args, max_retries=2, retry_interval=1, **kwargs):
+    """
+    异步调用重试封装，最多重试 max_retries 次。
+    retry_interval：每次重试间隔秒数。
+    func: 需要重试的异步函数
+    args, kwargs: 传给 func 的参数
+    """
+    attempt = 0
+    while attempt <= max_retries:
+        try:
+            return await func(*args, **kwargs)
+        except Exception as e:
+            attempt += 1
+            if attempt > max_retries:
+                raise e
+            else:
+                logger.warning(f"异步调用失败，第 {attempt} 次重试，错误：{e}")
+                await asyncio.sleep(retry_interval)
+
+
 async def run_repair_code_llm(antipattern_type: str, antipattern_to_update: str, related_files_json_path: str):
     """Runs multi-turn LLM interaction where agent can autonomously call tools."""
 
-    # 初始化 agent，只注册工具
     rag_agent = create_repair_code_model(build_fix_system_prompt(antipattern_type))
+    console = Console(width=None, force_terminal=True)
 
-    # 构造初始问题
     try:
         user_question = build_first_fix_user_input(antipattern_to_update, related_files_json_path)
     except FileNotFoundError:
         user_question = ""
     logger.info(f"[bold cyan]User question:[/bold cyan] {user_question}")
 
-    # 控制台
-    console = Console(width=None, force_terminal=True)
-
-    # 第一次交互：LLM生成自然语言查询
+    # 第一次交互
     try:
         console.print("[bold green]LLM generating first fix answer...[/bold green]")
-        llm_response = await rag_agent.run(user_question)
-        # 兼容不同返回类型
-        first_llm_output = getattr(llm_response, "output", str(llm_response)).strip()
+        llm_response = await async_run_with_retry(rag_agent.run, user_question, max_retries=2)
+        first_llm_output_raw = getattr(llm_response, "output", str(llm_response)).strip()
+
         console.print(
             Panel(
-                Markdown(first_llm_output),
+                Markdown(first_llm_output_raw),
                 title="[bold green]LLM Generated Instruction[/bold green]",
                 border_style="green",
             )
         )
+
+        # 尝试转成 dict，如果是字符串或者其它格式，按你需求调整
+        first_llm_output = first_llm_output_raw
+        if isinstance(first_llm_output_raw, str):
+            import json
+            try:
+                first_llm_output = json.loads(first_llm_output_raw)
+            except Exception:
+                # 无法解析为 JSON，保持原样
+                pass
+
     except Exception as e:
         console.print(f"[red]Error during LLM instruction generation:[/red] {e}")
         traceback.print_exc()
         return str(e)
 
-    overall_desc = first_llm_output.get("overall_repair_description")
+    overall_desc = first_llm_output.get("overall_repair_description", "")
     file_descriptions = first_llm_output.get("file_repair_descriptions", [])
 
     results = []
-    # 第二次的多轮交互，生成总的代码修复结果
+
+    # 第二次多轮交互
     for file_entry in file_descriptions:
         user_input = build_fix_user_input(overall_desc, file_entry)
         try:
-            console.print("[bold green]LLM generating first fix answer...[/bold green]")
-            llm_response = await rag_agent.run(user_input)
-            # 兼容不同返回类型
-            second_llm_output = getattr(llm_response, "output", str(llm_response)).strip()
+            console.print("[bold green]LLM generating fix answer for a file...[/bold green]")
+            second_llm_response = await async_run_with_retry(rag_agent.run, user_input, max_retries=2)
+            second_llm_output = getattr(second_llm_response, "output", str(second_llm_response)).strip()
+
             console.print(
                 Panel(
                     Markdown(second_llm_output),
@@ -981,22 +1037,59 @@ async def run_repair_code_llm(antipattern_type: str, antipattern_to_update: str,
                     border_style="green",
                 )
             )
+
             result_entry = {
-                "file": file_entry["file"],
-                "source": file_entry["source"],
-                "repair_description": file_entry["repair_description"],
-                "repair_code": second_llm_output
+                "file": file_entry.get("file", ""),
+                "source": file_entry.get("source", ""),
+                "repair_description": file_entry.get("repair_description", ""),
+                "repair_code": second_llm_output,
             }
-            # 添加到结果列表
             results.append(result_entry)
 
         except Exception as e:
             console.print(f"[red]Error during LLM instruction generation:[/red] {e}")
             traceback.print_exc()
-        return str(e)
-        # 构建结果条目
+            # 这里不返回错误，继续执行下一条，或者你可以改成记录失败条目
+            # return str(e)  # 如果你要失败立即返回，取消注释这一行
 
     return results
+
+
+def save_repair_results_to_json(results: list, output_dir: str, filename: str = None):
+    """
+    将 run_repair_code_llm 的返回结果保存为 JSON 文件。
+
+    Args:
+        results (list): run_repair_code_llm 的返回结果（list[dict]）
+        output_dir (str): 保存目录路径
+        filename (str, optional): 输出文件名（不含路径）。默认为 "repair_results_{timestamp}.json"
+
+    Returns:
+        str: 保存的 JSON 文件完整路径
+    """
+    if not results:
+        raise ValueError("results 为空，无法保存。")
+
+    # 确保目录存在
+    os.makedirs(output_dir, exist_ok=True)
+
+    # 默认文件名
+    if not filename:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"repair_results_{timestamp}.json"
+
+    output_path = os.path.join(output_dir, filename)
+
+    # 保存 JSON 文件
+    try:
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+        print(f"[✅] 修复结果已成功保存至：{output_path}")
+    except Exception as e:
+        print(f"[❌] 保存 JSON 文件失败：{e}")
+        raise
+
+    return output_path
 
 
 if __name__ == "__main__":

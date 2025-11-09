@@ -19,7 +19,7 @@ def detect_provider_from_model(model_name: str) -> Literal["gemini", "openai", "
     if model_name.startswith("gemini-"):
         return "gemini"
     elif model_name.startswith("gpt-") or model_name.startswith("o1-"):
-        return "openai"
+        return "local"
     else:
         return "local"
 
@@ -159,7 +159,7 @@ IGNORE_PATTERNS = {
     ".idea",
     ".vscode",
 }
-IGNORE_SUFFIXES = {".tmp", "~"}
+IGNORE_SUFFIXES = {"tmp", "~"}
 
 
 # --- Edit Operation Constants ---
@@ -230,15 +230,15 @@ def resolve_output_path(output: str) -> str:
     规则：
       - 如果 output 是文件夹（无后缀名）：在该文件夹下创建 final-result.json。
       - 如果 output 是文件路径（有后缀名）：
-          若只提供文件名 → 放入 .tmp 文件夹。
+          若只提供文件名 → 放入 tmp 文件夹。
       - 如果 output 是相对路径：基于当前工作目录解析。
     """
     output_path = Path(output).expanduser()
 
     # 判断是否为单纯的文件名（没有目录部分）
     if output_path.parent == Path('.'):
-        # 如果只给了文件名，则放入 .tmp 文件夹
-        output_path = Path('.tmp') / output_path
+        # 如果只给了文件名，则放入 tmp 文件夹
+        output_path = Path('tmp') / output_path
 
     # 如果是相对路径 → 转成绝对路径
     if not output_path.is_absolute():

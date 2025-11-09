@@ -405,48 +405,86 @@ Return your answer as a JSON object with exactly the following fields:
 
 def build_fix_system_prompt(antipattern_type: str):
     """
-    根据反模式类型动态构建system_prompt
+    根据反模式类型动态构建 system_prompt
 
     Args:
         antipattern_type (str): 反模式类型
 
     Returns:
-        str: 构建好的system_prompt
+        str: 构建好的 system_prompt
     """
+    base_dir = "fix_example"
+    yaml_file_path = os.path.join(base_dir, f"{antipattern_type}_fix.yaml")
+    json_file_path = os.path.join(base_dir, f"{antipattern_type}_antipattern.json")
 
-    # 尝试加载对应的yaml文件
-    yaml_file_path = f"fix_example/{antipattern_type}_fix.yaml"
     yaml_content = {}
+    json_content = {}
 
+    # 尝试加载 YAML 文件（反模式定义）
     try:
         if os.path.exists(yaml_file_path):
-            with open(yaml_file_path, 'r', encoding='utf-8') as file:
-                yaml_content = yaml.safe_load(file)
+            with open(yaml_file_path, "r", encoding="utf-8") as f:
+                yaml_content = yaml.safe_load(f)
     except Exception as e:
         print(f"Warning: Could not load YAML file {yaml_file_path}: {e}")
 
-    # 从YAML中提取内容，如果文件不存在则使用默认值
-    antipattern_definition = yaml_content.get('definition', '架构反模式描述待补充')
-    examples = yaml_content.get('examples', [])
+    # 尝试加载 JSON 文件（反模式结构信息）
+    try:
+        if os.path.exists(json_file_path):
+            with open(json_file_path, "r", encoding="utf-8") as f:
+                json_content = json.load(f)
+    except Exception as e:
+        print(f"Warning: Could not load JSON file {json_file_path}: {e}")
 
+    # 从 YAML 中提取定义和示例
+    antipattern_definition = yaml_content.get(
+        "definition",
+        "Architectural anti-pattern definition not provided."
+    )
+    examples = yaml_content.get("examples", [])
+
+    # 格式化示例文本
+    if examples:
+        formatted_examples = ""
+        for ex in examples:
+            formatted_examples += (
+                f"\n\n### Example ID: {ex.get('example_id', 'N/A')}\n"
+                f"**Refactor Method:**\n{ex.get('refactor_method', '')}\n\n"
+                f"**Detailed Refactor Operation:**\n{ex.get('detail_refactor_operation', '')}\n"
+            )
+    else:
+        formatted_examples = "No specific repair examples are available."
+
+    # 格式化 JSON 结构信息
+    if json_content:
+        json_section = f"## Anti-Pattern Instance Details\n```json\n{json.dumps(json_content, indent=2, ensure_ascii=False)}\n```"
+    else:
+        json_section = "## Anti-Pattern Instance Details\nNo detailed structure information available."
+
+    # 组合最终 prompt
     system_prompt = f"""
-    # Architecture Anti-Pattern Remediation Expert
+# Architecture Anti-Pattern Remediation Expert
 
-    ## Background
-    You are a professional software architect specializing in identifying and remediating architectural anti-patterns.  Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules and can lead to technical debt, maintainability issues, and performance problems.
+## Background
+You are a professional software architect specializing in identifying and remediating architectural anti-patterns. 
+Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules 
+and can lead to technical debt, maintainability issues, and performance problems.
 
-    ## Current Anti-Pattern Type: {antipattern_type.upper()}
+## Current Anti-Pattern Type
+{antipattern_type.upper()}
 
-    ## Anti-Pattern Definition
-    {antipattern_definition}
+## Anti-Pattern Definition
+{antipattern_definition}
 
-    ## Repair Examples
-    {examples if examples else "No specific repair examples are available.  Please provide solutions based on general architectural principles."}
+{json_section}
 
-    Please ensure your recommendations are concrete, actionable, and include complete code examples that cover all affected files or modules necessary for a full repair.
-    """
-    return system_prompt
+## Refactor Examples
+{formatted_examples}
 
+Please ensure your recommendations are concrete, actionable, and include complete code examples 
+that cover all affected files or modules necessary for a full repair.
+"""
+    return system_prompt.strip()
 
 def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
     # ---------- Read antipattern.json ----------

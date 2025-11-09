@@ -222,7 +222,7 @@ def analyze_antipattern_json_change_format(repo_out_path, antipattern_path, outp
 
 
 if __name__ == "__main__":
-    repo_out_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/kafka-out.json"
+    repo_out_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/kafka-out.json"
     antipattern_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/test1/20/kafka_20_ch_antipattern.json"
-    output_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/.tmp/analyze_antipattern_change_format_output.json"
+    output_path = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/analyze_antipattern_change_format_output.json"
     analyze_antipattern_json_change_format(repo_out_path, antipattern_path, output_path)
