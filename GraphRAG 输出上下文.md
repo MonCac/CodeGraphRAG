@@ -113,7 +113,6 @@ ComoRAG是一个用于长文档和多文档QA、信息提取和知识图谱构�
    - **记忆编码（Mem-Encode）**：将新证据转化为记忆单元；
    - **记忆融合（Mem-Fuse）**：整合新旧线索，形成全局认知；
    - **尝试作答（Try-Answer）**：判断是否能给出答案，否则循环升级。
-   c
 #### 上下文工程
 
 **自我探测（Self-Probe）**：Instruction Template for Probing Query Generation in Regulation Agent

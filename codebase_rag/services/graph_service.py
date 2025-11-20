@@ -94,7 +94,7 @@ class MemgraphIngestor:
             if cursor:
                 cursor.close()
 
-    def clean_database(
+    def clean_database2(
             self,
             volume_name: str = "mg_lib",
             max_retries: int = 30,
@@ -111,6 +111,7 @@ class MemgraphIngestor:
             retry_interval: 每次重试等待秒数
         """
         logger.info("--- Cleaning Docker Memgraph database (node_id will reset) ---")
+        self._execute_query("MATCH (n) DETACH DELETE n;")
 
         # 1️⃣ 关闭现有连接
         if self.conn:
@@ -190,6 +191,45 @@ class MemgraphIngestor:
             logger.error(f"Failed to reconnect to Memgraph after {max_retries} attempts.")
             self.conn = None
 
+    def clean_database(self) -> None:
+        logger.info("--- Cleaning database with DROP GRAPH ---")
+        try:
+            cursor = self.conn.cursor()
+
+            # 1. 查询当前存储模式
+            cursor.execute("SHOW STORAGE INFO;")
+            storage_info = cursor.fetchall()
+            logger.info(f"Storage info: {storage_info}")
+
+            # 2. 查找 storage_mode
+            current_mode = None
+            for key, value in storage_info:
+                if key == "storage_mode":
+                    current_mode = value
+                    break
+
+            logger.info(f"Current storage mode: {current_mode}")
+
+            # 3. 如果不是 IN_MEMORY_ANALYTICAL，切换
+            if current_mode != "IN_MEMORY_ANALYTICAL":
+                logger.info(f"Switching storage mode from {current_mode} to IN_MEMORY_ANALYTICAL.")
+                cursor.execute("STORAGE MODE IN_MEMORY_ANALYTICAL;")
+
+            current_mode = None
+            for key, value in storage_info:
+                if key == "storage_mode":
+                    current_mode = value
+                    break
+            logger.info(f"Current storage mode: {current_mode}")
+
+            # 4. 执行 DROP GRAPH
+            cursor.execute("DROP GRAPH;")
+            logger.info("DROP GRAPH executed successfully.")
+
+            cursor.close()
+        except Exception as e:
+            logger.error(f"Failed to clean database: {e}")
+
     def clean_database_before(self) -> None:
         logger.info("--- Cleaning database... ---")
         self._execute_query("MATCH (n) DETACH DELETE n;")
@@ -238,6 +278,11 @@ class MemgraphIngestor:
         if not self.node_buffer:
             return
 
+        # flush前导出全量图数据，获取节点和关系数
+        graph_before = self.export_graph_to_dict()
+        logger.info(
+            f"[flush_nodes] Before flush: {graph_before['metadata']['total_nodes']} nodes, {graph_before['metadata']['total_relationships']} relationships.")
+
         nodes_by_label = defaultdict(list)
         for label, props in self.node_buffer:
             nodes_by_label[label].append(props)
@@ -248,7 +293,6 @@ class MemgraphIngestor:
 
             id_key = "id"  # 用 id 做唯一标识
 
-            # 生成 SET 子句时排除 id
             prop_keys = [key for key in props_list[0].keys() if key != id_key]
             set_clause = ", ".join([f"n.{key} = row.{key}" for key in prop_keys])
             query = (
@@ -260,9 +304,18 @@ class MemgraphIngestor:
         logger.info(f"Flushed {len(self.node_buffer)} nodes.")
         self.node_buffer.clear()
 
+        # flush后再导出全量图数据
+        graph_after = self.export_graph_to_dict()
+        logger.info(
+            f"[flush_nodes] After flush: {graph_after['metadata']['total_nodes']} nodes, {graph_after['metadata']['total_relationships']} relationships.")
+
     def flush_relationships(self) -> None:
         if not self.relationship_buffer:
             return
+
+        graph_before = self.export_graph_to_dict()
+        logger.info(
+            f"[flush_relationships] Before flush: {graph_before['metadata']['total_nodes']} nodes, {graph_before['metadata']['total_relationships']} relationships.")
 
         rels_by_pattern = defaultdict(list)
         for from_node, rel_type, to_node, props in self.relationship_buffer:
@@ -270,6 +323,7 @@ class MemgraphIngestor:
             rels_by_pattern[pattern].append(
                 {"from_val": from_node[2], "to_val": to_node[2], "props": props or {}}
             )
+
         for pattern, params_list in rels_by_pattern.items():
             from_label, from_key, rel_type, to_label, to_key = pattern
             query = (
@@ -281,8 +335,13 @@ class MemgraphIngestor:
                 query += "\nSET r += row.props"
 
             self._execute_batch(query, params_list)
+
         logger.info(f"Flushed {len(self.relationship_buffer)} relationships.")
         self.relationship_buffer.clear()
+
+        graph_after = self.export_graph_to_dict()
+        logger.info(
+            f"[flush_relationships] After flush: {graph_after['metadata']['total_nodes']} nodes, {graph_after['metadata']['total_relationships']} relationships.")
 
     def flush_all(self) -> None:
         logger.info("--- Flushing all pending writes to database... ---")
@@ -304,17 +363,17 @@ class MemgraphIngestor:
         """Export the entire graph as a dictionary with nodes and relationships."""
         logger.info("Exporting graph data...")
 
-        # Get all nodes with their labels and properties
+        # Get all nodes with their labels and properties, export user-defined 'id' property instead of internal id
         nodes_query = """
         MATCH (n)
-        RETURN id(n) as node_id, labels(n) as labels, properties(n) as properties
+        RETURN n.id AS node_id, labels(n) AS labels, properties(n) AS properties
         """
         nodes_data = self.fetch_all(nodes_query)
 
-        # Get all relationships with their types and properties
+        # Get all relationships with their types and properties, using user-defined 'id' properties on nodes
         relationships_query = """
         MATCH (a)-[r]->(b)
-        RETURN id(a) as from_id, id(b) as to_id, type(r) as type, properties(r) as properties
+        RETURN a.id AS from_id, b.id AS to_id, type(r) AS type, properties(r) AS properties
         """
         relationships_data = self.fetch_all(relationships_query)
 

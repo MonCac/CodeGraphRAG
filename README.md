@@ -1,3 +1,21 @@
+# CodeGraphRAG
+
+中间文件输出说明：
+
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+
 # Linux 服务器部署
 
 若出现 `mgclient.cpython-312-x86_64-linux-gnu.so: undefined symbol: SSL_get1_peer_certificate`报错，说明此时调用的 OpenSSL为v1，需要配置环境为OpenSSLv3.

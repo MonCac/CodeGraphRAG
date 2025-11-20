@@ -235,15 +235,15 @@ class BaseGraphUpdater:
 
     def run(self) -> None:
         """Main entry point: loads data and writes to Memgraph."""
-        # 1 Ensure Project node
+        # 1 Clean database
+        self.ingestor.clean_database()
+
+        # 2 Ensure Project node
         logger.info(f"Ensuring Project: {self.project_name}")
 
-        # 2 Load graph data
+        # 3 Load graph data
         self.nodes, self.relationships = self._load_data()
         logger.info(f"Loaded {len(self.nodes)} nodes and {len(self.relationships)} relationships.")
-
-        # 3 Clean database
-        self.ingestor.clean_database()
 
         # 4 Write nodes
         self._write_nodes(self.nodes)
@@ -263,6 +263,8 @@ class BaseGraphUpdater:
     # -------- Shared private methods --------
     def _write_nodes(self, nodes: List[Dict[str, Any]]) -> None:
         """Write all nodes to Memgraph."""
+        if nodes:  # 打印第一个 node
+            print("First node:", nodes[0])
         for node in nodes:
             self.ingestor.ensure_node_batch(
                 label=node["labels"][0],
@@ -271,6 +273,8 @@ class BaseGraphUpdater:
 
     def _write_relationships(self, relationships: List[Dict[str, Any]]) -> None:
         """Write all relationships to Memgraph using correct node labels."""
+        if relationships:  # 打印第一个 relationship
+            print("First relationship:", relationships[0])
         id_to_label = {node["node_id"]: node["labels"][0] for node in self.nodes}
 
         for rel in relationships:

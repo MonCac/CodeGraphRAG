@@ -5,6 +5,7 @@ import os
 import re
 import shlex
 import shutil
+import subprocess
 import sys
 import traceback
 import uuid
@@ -734,7 +735,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "final-result.json",
+            "tmp/final-result.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -756,6 +757,7 @@ def start(
 ) -> None:
     """Starts the Codebase RAG CLI."""
     global confirm_edits_globally
+    # restart_memgraph()
 
     # Set confirmation mode based on flag
     confirm_edits_globally = not no_confirm
@@ -821,7 +823,6 @@ def start(
         logger.info(
             f"[bold green]Updating knowledge graph for: {repo_to_update} \n and \n {antipattern_to_update}[/bold green]"
         )
-
         with MemgraphIngestor(
                 host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
         ) as ingestor:
@@ -882,8 +883,9 @@ def start(
                 # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
                 # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
                 # 4. 多次交互，完善其他文件的代码具体内容
+                # 第三个参数是上面生成的路径json，所以需要统一路径
                 result = asyncio.run(run_repair_code_llm(antipattern_type, antipattern_relation_path,
-                                                         "tmp/antipattern_relevance_result.json"))  # 第三个参数是上面生成的路径json，所以需要统一路径
+                                                         "tmp/antipattern_relevance_result.json"))
 
                 save_repair_results_to_json(result, "./repair_outputs")
 
@@ -1091,6 +1093,22 @@ def save_repair_results_to_json(results: list, output_dir: str, filename: str = 
 
     return output_path
 
+
+def restart_memgraph():
+    try:
+        # 尝试删除容器，忽略报错
+        subprocess.run(['docker', 'rm', '-f', 'memgraph'], check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        # 启动新的容器
+        subprocess.run([
+            'docker', 'run', '-d',
+            '-p', '7687:7687',
+            '-p', '7444:7444',
+            '--name', 'memgraph',
+            'memgraph/memgraph-mage:latest'
+        ], check=True)
+        print("Memgraph container restarted successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred: {e}")
 
 if __name__ == "__main__":
     app()

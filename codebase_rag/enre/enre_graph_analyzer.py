@@ -19,9 +19,7 @@ class ENREGraphAnalyzer:
         self.nodes: List[Dict[str, Any]] = []
         self.relationships: List[Dict[str, Any]] = []
 
-    def map_antipattern_node_to_project(self, antinode, project_nodes,
-                                        exclude_keys={"id", "parentId", "external", "additionalBin", "File",
-                                                      "parameter", "rawType", "enhancement"}):
+    def map_antipattern_node_to_project(self, antinode, project_nodes,exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter", "rawType", "enhancement"}):
         """
         将单个 antipattern 节点映射到 project_nodes 中对应节点的 node_id。
         匹配规则：
