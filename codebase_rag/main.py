@@ -10,7 +10,7 @@ import sys
 import traceback
 import uuid
 from pathlib import Path
-from typing import Any
+from typing import Any, Union, Optional
 from datetime import datetime
 
 import typer
@@ -28,6 +28,7 @@ from rich.text import Text
 
 from codebase_rag.prompts import build_query_question_from_antipattern, build_fix_system_prompt, \
     build_first_fix_user_input, build_fix_user_input
+from codebase_rag.services.graph_file_classifier.classifier import GraphFileClassifier
 from codebase_rag.services.hierarchical_semantic_builder import HierarchicalSemanticBuilder
 from codebase_rag.tools.analyze_antipattern_relevance_files import analyze_files_with_llm
 from codebase_rag.tools.graph_extract_query import create_graph_extract_query_tool, query_codebase_with_agent_batch
@@ -596,6 +597,14 @@ def save_semantic_results(result: dict, save_dir: str = "tmp") -> None:
         logger.error(f"❌ 保存语义结果失败: {e}")
 
 
+def find_first_antipattern_json_in_parent_dir(antipattern_to_update: Union[str, Path]) -> Optional[Path]:
+    path = Path(antipattern_to_update) if not isinstance(antipattern_to_update, Path) else antipattern_to_update
+    parent_dir = path.parent
+    pattern = "*_antipattern.json"
+    files = list(parent_dir.glob(pattern))
+    return files[0] if files else None
+
+
 def save_antipattern_relevance_result(result, file_path):
     """
     保存反模式相关性结果到 JSON 文件
@@ -858,6 +867,13 @@ def start(
                 # 实际执行逻辑
                 graph_data = ingestor.export_graph_to_dict()
 
+                # graph_data 的拆分
+                classifier = GraphFileClassifier(graph_data, antipattern_type)
+                antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
+                classify_result = classifier.classify(antipattern_json_path)
+                save_antipattern_relevance_result(classify_result, os.path.join("tmp", "classify_result.json"))
+                # semantic_description 的获取
+
                 output_file = Path(output)
                 output_dir = output_file.parent
                 hierarchical_semantic_builder = HierarchicalSemanticBuilder()
@@ -1109,6 +1125,7 @@ def restart_memgraph():
         print("Memgraph container restarted successfully.")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred: {e}")
+
 
 if __name__ == "__main__":
     app()

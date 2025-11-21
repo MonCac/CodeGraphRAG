@@ -1,7 +1,12 @@
 import json
 
+from codebase_rag.main import find_first_antipattern_json_in_parent_dir
+from codebase_rag.services.graph_file_classifier.classifier import GraphFileClassifier
 
-def map_antipattern_node_to_project(antinode, project_nodes, exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter", "rawType", "enhancement"}):
+
+def map_antipattern_node_to_project(antinode, project_nodes,
+                                    exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter",
+                                                  "rawType", "enhancement"}):
     """
     将单个 antipattern 节点映射到 project_nodes 中对应节点的 node_id。
     匹配规则：
@@ -77,5 +82,18 @@ def test_map_antipattern_nodes_to_project(antipattern_nodes_path, project_nodes_
         matched_node_id = map_antipattern_node_to_project(antipattern_node, project_nodes)
         print(f"Antipattern node #{i} 匹配到的 project 节点 node_id: {matched_node_id}")
 
+
 # 调用示例（替换为你真实的文件路径）
-test_map_antipattern_nodes_to_project('/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/20-graph.json', '/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/kafka-graph.json')
+# test_map_antipattern_nodes_to_project('/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/20-graph.json', '/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/kafka-graph.json')
+
+
+if __name__ == "__main__":
+    graph_data = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/final-result.json"
+    antipattern_to_update = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/test1/20/before"
+    antipattern_type = "ch"
+    with open(graph_data, "r", encoding="utf-8") as f:
+        graph_data = json.load(f)
+    classifier = GraphFileClassifier(graph_data, antipattern_type)
+    antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
+    result1 = classifier.classify(antipattern_json_path)
+    print(result1)

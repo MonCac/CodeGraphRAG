@@ -3,8 +3,43 @@
 中间文件输出说明：
 
 ```
+/tmp
+	before-out.json
+	kafka-out.json           反模式文件集 + 项目的 enre 输出结果
+	
+	before-graph.json
+	kafka-graph.json         反模式文件集 + 项目的 graph 映射
+	
+	subgraph-file.json       反模式文件集在项目中的 subgraph 提取结果
+	
+	
+	semantic_total_result.json
+	semantic_file_result.json
+	
+	antipattern_relevance_result.json
+	
+	/repair_outputs
+		...
+	final-result.json        最终的 graph 输出结果
 
 ```
+
+
+
+
+
+
+
+
+
+今日要做的事的步骤
+1. 根据 graph_data 提取所有 files 的路径
+2. 将路径拆分为3类。
+	1. 首先根据 _antipattern.json 文件，得到直接关联的 files
+	2. 根据 具体被调用的 call 方法，找到所有关联的文件，得到不属于直接关联的文件
+	3. 剩余的文件为提供修复信息的文件集
+3. 编写两个 method，生成直接关联 files 的描述和间接关联文件的描述
+4. 构造最终的 prompt 来实现反模式修复
 
 
 
