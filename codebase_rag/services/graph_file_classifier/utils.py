@@ -112,3 +112,20 @@ def find_related_files_by_relationships(graph_data: Dict, node_ids: Set[int]) ->
             related_files.add(file_path)
 
     return related_files
+
+
+def extract_all_child_methods(antipattern_json):
+    results = []
+
+    def dfs(obj):
+        if isinstance(obj, dict):
+            if "childMethod" in obj and isinstance(obj["childMethod"], dict):
+                results.append(obj["childMethod"])
+            for v in obj.values():
+                dfs(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                dfs(item)
+
+    dfs(antipattern_json)
+    return results
