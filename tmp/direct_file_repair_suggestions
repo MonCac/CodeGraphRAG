@@ -1,0 +1,9 @@
+{
+    "summary": "LLM调用失败，无法生成修复建议。",
+    "files": [
+        {
+            "file_path": null,
+            "repair_description": "LLM调用失败: Connection error."
+        }
+    ]
+}

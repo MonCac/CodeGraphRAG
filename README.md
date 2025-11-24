@@ -22,6 +22,14 @@
 		...
 	final-result.json        最终的 graph 输出结果
 
+
+/test-project
+	/CH
+		kafka-1000
+	/AWD
+		kafka-1400
+	/MH
+		kafka-1300
 ```
 
 

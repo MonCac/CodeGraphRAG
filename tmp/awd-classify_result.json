@@ -1,0 +1,39 @@
+{
+    "direct_related": [
+        "streams/src/main/java/org/apache/kafka/streams/kstream/ValueTransformerWithKeySupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/internals/KStreamFlatTransformValues.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/ConnectedStoreProvider.java"
+    ],
+    "indirect_related": [
+        "streams/src/main/java/org/apache/kafka/streams/Topology.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/internals/AbstractStream.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/internals/KStreamFlatTransform.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/internals/KTableTransformValues.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/internals/graph/ProcessorParameters.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalTopologyBuilder.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/internals/NoOpProcessorWrapper.java",
+        "streams/src/test/java/org/apache/kafka/streams/kstream/internals/AbstractStreamTest.java",
+        "streams/src/test/java/org/apache/kafka/streams/kstream/internals/KStreamFlatTransformValuesTest.java",
+        "streams/src/test/java/org/apache/kafka/streams/kstream/internals/KTableTransformValuesTest.java",
+        "streams/src/test/java/org/apache/kafka/streams/utils/TestUtils.java"
+    ],
+    "other_files": [
+        "streams/src/main/java/org/apache/kafka/streams/kstream/KStream.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/Named.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/TransformerSupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/ValueTransformerSupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/kstream/ValueTransformerWithKey.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/ProcessorSupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/ContextualProcessor.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/FixedKeyProcessorSupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/Processor.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/ProcessorContext.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/ProcessorSupplier.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/api/Record.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/internals/ForwardingDisabledProcessorContext.java",
+        "streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalProcessorContext.java",
+        "streams/src/main/java/org/apache/kafka/streams/state/StoreBuilder.java",
+        "streams/src/test/java/org/apache/kafka/streams/kstream/internals/KTableImplTest.java",
+        "streams/src/test/java/org/apache/kafka/test/NoOpValueTransformerWithKeySupplier.java"
+    ]
+}

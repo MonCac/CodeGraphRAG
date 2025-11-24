@@ -263,6 +263,48 @@ Guidelines:
 
 """
 
+# ======================================================================================
+#  DIRECT FILE CODE REPAIR SYSTEM PROMPT
+# ======================================================================================
+DIRECT_FILE_CODE_REPAIR_SYSTEM_PROMPT = f""" 
+You are an expert software engineer specialized in generating precise and complete source code files based on detailed repair descriptions.
+
+Your task is to read a natural language repair description for a specific source code file and generate the full, updated version of that source code file reflecting the described fix.
+
+Requirements:
+- Return the complete updated file content, incorporating all necessary changes to fully implement the repair.
+- Do NOT return diffs, patches, or partial snippets—only the full file content.
+- Provide your output strictly inside a Markdown-style code block with the appropriate language tag (e.g., ```python```).
+- Do NOT include any explanation, comments, or extra text outside the code block.
+- Ensure the updated code is syntactically correct and follows best practices.
+- Each request corresponds to one file.
+
+Focus on accuracy and completeness so the returned content can directly replace the existing file.
+
+"""
+
+
+# ======================================================================================
+#  INDIRECT FILE CODE REPAIR SYSTEM PROMPT
+# ======================================================================================
+INDIRECT_FILE_CODE_REPAIR_SYSTEM_PROMPT = f"""
+You are an expert software engineer specialized in analyzing and repairing indirect dependency source code files that may be affected by changes in directly related files.
+
+Your task is to:
+- Carefully analyze the indirect source code file content along with natural language repair descriptions for directly related files.
+- Determine whether the indirect file requires any modifications to maintain correctness and consistency.
+- If modifications are necessary, generate the full, updated version of the entire source code file reflecting those changes.
+- If no modifications are needed, indicate that no changes are required.
+
+Requirements:
+- When generating updated code, provide the complete file content only;  do not produce partial snippets or diffs.
+- Ensure the updated code is syntactically correct, follows best practices, and can directly replace the existing file.
+- Avoid including explanations or comments outside of the updated code content.
+- Focus on accuracy, completeness, and clarity in your responses.
+
+Each request corresponds to one indirect dependency file.
+"""
+
 
 # ======================================================================================
 #  NODE SEMANTIC PROMPT
@@ -403,88 +445,56 @@ Return your answer as a JSON object with exactly the following fields:
     return user_prompt
 
 
-def build_fix_system_prompt(antipattern_type: str):
+def build_fix_system_prompt(antipattern_type: str) -> str:
     """
-    根据反模式类型动态构建 system_prompt
-
-    Args:
-        antipattern_type (str): 反模式类型
-
-    Returns:
-        str: 构建好的 system_prompt
+    根据反模式类型动态构建 system_prompt（简洁版，带背景介绍）
+    仅使用 YAML 中的 antipattern_type、definition、examples(example_id + description)
     """
-    base_dir = "fix_example"
-    yaml_file_path = os.path.join(base_dir, f"{antipattern_type}_fix.yaml")
-    json_file_path = os.path.join(base_dir, f"{antipattern_type}_antipattern.json")
 
-    yaml_content = {}
-    json_content = {}
+    yaml_path = os.path.join("fix_example", f"{antipattern_type}_fix.yaml")
 
-    # 尝试加载 YAML 文件（反模式定义）
-    try:
-        if os.path.exists(yaml_file_path):
-            with open(yaml_file_path, "r", encoding="utf-8") as f:
-                yaml_content = yaml.safe_load(f)
-    except Exception as e:
-        print(f"Warning: Could not load YAML file {yaml_file_path}: {e}")
+    data = {
+        "antipattern_type": antipattern_type,
+        "definition": "Definition not provided.",
+        "examples": []
+    }
 
-    # 尝试加载 JSON 文件（反模式结构信息）
-    try:
-        if os.path.exists(json_file_path):
-            with open(json_file_path, "r", encoding="utf-8") as f:
-                json_content = json.load(f)
-    except Exception as e:
-        print(f"Warning: Could not load JSON file {json_file_path}: {e}")
+    if os.path.exists(yaml_path):
+        try:
+            with open(yaml_path, "r", encoding="utf-8") as f:
+                content = yaml.safe_load(f) or {}
+                data.update(content)
+        except Exception as e:
+            print(f"Warning: failed to read YAML {yaml_path}: {e}")
 
-    # 从 YAML 中提取定义和示例
-    antipattern_definition = yaml_content.get(
-        "definition",
-        "Architectural anti-pattern definition not provided."
-    )
-    examples = yaml_content.get("examples", [])
-
-    # 格式化示例文本
-    if examples:
-        formatted_examples = ""
-        for ex in examples:
-            formatted_examples += (
-                f"\n\n### Example ID: {ex.get('example_id', 'N/A')}\n"
-                f"**Refactor Method:**\n{ex.get('refactor_method', '')}\n\n"
-                f"**Detailed Refactor Operation:**\n{ex.get('detail_refactor_operation', '')}\n"
-            )
+    if data["examples"]:
+        examples_text = "\n".join(
+            f"### Example {ex.get('example_id', 'N/A')}\n{ex.get('description', '')}"
+            for ex in data["examples"]
+        )
     else:
-        formatted_examples = "No specific repair examples are available."
+        examples_text = "No examples available."
 
-    # 格式化 JSON 结构信息
-    if json_content:
-        json_section = f"## Anti-Pattern Instance Details\n```json\n{json.dumps(json_content, indent=2, ensure_ascii=False)}\n```"
-    else:
-        json_section = "## Anti-Pattern Instance Details\nNo detailed structure information available."
-
-    # 组合最终 prompt
     system_prompt = f"""
 # Architecture Anti-Pattern Remediation Expert
 
 ## Background
-You are a professional software architect specializing in identifying and remediating architectural anti-patterns. 
-Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules 
+You are a professional software architect specializing in identifying and remediating architectural anti-patterns.
+Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules
 and can lead to technical debt, maintainability issues, and performance problems.
 
 ## Current Anti-Pattern Type
-{antipattern_type.upper()}
+{data['antipattern_type'].upper()}
 
 ## Anti-Pattern Definition
-{antipattern_definition}
-
-{json_section}
+{data['definition']}
 
 ## Refactor Examples
-{formatted_examples}
+{examples_text}
+""".strip()
 
-Please ensure your recommendations are concrete, actionable, and include complete code examples 
-that cover all affected files or modules necessary for a full repair.
-"""
-    return system_prompt.strip()
+    return system_prompt
+
 
 def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
     # ---------- Read antipattern.json ----------
@@ -625,3 +635,118 @@ def build_fix_user_input(overall_repair_description: str, file_repair_entry: dic
     }
 
     return user_input
+
+
+def build_generate_file_repair_suggestions_prompt(classify_result, antipattern_json) -> str:
+    """
+    Construct a prompt for the LLM to generate repair suggestions for a cross-file architectural anti-pattern.
+    The output must be in JSON format.
+    """
+
+    direct_files = classify_result.get("direct_related", [])
+
+    prompt = f"""
+You are a professional software architecture repair expert.
+
+You are dealing with a **cross-file architectural anti-pattern** that affects multiple files or modules within the system. 
+This anti-pattern may involve complex dependencies and interactions between files.
+
+Please carefully review the anti-pattern details and the list of directly related files below, and generate repair suggestions accordingly.
+
+**Requirements:**
+
+1. Return your answer strictly in the following JSON format:
+{{
+  "summary": "A clear and comprehensive overall repair description, explaining the cross-file repair strategy and relationships between files.",
+  "files": [
+    {{
+      "file_path": "Path to the file",
+      "repair_description": "Detailed repair suggestion focused on this file, including specific changes and steps, and noting any possible impact on other files."
+    }},
+    ...
+  ]
+}}
+
+2. The summary should clearly explain the overall repair approach and inter-file considerations, fully reflecting the repair operations for each file and covering specific repair suggestions for all involved files.
+
+3. Each file's repair description must specify concrete modification steps and operations.
+
+---
+
+Anti-pattern details (JSON format):
+```json
+{json.dumps(antipattern_json, indent=2, ensure_ascii=False)}
+Directly related files:
+{json.dumps(direct_files, indent=2, ensure_ascii=False)}
+
+Please begin generating the detailed repair suggestions based on the above information.
+""".strip()
+
+    return prompt
+
+
+def build_generate_file_repair_code_prompt(target_repo_path, summary, file_info):
+    file_path = file_info.get("file_path")
+    repair_desc = file_info.get("repair_description", "")
+    if not file_path or not repair_desc.strip():
+        # 忽略无效条目
+        return " "
+
+    abs_path = os.path.join(target_repo_path, file_path)
+
+    try:
+        with open(abs_path, "r", encoding="utf-8") as f:
+            original_code = f.read()
+    except Exception as e:
+        original_code = f"// Failed to read original file content: {e}"
+
+    prompt = f"""
+You are a software engineer tasked with generating the full, updated source code file based on the overall repair summary and the repair description below.
+
+Overall Repair Summary:
+{summary}
+
+Repair description:
+{repair_desc}
+
+Please provide the complete, updated content of the entire file, incorporating all necessary changes.
+Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```python```).
+Do NOT include any explanation, commentary, or diff output outside the code block.
+
+File Original Code: 
+---
+{original_code}
+---
+"""
+    return prompt
+
+
+def build_indirect_dependency_change_prompt(summary: str, file_content: str) -> str:
+    prompt = f"""
+You are analyzing an indirect dependency source code file that might be impacted by recent changes in directly related files.
+
+Here is the summary of the repair descriptions for directly related files:
+---
+{summary}
+---
+
+Below is the full current content of the indirect dependency file:
+---
+{file_content}
+---
+Your task:
+
+Determine whether this indirect file needs to be updated to maintain correctness and consistency.
+
+If updates are needed, generate the full updated file content reflecting the necessary changes.
+
+If no updates are necessary, respond accordingly.
+
+Please respond with a JSON object strictly in the following format, with no extra text:
+
+{{
+"should_update": true or false,
+"file_content": "If should_update is true, provide the complete updated file content as a string; if false, set this field to the string "不需要更改"."
+}}
+"""
+    return prompt.strip()

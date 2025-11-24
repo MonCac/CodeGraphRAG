@@ -1,0 +1,52 @@
+- source_file: streams/test-utils/src/main/java/org/apache/kafka/streams/processor/api/MockProcessorContext.java
+  class: MockProcessorContext
+  extends: []
+  implements:
+  - ProcessorContext
+  - Supplier
+  path: {}
+  id: '77'
+- source_file: streams/test-utils/src/main/java/org/apache/kafka/streams/processor/api/MockProcessorContext.java
+  class: MockRecordMetadata
+  extends: []
+  implements:
+  - RecordMetadata
+  path: {}
+  id: '77'
+- source_file: streams/test-utils/src/main/java/org/apache/kafka/streams/processor/api/MockProcessorContext.java
+  class: CapturedPunctuator
+  extends: []
+  implements: []
+  path: {}
+  id: '77'
+- source_file: streams/test-utils/src/main/java/org/apache/kafka/streams/processor/api/MockProcessorContext.java
+  class: CapturedForward
+  extends: []
+  implements: []
+  path: {}
+  id: '77'
+- source_file: streams/src/test/java/org/apache/kafka/test/MockInternalNewProcessorContext.java
+  class: MockInternalNewProcessorContext
+  extends:
+  - MockProcessorContext
+  implements:
+  - InternalProcessorContext
+  path: {}
+  id: '77'
+- source_file: streams/src/main/java/org/apache/kafka/streams/processor/api/ProcessorContext.java
+  class: ProcessorContext
+  extends: []
+  implements:
+  - ProcessingContext
+  path: {}
+  id: '77'
+- source_file: streams/src/main/java/org/apache/kafka/streams/processor/internals/InternalProcessorContext.java
+  class: InternalProcessorContext
+  extends: []
+  implements:
+  - ProcessorContext
+  - ProcessorContext
+  - FixedKeyProcessorContext
+  - StateStoreContext
+  path: {}
+  id: '77'

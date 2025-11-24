@@ -88,9 +88,9 @@ def test_map_antipattern_nodes_to_project(antipattern_nodes_path, project_nodes_
 
 
 if __name__ == "__main__":
-    graph_data = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/final-result.json"
-    antipattern_to_update = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/test1/20/before"
-    antipattern_type = "ch"
+    graph_data = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/awd-final-result.json"
+    antipattern_to_update = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/AWD/86/before"
+    antipattern_type = "awd"
     with open(graph_data, "r", encoding="utf-8") as f:
         graph_data = json.load(f)
     classifier = GraphFileClassifier(graph_data, antipattern_type)

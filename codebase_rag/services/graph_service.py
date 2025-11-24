@@ -199,7 +199,6 @@ class MemgraphIngestor:
             # 1. 查询当前存储模式
             cursor.execute("SHOW STORAGE INFO;")
             storage_info = cursor.fetchall()
-            logger.info(f"Storage info: {storage_info}")
 
             # 2. 查找 storage_mode
             current_mode = None
@@ -220,7 +219,6 @@ class MemgraphIngestor:
                 if key == "storage_mode":
                     current_mode = value
                     break
-            logger.info(f"Current storage mode: {current_mode}")
 
             # 4. 执行 DROP GRAPH
             cursor.execute("DROP GRAPH;")

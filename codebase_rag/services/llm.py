@@ -309,7 +309,7 @@ def create_graph_extract_query_model() -> Any:
 def create_repair_code_model(system_prompt: str) -> Any:
     try:
         """
-        返回用于生成语义摘要的 LLM client，支持 Gemini / OpenAI / local。
+        返回自定义 system_prompt 代码修复的 LLM client，支持 Gemini / OpenAI / local。
         """
         model_settings = None
         model_id = settings.active_cypher_model
