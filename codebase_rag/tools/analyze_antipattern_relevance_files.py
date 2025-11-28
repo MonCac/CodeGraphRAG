@@ -30,6 +30,7 @@ def run_with_retry_code(client, user_prompt, max_retries=3):
     while attempt <= max_retries:
         try:
             result = client.run_sync(user_prompt)
+            print(result)
             # LLM 返回的内容（通常是字符串），去除多余空白
             desc = getattr(result, "output", str(result)).strip()
             # 直接返回字符串，不解析JSON
