@@ -283,6 +283,50 @@ Focus on accuracy and completeness so the returned content can directly replace 
 
 """
 
+# ======================================================================================
+#  CODE2TEXT SYSTEM PROMPT
+# ======================================================================================
+CODE2TEXT_SYSTEM_PROMPT = f"""
+You are a professional software understanding and code summarization assistant, specializing in converting source code into accurate, concise, and semantically meaningful natural language descriptions.
+
+Your task is to analyze a given code file and produce a high-quality natural language summary that clearly communicates the file’s purpose, internal logic, responsibilities, and relationships among its functions, classes, and data structures.
+
+You will be provided with:
+1. A JSON object representing a source code file, including:
+   - File metadata (path, name, language).
+   - The full code contents.
+2. Additional optional context such as:
+   - Imports, dependencies, or module structure.
+   - Comments or docstrings present in the code.
+
+Your goal:
+- Understand the high-level purpose of the file.
+- Identify key functions, methods, classes, and their roles.
+- Explain the main logic flow and responsibilities in natural language.
+- Capture meaningful relationships such as:
+  - Data flow
+  - Control flow
+  - Inter-module interactions
+  - API behaviors
+- Produce a summary that is suitable for downstream embedding, indexing, or retrieval.
+
+Guidelines:
+- Focus on semantic content, not line-by-line explanation.
+- Summaries should emphasize:
+  - What the code does
+  - Why it exists
+  - How its components interact
+- Avoid overly verbose descriptions or restating the code literally.
+- Prefer abstracted functional descriptions over implementation detail.
+- Describe behavior and purpose in clear, precise, human-readable language.
+- Do not hallucinate external context; limit yourself strictly to the provided code.
+
+Output Requirements:
+- Output a factual, concise summary suitable for automated processing.
+- Use simplified and technically accurate language.
+- Do not include code or markdown formatting in the summary unless necessary.
+
+"""
 
 # ======================================================================================
 #  INDIRECT FILE CODE REPAIR SYSTEM PROMPT
@@ -635,6 +679,56 @@ def build_fix_user_input(overall_repair_description: str, file_repair_entry: dic
     }
 
     return user_input
+
+
+def build_code2text_user_input_func(file_node: dict):
+    """
+    构建 LLM user prompt，将候选文件和反模式 JSON 直接拼接，
+    要求 LLM 返回候选文件是否参与反模式修复以及理由。
+
+    Args:
+        candidate_file (dict): file_result.json 中的单个文件节点
+        antipattern_data (dict): 反模式 JSON 文件内容
+
+    Returns:
+        str: 拼接好的 user prompt 字符串
+    """
+    file_str = json.dumps(file_node, indent=2)
+
+    user_prompt = f"""
+You are provided with the following information:
+
+File:
+{file_str}
+
+Your task is to generate a comprehensive natural-language summary of this file.
+Focus on the following aspects:
+1. What the file does (high-level purpose)
+2. Key classes, functions, methods, or logical blocks
+3. Important data structures and their relationships
+4. External dependencies or modules referenced
+5. How different parts of the code interact
+6. Any notable implementation patterns, responsibilities, or behaviors
+
+Return your answer strictly as a JSON object with fields:
+{{
+  "summary": "<A clear natural-language summary of what the file does>",
+  "top_level_entities": [
+      "<Class/Function/Struct names with short descriptions>"
+  ],
+  "dependencies": [
+      "<imports, external modules, or referenced files>"
+  ],
+  "key_relations": [
+      "<important interactions between entities>"
+  ],
+  "maintenance_notes": [
+      "<optional notes about design/complexity/clarity>"
+  ],
+  "confidence": 0.0 -- a float between 0 and 1
+}}
+"""
+    return user_prompt
 
 
 def build_generate_file_repair_suggestions_prompt(classify_result, antipattern_json) -> str:
