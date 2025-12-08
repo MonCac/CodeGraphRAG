@@ -12,15 +12,15 @@ from codebase_rag.services.embedding.text_embedding_analyze import analyze_files
 
 load_dotenv(override=True)
 
-top_k = 10
-repo_path = os.getenv("TARGET_REPO_PATH")
+top_k_1 = 10
+top_k_2 = 5
+target_repo_path = os.getenv("TARGET_REPO_PATH")
 
-test_path = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\tmp\\classify_result.json"
-OTHER_CODE_SUMMARY_OUTPUT = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output_code2text.jsonl"
-DIRECT_CODE_SUMMARY_OUTPUT = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output_code2text_direct.jsonl"
-CODE_EMBEDDING_RANK_OUTPUT = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output1.jsonl"
-TEXT_EMBEDDING_RANK_OUTPUT = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output2.jsonl"
+test_path = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\tmp\\ch-classify_result.json"
 
+BASE_DIR = Path(__file__).resolve().parent
+TMP_DIR = BASE_DIR / "tmp"
+TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 def cosine_similarity(a: List, b: List) -> float:
     a, b = np.array(a), np.array(b)
@@ -148,7 +148,7 @@ def generate_text_embedding(text):
 
     return embeddings
 
-def match_embeddings(direct_embeddings, other_embeddings, other_nodes):
+def match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k):
     outputs = []
 
     for node in other_nodes:
@@ -190,26 +190,25 @@ def write_jsonl(matches, output_file):
 
 
 def process_initial_classification(json_path, repo_path):
+    repo_name = Path(repo_path).name
     data = load_json(json_path)
-
     direct_files = data["direct_related"]
-    indirect_files = data["indirect_related"]
     other_files = data["other_files"]
 
     direct_nodes = build_file_nodes(repo_path, direct_files)
-    analyze_files_with_llm(direct_nodes, DIRECT_CODE_SUMMARY_OUTPUT)
+    analyze_files_with_llm(direct_nodes, TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
 
     other_nodes = build_file_nodes(repo_path, other_files)
 
     direct_embeddings = build_code_embeddings(direct_nodes)
     other_embeddings = build_code_embeddings(other_nodes)
 
-    match_results = match_embeddings(direct_embeddings, other_embeddings, other_nodes)
+    match_results = match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k_1)
 
-    write_jsonl(match_results, CODE_EMBEDDING_RANK_OUTPUT)
+    write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage1.jsonl")
 
     matched_file_paths = []
-    with open(CODE_EMBEDDING_RANK_OUTPUT, 'r', encoding='utf-8') as f:
+    with open(TMP_DIR / f"{repo_name}_other_files_rank_stage1.jsonl", 'r', encoding='utf-8') as f:
         for line in f:
             # 解析每行的JSON对象
             try:
@@ -222,17 +221,17 @@ def process_initial_classification(json_path, repo_path):
 
     ranked_nodes = build_file_nodes(repo_path, matched_file_paths)
 
-    analyze_files_with_llm(ranked_nodes, OTHER_CODE_SUMMARY_OUTPUT)
+    analyze_files_with_llm(ranked_nodes, TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
 
-    direct_code2text = build_code2text_nodes(DIRECT_CODE_SUMMARY_OUTPUT)
-    other_code2text = build_code2text_nodes(OTHER_CODE_SUMMARY_OUTPUT)
+    direct_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
+    other_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
 
     direct_text_embeddings = build_text_embeddings(direct_code2text)
     other_text_embeddings = build_text_embeddings(other_code2text)
 
-    match_results = match_embeddings(direct_text_embeddings, other_text_embeddings, ranked_nodes)
+    match_results = match_embeddings(direct_text_embeddings, other_text_embeddings, ranked_nodes, top_k_2)
 
-    write_jsonl(match_results, TEXT_EMBEDDING_RANK_OUTPUT)
+    write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage2.jsonl")
 
 if __name__ == "__main__":
-    process_initial_classification(test_path, repo_path)
+    process_initial_classification(test_path, target_repo_path)

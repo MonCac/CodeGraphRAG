@@ -844,3 +844,87 @@ Please respond with a JSON object strictly in the following format, with no extr
 }}
 """
     return prompt.strip()
+
+
+def build_generate_file_repair_code_prompt_1(target_repo_path, summary, file_info, other_file_entities: list):
+    other_file_contents = json.dumps(other_file_entities, indent=2, ensure_ascii=False)
+    file_path = file_info.get("file_path")
+    repair_desc = file_info.get("repair_description", "")
+    if not file_path or not repair_desc.strip():
+        # 忽略无效条目
+        return " "
+
+    abs_path = os.path.join(target_repo_path, file_path)
+
+    try:
+        with open(abs_path, "r", encoding="utf-8") as f:
+            original_code = f.read()
+    except Exception as e:
+        original_code = f"// Failed to read original file content: {e}"
+
+    prompt = f"""
+You are a software engineer tasked with generating the full, updated source code file based on the overall repair summary and the repair description below.
+
+Overall Repair Summary:
+{summary}
+
+Repair description:
+{repair_desc}
+
+Below is supplementary structural information (Classes and Methods) extracted from **other files** in the codebase.
+These files are **not strongly related**, but the information is provided only for optional contextual reference.
+Do NOT assume strong coupling unless explicitly implied by the code:
+---
+{other_file_contents}
+---
+
+Please provide the complete, updated content of the entire file, incorporating all necessary changes.
+Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```python```).
+Do NOT include any explanation, commentary, or diff output outside the code block.
+
+File Original Code: 
+---
+{original_code}
+---
+"""
+    return prompt
+
+
+def build_indirect_dependency_change_prompt_1(summary: str, file_content: str, other_file_entities: list) -> str:
+    other_file_contents = json.dumps(other_file_entities, indent=2, ensure_ascii=False)
+    prompt = f"""
+You are analyzing an indirect dependency source code file that might be impacted by recent changes in directly related files.
+
+Here is the summary of the repair descriptions for directly related files:
+---
+{summary}
+---
+
+Below is the full current content of the indirect dependency file:
+---
+{file_content}
+---
+
+Below is supplementary structural information (Classes and Methods) extracted from **other files** in the codebase.
+These files are **not strongly related**, but the information is provided only for optional contextual reference.
+Do NOT assume strong coupling unless explicitly implied by the code:
+---
+{other_file_contents}
+---
+
+Your task:
+
+Determine whether this indirect file needs to be updated to maintain correctness and consistency.
+
+If updates are needed, generate the full updated file content reflecting the necessary changes.
+
+If no updates are necessary, respond accordingly.
+
+Please respond with a JSON object strictly in the following format, with no extra text:
+
+{{
+"should_update": true or false,
+"file_content": "If should_update is true, provide the complete updated file content as a string; if false, set this field to the string "不需要更改"."
+}}
+"""
+    return prompt.strip()
