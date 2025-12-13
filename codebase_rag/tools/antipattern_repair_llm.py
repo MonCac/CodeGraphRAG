@@ -17,6 +17,7 @@ from codebase_rag.tools.analyze_antipattern_relevance_files import run_with_retr
 
 other_files = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output2.jsonl"
 
+
 def generate_direct_file_repair_suggestions(antipattern_json_path, classify_result, antipattern_type):
     """
     Step 1: 为直接相关文件生成修复建议（自然语言描述）
@@ -207,6 +208,7 @@ def other_info(json_data, file_priority_list, sample_ratio=1.0, max_class=None, 
 
     return sampled_class + sampled_method
 
+
 def load_selected_files(jsonl_path):
     selected_files = []
     with open(jsonl_path, "r", encoding="utf-8") as f:
@@ -219,7 +221,7 @@ def load_selected_files(jsonl_path):
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
     temp_dir = os.path.join(project_root, "tmp")
-    temp_dir = tempfile.mkdtemp(prefix="enre_selected_repo_", dir= temp_dir)
+    temp_dir = tempfile.mkdtemp(prefix="enre_selected_repo_", dir=temp_dir)
 
     for full_path in selected_files:
         filename = os.path.basename(full_path)

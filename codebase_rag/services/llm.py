@@ -14,8 +14,8 @@ from pydantic_ai.providers.openai import OpenAIProvider
 from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.embeddings.base import Embeddings
 
-from ..config import detect_provider_from_model, settings
-from ..prompts import (
+from codebase_rag.config import detect_provider_from_model, settings
+from codebase_rag.prompts import (
     CYPHER_SYSTEM_PROMPT,
     LOCAL_CYPHER_SYSTEM_PROMPT,
     RAG_ORCHESTRATOR_SYSTEM_PROMPT,
@@ -87,8 +87,8 @@ class CypherGenerator:
                 llm = OpenAIModel(  # type: ignore
                     cypher_model_id,
                     provider=OpenAIProvider(
-                        api_key=settings.LOCAL_MODEL_API_KEY,
-                        base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                        api_key=settings.OPENAI_API_KEY,
+                        base_url=str(settings.OPENAI_MODEL_ENDPOINT),
                     ),
                 )
                 system_prompt = LOCAL_CYPHER_SYSTEM_PROMPT
@@ -168,6 +168,7 @@ def create_rag_orchestrator(tools: list[Tool]) -> Agent:
                 orchestrator_model_id,
                 provider=OpenAIProvider(
                     api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
                 ),
             )
 
@@ -212,7 +213,10 @@ def create_semantic_model() -> Any:
         else:  # openai
             llm = OpenAIResponsesModel(
                 model_id,
-                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+                provider=OpenAIProvider(
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
+                ),
             )
         return Agent(
             model=llm,
@@ -254,7 +258,10 @@ def create_relevance_model() -> Any:
         else:  # openai
             llm = OpenAIResponsesModel(
                 model_id,
-                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+                provider=OpenAIProvider(
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
+                ),
             )
         return Agent(
             model=llm,
@@ -296,7 +303,10 @@ def create_graph_extract_query_model() -> Any:
         else:  # openai
             llm = OpenAIResponsesModel(
                 model_id,
-                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+                provider=OpenAIProvider(
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
+                ),
             )
         return Agent(
             model=llm,
@@ -331,14 +341,17 @@ def create_repair_code_model(system_prompt: str) -> Any:
             llm = OpenAIChatModel(
                 model_id,
                 provider=OpenAIProvider(
-                    api_key=settings.LOCAL_MODEL_API_KEY,
-                    base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
                 ),
             )
         else:  # openai
             llm = OpenAIResponsesModel(
                 model_id,
-                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+                provider=OpenAIProvider(
+                    api_key=settings.LOCAL_MODEL_API_KEY,
+                    base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                ),
             )
         return Agent(
             model=llm,
@@ -406,7 +419,10 @@ def create_code2text_model() -> Any:
         else:  # openai
             llm = OpenAIResponsesModel(
                 model_id,
-                provider=OpenAIProvider(api_key=settings.OPENAI_API_KEY),
+                provider=OpenAIProvider(
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
+                ),
             )
         return Agent(
             model=llm,
@@ -415,3 +431,9 @@ def create_code2text_model() -> Any:
         )  # type: ignore
     except Exception as e:
         raise LLMGenerationError(f"Failed to initialize RAG Orchestrator: {e}") from e
+
+
+if __name__ == "__main__":
+    model = create_semantic_model()
+    result = model.run_sync("hello")
+    print(result)

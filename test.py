@@ -1,12 +1,10 @@
 import json
+#
+# from codebase_rag.main import find_first_antipattern_json_in_parent_dir
+# from codebase_rag.services.graph_file_classifier.classifier import GraphFileClassifier
 
-from codebase_rag.main import find_first_antipattern_json_in_parent_dir
-from codebase_rag.services.graph_file_classifier.classifier import GraphFileClassifier
 
-
-def map_antipattern_node_to_project(antinode, project_nodes,
-                                    exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter",
-                                                  "rawType", "enhancement"}):
+def map_antipattern_node_to_project(antinode, project_nodes, exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter", "rawType", "enhancement"}):
     """
     将单个 antipattern 节点映射到 project_nodes 中对应节点的 node_id。
     匹配规则：
@@ -88,12 +86,27 @@ def test_map_antipattern_nodes_to_project(antipattern_nodes_path, project_nodes_
 
 
 if __name__ == "__main__":
-    graph_data = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/awd-final-result.json"
-    antipattern_to_update = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/AWD/86/before"
-    antipattern_type = "awd"
-    with open(graph_data, "r", encoding="utf-8") as f:
-        graph_data = json.load(f)
-    classifier = GraphFileClassifier(graph_data, antipattern_type)
-    antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
-    result1 = classifier.classify(antipattern_json_path)
-    print(result1)
+    from openai import OpenAI
+
+    client = OpenAI(
+        base_url='https://xiaoai.plus/v1',
+        # sk-xxx替换为自己的key
+        api_key='sk-9t1798hIfnUm1WyZ799fE44265Dc428696038561D341C516'
+    )
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hello!"}
+        ]
+    )
+    print(completion.choices[0].message)
+    # graph_data = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/tmp/awd-final-result.json"
+    # antipattern_to_update = "/Users/moncheri/Downloads/main/重构/反模式修复数据集构建/CodeGraphRAG/test-project/AWD/86/before"
+    # antipattern_type = "awd"
+    # with open(graph_data, "r", encoding="utf-8") as f:
+    #     graph_data = json.load(f)
+    # classifier = GraphFileClassifier(graph_data, antipattern_type)
+    # antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
+    # result1 = classifier.classify(antipattern_json_path)
+    # print(result1)

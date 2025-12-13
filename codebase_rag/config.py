@@ -19,7 +19,7 @@ def detect_provider_from_model(model_name: str) -> Literal["gemini", "openai", "
     if model_name.startswith("gemini-"):
         return "gemini"
     elif model_name.startswith("gpt-") or model_name.startswith("o1-"):
-        return "local"
+        return "openai"
     else:
         return "local"
 
@@ -62,6 +62,7 @@ class AppConfig(BaseSettings):
     OPENAI_API_KEY: str | None = None
     OPENAI_ORCHESTRATOR_MODEL_ID: str = "gpt-4o-mini"
     OPENAI_CYPHER_MODEL_ID: str = "gpt-4o-mini"
+    OPENAI_MODEL_ENDPOINT: str = "https://xiaoai.plus/v1"
 
     TARGET_REPO_PATH: str = "."
     ANTIPATTERN_RELATION_PATH: str = "."
