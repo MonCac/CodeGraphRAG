@@ -12,15 +12,6 @@ from codebase_rag.services.embedding.text_embedding_analyze import analyze_files
 
 load_dotenv(override=True)
 
-top_k_1 = 10
-top_k_2 = 5
-target_repo_path = os.getenv("TARGET_REPO_PATH")
-
-test_path = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\tmp\\ch-classify_result.json"
-
-BASE_DIR = Path(__file__).resolve().parent
-TMP_DIR = BASE_DIR / "tmp"
-TMP_DIR.mkdir(parents=True, exist_ok=True)
 
 def cosine_similarity(a: List, b: List) -> float:
     a, b = np.array(a), np.array(b)
@@ -148,6 +139,7 @@ def generate_text_embedding(text):
 
     return embeddings
 
+
 def match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k):
     outputs = []
 
@@ -233,5 +225,15 @@ def process_initial_classification(json_path, repo_path):
 
     write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage2.jsonl")
 
+
 if __name__ == "__main__":
+    top_k_1 = 10
+    top_k_2 = 5
+    target_repo_path = os.getenv("TARGET_REPO_PATH")
+
+    test_path = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\tmp\\ch-classify_result.json"
+
+    BASE_DIR = Path(__file__).resolve().parent
+    TMP_DIR = BASE_DIR / "tmp"
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
     process_initial_classification(test_path, target_repo_path)

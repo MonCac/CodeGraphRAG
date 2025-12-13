@@ -785,6 +785,9 @@ def start(
 
     _update_model_settings(orchestrator_model, cypher_model, embedding_model)
 
+    table = _create_configuration_table(repo_path)
+    logger.info(table)
+
     if update_project_graph:
         repo_to_update = Path(target_repo_path)
         logger.info(
@@ -877,6 +880,9 @@ def start(
                     classify_result,
                     os.path.join("tmp", f"{antipattern_type}-classify_result.json")
                 )
+
+
+
                 # 暂时不用 semantic_description
                 # # semantic_description 的获取
                 # output_file = Path(output)
@@ -897,7 +903,7 @@ def start(
                                                                                          antipattern_type)
                 direct_file_repair_suggestions_json_path = save_antipattern_relevance_result(
                     direct_file_repair_suggestions,
-                    os.path.join("tmp", "direct_file_repair_suggestions")
+                    os.path.join("tmp", "direct_file_repair_suggestions.json")
                 )
                 logger.info(f"Direct file repair suggestions saved to: {direct_file_repair_suggestions_json_path}")
                 # 2. 根据对直接依赖的文件的修复建议，生成每个文件的具体代码修复
@@ -917,7 +923,7 @@ def start(
                                                                                         direct_file_repair_suggestions)
                 indirect_files_for_changes_results_json_path = save_antipattern_relevance_result(
                     indirect_files_for_changes_results,
-                    os.path.join("tmp", "indirect_files_for_changes_results")
+                    os.path.join("tmp", "indirect_files_for_changes_results.json")
                 )
                 logger.info(f"Indirect file repair results saved to: {indirect_files_for_changes_results_json_path}")
 

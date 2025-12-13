@@ -60,7 +60,7 @@ def generate_direct_file_code_repair(target_repo_path, direct_suggestions):
     files = direct_suggestions.get("files", [])
     for file_info in tqdm(files, desc="Generating direct file code repair"):
         user_input = build_generate_file_repair_code_prompt(target_repo_path, summary, file_info)
-        user_input_1 = build_generate_file_repair_code_prompt_1(target_repo_path, summary, file_info, other_content)
+        user_input = build_generate_file_repair_code_prompt_1(target_repo_path, summary, file_info, other_content)
         try:
             new_code = run_with_retry_code(client, user_input)
         except Exception as e:
@@ -98,7 +98,7 @@ def analyze_indirect_files_for_changes(target_repo_path, classify_result, direct
         # 构造 LLM prompt
         user_input = build_indirect_dependency_change_prompt(summary, indirect_code)
 
-        user_input_1 = build_indirect_dependency_change_prompt_1(summary, indirect_code, other_content)
+        user_input = build_indirect_dependency_change_prompt_1(summary, indirect_code, other_content)
 
         try:
             llm_output = run_with_retry(client, user_input)
