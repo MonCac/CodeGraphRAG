@@ -489,36 +489,45 @@ Return your answer as a JSON object with exactly the following fields:
     return user_prompt
 
 
-def build_fix_system_prompt(antipattern_type: str) -> str:
+def build_fix_system_prompt(
+    antipattern_type: str,
+    repaired_description_json_path: Path | str
+) -> str:
     """
-    根据反模式类型动态构建 system_prompt（简洁版，带背景介绍）
-    仅使用 YAML 中的 antipattern_type、definition、examples(example_id + description)
+    根据反模式类型动态构建 system_prompt
+    - YAML：只提供 definition
+    - JSON：完整 example 内容，原样注入，不做任何结构重组
     """
 
     yaml_path = os.path.join("fix_example", f"{antipattern_type}_fix.yaml")
 
-    data = {
-        "antipattern_type": antipattern_type,
-        "definition": "Definition not provided.",
-        "examples": []
-    }
+    definition = "Definition not provided."
+    antipattern_type_content = "antipattern content not provided"
 
+    # 1️⃣ 读取 YAML（只取 definition）
     if os.path.exists(yaml_path):
         try:
             with open(yaml_path, "r", encoding="utf-8") as f:
                 content = yaml.safe_load(f) or {}
-                data.update(content)
+                definition = content.get("definition")
+                antipattern_content = content.get("antipattern_type")
         except Exception as e:
             print(f"Warning: failed to read YAML {yaml_path}: {e}")
 
-    if data["examples"]:
-        examples_text = "\n".join(
-            f"### Example {ex.get('example_id', 'N/A')}\n{ex.get('description', '')}"
-            for ex in data["examples"]
-        )
-    else:
-        examples_text = "No examples available."
+    # 2️⃣ 读取 JSON（example 原文）
+    repaired_description_json_path = Path(repaired_description_json_path)
+    example_content = "{}"
 
+    if repaired_description_json_path.exists():
+        try:
+            with open(repaired_description_json_path, "r", encoding="utf-8") as f:
+                example_content = f.read()
+        except Exception as e:
+            print(
+                f"Warning: failed to read JSON {repaired_description_json_path}: {e}"
+            )
+
+    # 3️⃣ 构造 system prompt（不再构造 examples_text）
     system_prompt = f"""
 # Architecture Anti-Pattern Remediation Expert
 
@@ -528,17 +537,16 @@ Architectural anti-patterns are common design flaws in software systems that can
 and can lead to technical debt, maintainability issues, and performance problems.
 
 ## Current Anti-Pattern Type
-{data['antipattern_type'].upper()}
+{antipattern_content}
 
 ## Anti-Pattern Definition
-{data['definition']}
+{definition}
 
-## Refactor Examples
-{examples_text}
+## Refactor Example (JSON)
+{example_content}
 """.strip()
 
     return system_prompt
-
 
 def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
     # ---------- Read antipattern.json ----------

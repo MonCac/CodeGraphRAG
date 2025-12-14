@@ -11,13 +11,14 @@ from codebase_rag.config import resolve_output_path
 class ENREGraphAnalyzer:
     """根据反模式结果递归搜索项目依赖图，提取相关子图"""
 
-    def __init__(self, project_path: str | Path, antipattern_path: str | Path):
+    def __init__(self, project_path: str | Path, antipattern_path: str | Path, output_dir: Path | str):
         self.project_path = Path(project_path).resolve()
         self.antipattern_path = Path(antipattern_path).resolve()
-        self.project_loader = ENRELoader(self.project_path)
-        self.antipattern_loader = ENRELoader(self.antipattern_path)
+        self.project_loader = ENRELoader(self.project_path, output_dir)
+        self.antipattern_loader = ENRELoader(self.antipattern_path, output_dir)
         self.nodes: List[Dict[str, Any]] = []
         self.relationships: List[Dict[str, Any]] = []
+        self.output_dir = output_dir
 
     def map_antipattern_node_to_project(self, antinode, project_nodes,exclude_keys={"id", "parentId", "external", "additionalBin", "File", "parameter", "rawType", "enhancement", "innerType", "anonymousBindVar", "anonymousRank"}):
         """
@@ -93,8 +94,8 @@ class ENREGraphAnalyzer:
         """
 
         # 1️⃣ 运行 ENRE 分析
-        project_nodes, project_rels = self.project_loader.get_nodes_and_relationships()
-        antipattern_nodes, _ = self.antipattern_loader.get_nodes_and_relationships()
+        project_nodes, project_rels = self.project_loader.get_nodes_and_relationships(self.output_dir)
+        antipattern_nodes, _ = self.antipattern_loader.get_nodes_and_relationships(self.output_dir)
 
         # 2️⃣ 构建项目图的邻接表（无向遍历）
         adjacency = {}
@@ -189,10 +190,10 @@ class ENREGraphAnalyzer:
 
         return result
 
-    def save_subgraph(self, output_path: str | Path, **kwargs):
+    def save_subgraph(self, output_dir, output_path: str | Path, **kwargs):
         """生成并保存子图 JSON"""
         subgraph = self.generate_subgraph(**kwargs)
-        output_path = resolve_output_path(output_path)
+        output_path = resolve_output_path(output_dir, output_path)
         output_path = Path(output_path)
 
         with output_path.open("w", encoding="utf-8") as f:

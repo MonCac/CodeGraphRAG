@@ -1,16 +1,26 @@
 import json
 import os
+import warnings
+
 import torch
 import numpy as np
 
+from transformers import logging as hf_logging
+from langchain_huggingface import HuggingFaceEmbeddings
 from typing import List
+from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 from transformers import AutoModel, AutoTokenizer
 from pathlib import Path
-
+from codebase_rag.services.embedding.embedding_wrapper import JinaCodeEmbeddingWrapper, QwenEmbeddingWrapper
 from codebase_rag.services.embedding.text_embedding_analyze import analyze_files_with_llm
 
+warnings.filterwarnings(
+    "ignore",
+    message=".*flash_attn.*",
+)
 load_dotenv(override=True)
+hf_logging.set_verbosity_error()
 
 
 def cosine_similarity(a: List, b: List) -> float:
@@ -68,12 +78,14 @@ def build_code2text_nodes(files):
 
 def build_code_embeddings(nodes):
     embeddings = {}
-    for node in nodes:
+    i = 0
+    for node in nodes[:5]:
+        print(f"i: {i}")
+        i += 1
         file_path = node["file_path"]
         contents = node["contents"]
-        embeddings[file_path] = generate_code_embedding(contents)
-        print(file_path)
-        print(embeddings[file_path])
+        embedding_model = get_code_embedding_model()
+        embeddings[file_path] = embedding_model.encode(contents)
     return embeddings
 
 
@@ -83,21 +95,30 @@ def build_text_embeddings(nodes):
         file_path = node["file_path"]
         summary = node["summary"]
         embeddings[file_path] = generate_text_embedding(summary)
-        print(file_path)
-        print(embeddings[file_path])
     return embeddings
 
 
-def generate_code_embedding(text):
-    hf_models_home = os.getenv("HF_MODELS_HOME")
-    hf_model_id = os.getenv("LOCAL_CODE_EMBEDDING_MODEL_ID")
-    local_model_dir = Path(Path(hf_models_home) / hf_model_id).as_posix()
-    model = AutoModel.from_pretrained(
-        local_model_dir,
-        trust_remote_code=True,
+def init_embedding_model(model_name: str, device: str = "cpu", normalize: bool = False):
+    model_kwargs = {"device": device, "trust_remote_code": True}
+    return HuggingFaceEmbeddings(
+        model_name=model_name,
+        model_kwargs=model_kwargs,
+        encode_kwargs={"normalize_embeddings": normalize},
     )
 
-    embeddings = model.encode(text, max_length=8191)
+
+def get_code_embedding_model():
+    hf_model_id = os.getenv("LOCAL_CODE_EMBEDDING_MODEL_ID")
+    embedding_model_raw = init_embedding_model(hf_model_id)
+    embedding_model = QwenEmbeddingWrapper(embedding_model_raw)
+    return embedding_model
+
+
+def generate_code_embedding(text):
+    hf_model_id = os.getenv("LOCAL_CODE_EMBEDDING_MODEL_ID")
+    embedding_model_raw = init_embedding_model(hf_model_id)
+    embedding_model = QwenEmbeddingWrapper(embedding_model_raw)
+    embeddings = embedding_model.encode(text)
     return embeddings
 
 
@@ -146,6 +167,8 @@ def match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k):
     for node in other_nodes:
         other_file = node["file_path"]
         other_repo = node["repo_path"]
+        if other_file not in other_embeddings:
+            continue  # 或者 logging warning
         other_emb = other_embeddings[other_file]
 
         max_score = -1.0
@@ -181,49 +204,51 @@ def write_jsonl(matches, output_file):
             f.write(json.dumps(serializable_match, ensure_ascii=False) + '\n')
 
 
-def process_initial_classification(json_path, repo_path):
+def process_initial_classification(json_path, repo_path, tem_dir):
+    TMP_DIR = Path(tem_dir)
+    TMP_DIR.mkdir(parents=True, exist_ok=True)
     repo_name = Path(repo_path).name
     data = load_json(json_path)
     direct_files = data["direct_related"]
     other_files = data["other_files"]
 
     direct_nodes = build_file_nodes(repo_path, direct_files)
-    analyze_files_with_llm(direct_nodes, TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
+    # analyze_files_with_llm(direct_nodes, TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
 
     other_nodes = build_file_nodes(repo_path, other_files)
 
     direct_embeddings = build_code_embeddings(direct_nodes)
     other_embeddings = build_code_embeddings(other_nodes)
 
-    match_results = match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k_1)
+    match_results = match_embeddings(direct_embeddings, other_embeddings, other_nodes, top_k=3)
 
     write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage1.jsonl")
 
-    matched_file_paths = []
-    with open(TMP_DIR / f"{repo_name}_other_files_rank_stage1.jsonl", 'r', encoding='utf-8') as f:
-        for line in f:
-            # 解析每行的JSON对象
-            try:
-                obj = json.loads(line.strip())
-                # 提取file_path并添加到列表
-                if "file_path" in obj:
-                    matched_file_paths.append(obj["file_path"])
-            except json.JSONDecodeError as e:
-                print(f"[WARN] 解析JSONL行失败: {e}, 行内容: {line}")
+    # matched_file_paths = []
+    # with open(TMP_DIR / f"{repo_name}_other_files_rank_stage1.jsonl", 'r', encoding='utf-8') as f:
+    #     for line in f:
+    #         # 解析每行的JSON对象
+    #         try:
+    #             obj = json.loads(line.strip())
+    #             # 提取file_path并添加到列表
+    #             if "file_path" in obj:
+    #                 matched_file_paths.append(obj["file_path"])
+    #         except json.JSONDecodeError as e:
+    #             print(f"[WARN] 解析JSONL行失败: {e}, 行内容: {line}")
+    #
+    # ranked_nodes = build_file_nodes(repo_path, matched_file_paths)
 
-    ranked_nodes = build_file_nodes(repo_path, matched_file_paths)
-
-    analyze_files_with_llm(ranked_nodes, TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
-
-    direct_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
-    other_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
-
-    direct_text_embeddings = build_text_embeddings(direct_code2text)
-    other_text_embeddings = build_text_embeddings(other_code2text)
-
-    match_results = match_embeddings(direct_text_embeddings, other_text_embeddings, ranked_nodes, top_k_2)
-
-    write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage2.jsonl")
+    # analyze_files_with_llm(ranked_nodes, TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
+    #
+    # direct_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_direct_files_code2text_direct.jsonl")
+    # other_code2text = build_code2text_nodes(TMP_DIR / f"{repo_name}_other_files_code2text.jsonl")
+    #
+    # direct_text_embeddings = build_text_embeddings(direct_code2text)
+    # other_text_embeddings = build_text_embeddings(other_code2text)
+    #
+    # match_results = match_embeddings(direct_text_embeddings, other_text_embeddings, ranked_nodes, top_k_2)
+    #
+    # write_jsonl(match_results, TMP_DIR / f"{repo_name}_other_files_rank_stage2.jsonl")
 
 
 if __name__ == "__main__":
@@ -231,9 +256,7 @@ if __name__ == "__main__":
     top_k_2 = 5
     target_repo_path = os.getenv("TARGET_REPO_PATH")
 
-    test_path = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\tmp\\ch-classify_result.json"
+    test_path = "/data/sanglei/CodeGraphRAG/tmp/awd-classify_result.json"
 
     BASE_DIR = Path(__file__).resolve().parent
-    TMP_DIR = BASE_DIR / "tmp"
-    TMP_DIR.mkdir(parents=True, exist_ok=True)
-    process_initial_classification(test_path, target_repo_path)
+    process_initial_classification(test_path, target_repo_path, "/data/sanglei/CodeGraphRAG/tmp")

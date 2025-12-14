@@ -232,6 +232,7 @@ class BaseGraphUpdater:
         self.project_name = self.repo_path.name
         self.nodes: List[Dict[str, Any]] = []
         self.relationships: List[Dict[str, Any]] = []
+        self.output_dir: Path | str
 
     def run(self) -> None:
         """Main entry point: loads data and writes to Memgraph."""
@@ -300,12 +301,14 @@ class GraphProjectUpdater(BaseGraphUpdater):
 class GraphAntipatternUpdater(BaseGraphUpdater):
     """Updates the graph using ENREGraphAnalyzer (antipattern subgraph)."""
 
-    def __init__(self, ingestor: MemgraphIngestor, repo_path: Path | str, antipattern_path: Path | str):
+    def __init__(self, ingestor: MemgraphIngestor, repo_path: Path | str, antipattern_path: Path | str,
+                 output_dir: Path | str):
         super().__init__(ingestor, repo_path)
+        self.output_dir = output_dir
         self.antipattern_path = Path(antipattern_path).resolve()
 
     def _load_data(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-        analyzer = ENREGraphAnalyzer(self.repo_path, self.antipattern_path)
+        analyzer = ENREGraphAnalyzer(self.repo_path, self.antipattern_path, self.output_dir)
         # analyzer.generate_subgraph(max_depth=3)
-        analyzer.save_subgraph("subgraph-file.json", max_depth=3)
+        analyzer.save_subgraph(self.output_dir, "subgraph-file.json", max_depth=3)
         return analyzer.get_nodes_and_relationships()

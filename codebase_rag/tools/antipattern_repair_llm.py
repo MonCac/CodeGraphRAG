@@ -18,12 +18,12 @@ from codebase_rag.tools.analyze_antipattern_relevance_files import run_with_retr
 other_files = "D:\\Disaster\\Codefield\\Code_Python\\CodeGraphRAG\\codebase_rag\\services\\embedding\\output2.jsonl"
 
 
-def generate_direct_file_repair_suggestions(antipattern_json_path, classify_result, antipattern_type):
+def generate_direct_file_repair_suggestions(antipattern_json_path, classify_result, antipattern_type, repaired_description_json_path):
     """
     Step 1: 为直接相关文件生成修复建议（自然语言描述）
     """
 
-    repair_code_model = create_repair_code_model(build_fix_system_prompt(antipattern_type))
+    repair_code_model = create_repair_code_model(build_fix_system_prompt(antipattern_type, repaired_description_json_path))
 
     with open(antipattern_json_path, "r", encoding="utf-8") as f:
         antipattern_json = json.load(f)
@@ -47,7 +47,7 @@ def generate_direct_file_repair_suggestions(antipattern_json_path, classify_resu
     return llm_json
 
 
-def generate_direct_file_code_repair(target_repo_path, direct_suggestions):
+def generate_direct_file_code_repair(target_repo_path, direct_suggestions, output_dir):
     """
     Step 2: 根据修复建议生成具体代码修复
     """
@@ -55,7 +55,7 @@ def generate_direct_file_code_repair(target_repo_path, direct_suggestions):
     results = []
     summary = direct_suggestions.get("summary")
 
-    other_content = analyze_other_info(other_files)
+    other_content = analyze_other_info(other_files, output_dir)
 
     files = direct_suggestions.get("files", [])
     for file_info in tqdm(files, desc="Generating direct file code repair"):
@@ -72,7 +72,7 @@ def generate_direct_file_code_repair(target_repo_path, direct_suggestions):
             # 处理异常情况，比如跳过
             logger.warning("file_path is None or empty, skipping this file_info")
             continue
-        tmp_file_path = os.path.join("tmp", file_path)
+        tmp_file_path = os.path.join(output_dir, "after_code", file_path)
         os.makedirs(os.path.dirname(tmp_file_path), exist_ok=True)
 
         with open(tmp_file_path, "w", encoding="utf-8") as f:
@@ -209,7 +209,7 @@ def other_info(json_data, file_priority_list, sample_ratio=1.0, max_class=None, 
     return sampled_class + sampled_method
 
 
-def load_selected_files(jsonl_path):
+def load_selected_files(jsonl_path, output_dir):
     selected_files = []
     with open(jsonl_path, "r", encoding="utf-8") as f:
         for line in f:
@@ -220,7 +220,7 @@ def load_selected_files(jsonl_path):
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
-    temp_dir = os.path.join(project_root, "tmp")
+    temp_dir = os.path.join(project_root, output_dir)
     temp_dir = tempfile.mkdtemp(prefix="enre_selected_repo_", dir=temp_dir)
 
     for full_path in selected_files:
@@ -232,7 +232,7 @@ def load_selected_files(jsonl_path):
 
     print("=== Running ENRELoader Test ===")
     try:
-        loader = ENRELoader(temp_dir)
+        loader = ENRELoader(temp_dir, output_dir)
         loader.run_enre_analysis()
     finally:
         shutil.rmtree(temp_dir)
@@ -240,8 +240,8 @@ def load_selected_files(jsonl_path):
     return loader.json_path
 
 
-def analyze_other_info(jsonl_path):
-    with open(load_selected_files(jsonl_path), "r", encoding="utf-8") as f:
+def analyze_other_info(jsonl_path, output_dir):
+    with open(load_selected_files(jsonl_path, output_dir), "r", encoding="utf-8") as f:
         entities_data = json.load(f)
 
     file_priority = []

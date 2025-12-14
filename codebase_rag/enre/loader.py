@@ -13,11 +13,11 @@ from codebase_rag.enre.relation_type import RelationType
 class ENRELoader:
     """Loads ENRE JSON files and converts them into nodes and relationships for Memgraph."""
 
-    def __init__(self, repo_path: str | Path):
+    def __init__(self, repo_path: str | Path, output_dir: Path | str):
         self.repo_path = Path(repo_path).resolve()
         self.repo_name = self.repo_path.name
-        self.tmp_dir = Path("tmp").resolve()
-        self.tmp_dir.mkdir(exist_ok=True)
+        self.tmp_dir = Path(output_dir).resolve()
+        self.tmp_dir.mkdir(parents=True, exist_ok=True)
         self.json_path: Path | None = None
         self.data: Dict[str, Any] = {}
         self.nodes: List[Dict[str, Any]] = []
@@ -32,6 +32,7 @@ class ENRELoader:
         # 执行命令
         cmd = ["java", "-jar", str(jar_path), "java", str(self.repo_path), self.repo_name]
         result = subprocess.run(cmd, capture_output=True, text=True)
+        print(f"cmd: {cmd}")
         if result.returncode != 0:
             raise RuntimeError(
                 f"ENRE analysis failed:\nSTDOUT: {result.stdout}\nSTDERR: {result.stderr}"
@@ -125,21 +126,21 @@ class ENRELoader:
         self.relationships = rels
         return rels
 
-    def get_nodes_and_relationships(self) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    def get_nodes_and_relationships(self, output_dir: Path | str) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
         """Parse and return both nodes and relationships."""
         self.run_enre_analysis()
         self.parse_entities()
         self.parse_relationships()
-        self.save_json()
+        self.save_json(output_dir)
         return self.nodes, self.relationships
 
-    def save_json(self) -> str:
-        """将 ENRE 结果保存为 JSON 文件，路径固定为 tmp/{repo_name}-graph.json。"""
+    def save_json(self, output_dir: Path | str) -> str:
+        """将 ENRE 结果保存为 JSON 文件，路径固定为 output_dir/{repo_name}-graph.json。"""
         data = self.to_json_dict()
         repo_name = self.repo_path.name
         logger.info(f"start ENRE GRAPH SAVE JSON")
 
-        output_path = Path("tmp") / f"{repo_name}-graph.json"
+        output_path = Path(output_dir) / f"{repo_name}-graph.json"
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         with output_path.open("wb") as f:  # 注意是二进制写入

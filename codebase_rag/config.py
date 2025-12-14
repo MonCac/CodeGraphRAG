@@ -59,6 +59,10 @@ class AppConfig(BaseSettings):
     LOCAL_EMBEDDING_MODEL_ID: str = "llama3"
     LOCAL_MODEL_API_KEY: str = "ollama"
 
+    LOCAL_CODE_EMBEDDING_MODEL_ID: str | None = None
+    LOCAL_TEXT_EMBEDDING_MODEL_ID: str | None = None
+    HF_MODELS_HOME: str | None = None
+
     OPENAI_API_KEY: str | None = None
     OPENAI_ORCHESTRATOR_MODEL_ID: str = "gpt-4o-mini"
     OPENAI_CYPHER_MODEL_ID: str = "gpt-4o-mini"
@@ -224,7 +228,7 @@ EDIT_INDICATORS = frozenset(
 ORANGE_STYLE = Style.from_dict({"": "#ff8c00"})
 
 
-def resolve_output_path(output: str) -> str:
+def resolve_output_path(output_dir, output: str) -> str:
     """
     解析 CLI 的输出路径，始终返回一个有效文件的绝对路径。
 
@@ -239,7 +243,7 @@ def resolve_output_path(output: str) -> str:
     # 判断是否为单纯的文件名（没有目录部分）
     if output_path.parent == Path('.'):
         # 如果只给了文件名，则放入 tmp 文件夹
-        output_path = Path('tmp') / output_path
+        output_path = Path(output_dir) / output_path
 
     # 如果是相对路径 → 转成绝对路径
     if not output_path.is_absolute():

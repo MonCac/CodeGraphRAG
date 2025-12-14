@@ -349,8 +349,8 @@ def create_repair_code_model(system_prompt: str) -> Any:
             llm = OpenAIResponsesModel(
                 model_id,
                 provider=OpenAIProvider(
-                    api_key=settings.LOCAL_MODEL_API_KEY,
-                    base_url=str(settings.LOCAL_MODEL_ENDPOINT),
+                    api_key=settings.OPENAI_API_KEY,
+                    base_url=str(settings.OPENAI_MODEL_ENDPOINT),
                 ),
             )
         return Agent(
