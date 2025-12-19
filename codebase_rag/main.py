@@ -735,7 +735,7 @@ def start(
             help="Update the knowledge graph by parsing the repository and antipattern files",
         ),
         antipattern_type: str = typer.Option(
-            "awd",
+            "mh",
             "--antipattern-type",
             help="Enable hybrid retrieval (graph + embedding) during query.",
         ),
@@ -755,7 +755,7 @@ def start(
             help="Clean the database before updating (use when adding first repo)",
         ),
         output: str | None = typer.Option(
-            "tmp/awd-final-result.json",
+            "tmp/sitech/final-result.json",
             "-o",
             "--output",
             help="Export graph to JSON file after updating (requires --update-graph)",
@@ -773,6 +773,11 @@ def start(
             False,
             "--no-confirm",
             help="Disable confirmation prompts for edit operations (YOLO mode)",
+        ),
+        result_folder_name: str | None = typer.Option(
+            "after_code",
+            "--no-confirm",
+            help="save final code results folder path",
         ),
 ) -> None:
     """Starts the Codebase RAG CLI."""
@@ -846,136 +851,210 @@ def start(
         logger.info(
             f"[bold green]Updating knowledge graph for: {repo_to_update} \n and \n {antipattern_to_update}[/bold green]"
         )
-        with MemgraphIngestor(
-                host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
-        ) as ingestor:
-            if clean:
-                logger.info("[bold yellow]Cleaning database...[/bold yellow]")
-                ingestor.clean_database()
-            ingestor.ensure_constraints()
+        antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
+        repaired_description_json_path = ""
+        # repaired_description_json_path = find_first_repaired_description_json_in_parent_dir(antipattern_to_update)
 
-            # # Load parsers and queries
-            parsers, queries = load_parsers()
+        # with MemgraphIngestor(
+        #         host=settings.MEMGRAPH_HOST, port=settings.MEMGRAPH_PORT
+        # ) as ingestor:
+        #     if clean:
+        #         logger.info("[bold yellow]Cleaning database...[/bold yellow]")
+        #         ingestor.clean_database()
+        #     ingestor.ensure_constraints()
+        #
+        #     # # Load parsers and queries
+        #     parsers, queries = load_parsers()
+        #
+        #     updater = GraphAntipatternUpdater(ingestor, repo_to_update, antipattern_to_update, output_dir)
+        #
+        #     updater.run()
+        #     _export_graph_to_file(ingestor, output)
+        #
+        #     # 与 LLM 交互，完成第一层文件的提取
+        #     # 仿照 run_chat_loop 构建 chat，完成对数据库的内容提取。输入是反模式的具体体现的文件，用它来构建 prompt。输出就是对知识图谱的提取结果，存储为 json
+        #     # 然后提供给 semantic_enhance。让 semantic_enhance 生成之后再存入数据库。
+        #     # asyncio.run(run_multi_interaction(ingestor, antipattern_relation_path))
+        #     # 可能遇到的问题：
+        #     # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
+        #     # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。
+        #
+        #     if semantic_enhance:
+        #         logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
+        #         # # 本地测试用
+        #         # json_path = Path("tmp\\algorithm-graph.json")  # 替换为你的文件路径
+        #         # if not json_path.exists():
+        #         #     raise FileNotFoundError(f"文件不存在: {json_path}")
+        #         # with open(json_path, "r", encoding="utf-8") as f:
+        #         #     graph_data = json.load(f)
+        #
+        #         # 实际执行逻辑
+        #         graph_data = ingestor.export_graph_to_dict()
+        #
+        #         # graph_data 的拆分
+        #         classifier = GraphFileClassifier(graph_data, antipattern_type)
+        #         classify_result = classifier.classify(antipattern_json_path, "mios/modules/user/util/CreatePdfThread.java")
+        #         classify_result_path = save_antipattern_relevance_result(
+        #             classify_result,
+        #             os.path.join(output_dir, f"{antipattern_type}-classify_result.json")
+        #         )
+        #
+        #         # 对无关文件进行筛选
+        #         # logger.info(f"[bold green]start other files select:[/bold green]")
+        #         # process_initial_classification(classify_result_path, target_repo_path, output_dir)
+        #         # logger.info(f"[bold green]other files select over[/bold green]")
+        #
+        #
+        #         # 暂时不用 semantic_description
+        #         # # semantic_description 的获取
+        #         # output_file = Path(output)
+        #         # output_dir = output_file.parent
+        #         # hierarchical_semantic_builder = HierarchicalSemanticBuilder()
+        #         # result = hierarchical_semantic_builder.build_node_semantics(graph_data)
+        #         # save_semantic_results(result, "tmp")
+        #         #
+        #         # logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
+        #
+        #         # # 编写与 llm 交互的逻辑
+        #         # # 1. 与 llm 交互，首先对直接依赖的文件集进行修复建议的生成
+        #         # # 输入： 案例库中检索到的修复案例、当前反模式描述文件
+        #         # # 输出： 每个文件的修复建议
+        #         # logger.info("[bold green]Step 1: Generating repair suggestions for directly related files[/bold green]")
+        #         # direct_file_repair_suggestions = generate_direct_file_repair_suggestions(antipattern_json_path,
+        #         #                                                                          classify_result,
+        #         #                                                                          antipattern_type,
+        #         #                                                                          repaired_description_json_path)
+        #         # direct_file_repair_suggestions_json_path = save_antipattern_relevance_result(
+        #         #     direct_file_repair_suggestions,
+        #         #     os.path.join(output_dir, "direct_file_repair_suggestions.json")
+        #         # )
+        #         # logger.info(f"Direct file repair suggestions saved to: {direct_file_repair_suggestions_json_path}")
+        #         # # # 2. 根据对直接依赖的文件的修复建议，生成每个文件的具体代码修复
+        #         # # # 输入：每个文件的修复建议
+        #         # # # 输出：每个文件具体的修复后的代码
+        #         # logger.info("[bold green]Step 2: Generating concrete code repairs based on suggestions[/bold green]")
+        #         # generate_direct_file_code_repair(target_repo_path, direct_file_repair_suggestions, output_dir, antipattern_type=antipattern_type)
+        #         # logger.info("Direct file code repairs generated successfully.")
+        #         # # 3. 根据直接文件的修复描述，大模型来判断每个间接文件是否需要更改，如果更改，直接返回具体的更改代码。
+        #         # # 输入：直接关联文件的修复描述、间接文件的存储路径
+        #         # # 输出：每个文件是否要更改，更改的描述、更改的具体代码
+        #         # logger.info(
+        #         #     "[bold green]Step 3: Analyzing indirect files for necessary changes and generating repairs[/bold "
+        #         #     "green]")
+        #         # indirect_files_for_changes_results = analyze_indirect_files_for_changes(target_repo_path,
+        #         #                                                                         classify_result,
+        #         #                                                                         direct_file_repair_suggestions)
+        #         # indirect_files_for_changes_results_json_path = save_antipattern_relevance_result(
+        #         #     indirect_files_for_changes_results,
+        #         #     os.path.join(output_dir, "indirect_files_for_changes_results.json")
+        #         # )
+        #         # logger.info(f"Indirect file repair results saved to: {indirect_files_for_changes_results_json_path}")
+        #
+        #         # 编写一个与 llm 交互的函数。
+        #         # 输入是tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
+        #         # 得到最终的files
+        #         # result = analyze_files_with_llm(
+        #         #     os.path.join("tmp", f"{antipattern_type}-classify_result.json"),
+        #         #     antipattern_to_update,
+        #         #     repo_to_update
+        #         # )
+        #         #
+        #         # related_files_json_path = save_antipattern_relevance_result(
+        #         #     result,
+        #         #     os.path.join("tmp", "antipattern_relevance_result.json")
+        #         # )
+        #         # 构建最终的修复架构反模式的与 llm 交互的流程
+        #         # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
+        #         # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
+        #         # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
+        #         # 4. 多次交互，完善其他文件的代码具体内容
+        #         # 第三个参数是上面生成的路径json，所以需要统一路径
+        #         # result = asyncio.run(run_repair_code_llm(antipattern_type, antipattern_relation_path,
+        #         #                                          "tmp/antipattern_relevance_result.json"))
+        #         #
+        #         # save_repair_results_to_json(result, "./repair_outputs")
 
-            updater = GraphAntipatternUpdater(ingestor, repo_to_update, antipattern_to_update, output_dir)
+        # 编写与 llm 交互的逻辑
+        # 1. 与 llm 交互，首先对直接依赖的文件集进行修复建议的生成
+        # 输入： 案例库中检索到的修复案例、当前反模式描述文件
+        # 输出： 每个文件的修复建议
+        #
+        # 编写与 llm 交互的逻辑
+        classify_result_json_path = Path(os.path.join(output_dir, f"{antipattern_type}-classify_result.json"))
+        if not classify_result_json_path.exists():
+            raise FileNotFoundError(f"文件不存在: {classify_result_json_path}")
+        with open(classify_result_json_path, "r", encoding="utf-8") as f:
+            classify_result = json.load(f)
+        # 1. 与 llm 交互，首先对直接依赖的文件集进行修复建议的生成
+        # 输入： 案例库中检索到的修复案例、当前反模式描述文件
+        # 输出： 每个文件的修复建议
+        logger.info("[bold green]Step 1: Generating repair suggestions for directly related files[/bold green]")
+        direct_file_repair_suggestions = generate_direct_file_repair_suggestions(antipattern_json_path,
+                                                                                 classify_result,
+                                                                                 antipattern_type,
+                                                                                 repaired_description_json_path)
+        direct_file_repair_suggestions_json_path = save_antipattern_relevance_result(
+            direct_file_repair_suggestions,
+            os.path.join(output_dir, result_folder_name, "direct_file_repair_suggestions.json")
+        )
+        logger.info(f"Direct file repair suggestions saved to: {direct_file_repair_suggestions_json_path}")
+        # 2. 根据对直接依赖的文件的修复建议，生成每个文件的具体代码修复
+        # 输入：每个文件的修复建议
+        # 输出：每个文件具体的修复后的代码
+        output_dir = Path(output_dir)
+        matches = list(output_dir.glob("*other_files_rank_stage1.jsonl"))
+        if not matches:
+            raise FileNotFoundError("未找到以 other_files_rank_stage1.jsonl 结尾的文件")
+        if len(matches) > 1:
+            raise RuntimeError("找到多个以 other_files_rank_stage1.jsonl 结尾的文件")
+        other_files = matches[0].resolve()  # 绝对路径
+        direct_file_repair_suggestions_json_path = Path(os.path.join(output_dir, result_folder_name, "direct_file_repair_suggestions.json"))
+        if not direct_file_repair_suggestions_json_path.exists():
+            raise FileNotFoundError(f"文件不存在: {direct_file_repair_suggestions_json_path}")
+        with open(direct_file_repair_suggestions_json_path, "r", encoding="utf-8") as f:
+            direct_file_repair_suggestions = json.load(f)
+        logger.info("[bold green]Step 2: Generating concrete code repairs based on suggestions[/bold green]")
+        repair_result = generate_direct_file_code_repair(target_repo_path, direct_file_repair_suggestions, output_dir, other_files, antipattern_type, result_folder_name)
+        logger.info("Direct file code repairs generated successfully.")
+        # 3. 根据直接文件的修复描述，大模型来判断每个间接文件是否需要更改，如果更改，直接返回具体的更改代码。
+        # 输入：直接关联文件的修复描述、间接文件的存储路径
+        # 输出：每个文件是否要更改，更改的描述、更改的具体代码
+        repair_result_path = Path(os.path.join(output_dir, result_folder_name, "repair_result.json"))
+        if not repair_result_path.exists():
+            raise FileNotFoundError(f"文件不存在: {repair_result_path}")
+        with open(repair_result_path, "r", encoding="utf-8") as f:
+            repair_result = json.load(f)
+        if "success" not in repair_result:
+            raise KeyError(
+                f"'success' 字段缺失: {repair_result_path}"
+            )
+        success = repair_result.get("success")
+        logger.info(
+            "[bold green]Step 3: Analyzing indirect files for necessary changes and generating repairs[/bold "
+            "green]")
+        print(f"step 2: success: {success}")
+        if success:
+            indirect_files_for_changes_results = analyze_indirect_files_for_changes(target_repo_path,
+                                                                                    classify_result,
+                                                                                    direct_file_repair_suggestions,
+                                                                                    output_dir,
+                                                                                    other_files,
+                                                                                    antipattern_type,
+                                                                                    result_folder_name)
+            indirect_files_for_changes_results_json_path = save_antipattern_relevance_result(
+                indirect_files_for_changes_results,
+                os.path.join(output_dir, result_folder_name, "indirect_files_for_changes_results.json")
+            )
+            logger.info(f"Indirect file repair results saved to: {indirect_files_for_changes_results_json_path}")
+        logger.info("[bold green]RUN OVER![/bold green]")
 
-            updater.run()
-            _export_graph_to_file(ingestor, output)
 
-            # 与 LLM 交互，完成第一层文件的提取
-            # 仿照 run_chat_loop 构建 chat，完成对数据库的内容提取。输入是反模式的具体体现的文件，用它来构建 prompt。输出就是对知识图谱的提取结果，存储为 json
-            # 然后提供给 semantic_enhance。让 semantic_enhance 生成之后再存入数据库。
-            # asyncio.run(run_multi_interaction(ingestor, antipattern_relation_path))
-            # 可能遇到的问题：
-            # 1. 数据库最新存储时需要让每次的 node_id 的 start 为 0
-            # 2. 对于 semantic_enhance 的内容，如何存储，可以进行辨识。不删除原来的内容。但又想让 from_id 和 to_id 不冲突，对应的仍然是 id。
-
-            if semantic_enhance:
-                logger.info("[bold blue]Generating semantic embeddings...[/bold blue]")
-                # # 本地测试用
-                # json_path = Path("tmp\\algorithm-graph.json")  # 替换为你的文件路径
-                # if not json_path.exists():
-                #     raise FileNotFoundError(f"文件不存在: {json_path}")
-                # with open(json_path, "r", encoding="utf-8") as f:
-                #     graph_data = json.load(f)
-
-                # 实际执行逻辑
-                graph_data = ingestor.export_graph_to_dict()
-
-                # graph_data 的拆分
-                classifier = GraphFileClassifier(graph_data, antipattern_type)
-                antipattern_json_path = find_first_antipattern_json_in_parent_dir(antipattern_to_update)
-                repaired_description_json_path = find_first_repaired_description_json_in_parent_dir(antipattern_to_update)
-                classify_result = classifier.classify(antipattern_json_path)
-                classify_result_path = save_antipattern_relevance_result(
-                    classify_result,
-                    os.path.join(output_dir, f"{antipattern_type}-classify_result.json")
-                )
-
-                # 对无关文件进行筛选
-                logger.info(f"[bold green]start other files select:[/bold green]")
-                process_initial_classification(classify_result_path, target_repo_path, output_dir)
-                logger.info(f"[bold green]other files select over[/bold green]")
-
-
-                # 暂时不用 semantic_description
-                # # semantic_description 的获取
-                # output_file = Path(output)
-                # output_dir = output_file.parent
-                # hierarchical_semantic_builder = HierarchicalSemanticBuilder()
-                # result = hierarchical_semantic_builder.build_node_semantics(graph_data)
-                # save_semantic_results(result, "tmp")
-                #
-                # logger.info("[bold green]Semantic embeddings generation completed![/bold green]")
-
-                # 编写与 llm 交互的逻辑
-                # 1. 与 llm 交互，首先对直接依赖的文件集进行修复建议的生成
-                # 输入： 案例库中检索到的修复案例、当前反模式描述文件
-                # 输出： 每个文件的修复建议
-                # logger.info("[bold green]Step 1: Generating repair suggestions for directly related files[/bold green]")
-                # direct_file_repair_suggestions = generate_direct_file_repair_suggestions(antipattern_json_path,
-                #                                                                          classify_result,
-                #                                                                          antipattern_type,
-                #                                                                          repaired_description_json_path)
-                # direct_file_repair_suggestions_json_path = save_antipattern_relevance_result(
-                #     direct_file_repair_suggestions,
-                #     os.path.join(output_dir, "direct_file_repair_suggestions.json")
-                # )
-                # logger.info(f"Direct file repair suggestions saved to: {direct_file_repair_suggestions_json_path}")
-                # 2. 根据对直接依赖的文件的修复建议，生成每个文件的具体代码修复
-                # 输入：每个文件的修复建议
-                # 输出：每个文件具体的修复后的代码
-                # logger.info("[bold green]Step 2: Generating concrete code repairs based on suggestions[/bold green]")
-                # generate_direct_file_code_repair(target_repo_path, direct_file_repair_suggestions, output_dir)
-                # logger.info("Direct file code repairs generated successfully.")
-                # 3. 根据直接文件的修复描述，大模型来判断每个间接文件是否需要更改，如果更改，直接返回具体的更改代码。
-                # 输入：直接关联文件的修复描述、间接文件的存储路径
-                # 输出：每个文件是否要更改，更改的描述、更改的具体代码
-                # logger.info(
-                #     "[bold green]Step 3: Analyzing indirect files for necessary changes and generating repairs[/bold "
-                #     "green]")
-                # indirect_files_for_changes_results = analyze_indirect_files_for_changes(target_repo_path,
-                #                                                                         classify_result,
-                #                                                                         direct_file_repair_suggestions)
-                # indirect_files_for_changes_results_json_path = save_antipattern_relevance_result(
-                #     indirect_files_for_changes_results,
-                #     os.path.join(output_dir, "indirect_files_for_changes_results.json")
-                # )
-                # logger.info(f"Indirect file repair results saved to: {indirect_files_for_changes_results_json_path}")
-
-                # 编写一个与 llm 交互的函数。
-                # 输入是tmp/file_result.json，都是file级别的。和.env中的antipattern路径，构建反模式代码和反模式描述的json拼接prompt，来判断file_result.json中的每个文件是否与反模式修复相关。
-                # 得到最终的files
-                # result = analyze_files_with_llm(
-                #     os.path.join("tmp", f"{antipattern_type}-classify_result.json"),
-                #     antipattern_to_update,
-                #     repo_to_update
-                # )
-                #
-                # related_files_json_path = save_antipattern_relevance_result(
-                #     result,
-                #     os.path.join("tmp", "antipattern_relevance_result.json")
-                # )
-                # 构建最终的修复架构反模式的与 llm 交互的流程
-                # 1. System Prompt 中包含的内容：背景、反模式描述、修复方法、修复案例
-                # 2. Input 包含的内容：当前反模式的 json 文件，反模式具体代码，相关文件与反模式文件调用关系相关代码。
-                # 3. Output 包含的内容：对反模式文件的修复描述，具体代码修复
-                # 4. 多次交互，完善其他文件的代码具体内容
-                # 第三个参数是上面生成的路径json，所以需要统一路径
-                # result = asyncio.run(run_repair_code_llm(antipattern_type, antipattern_relation_path,
-                #                                          "tmp/antipattern_relevance_result.json"))
-                #
-                # save_repair_results_to_json(result, "./repair_outputs")
-
-    # Export graph if output file specified
-    # if output:
-    #     output = resolve_output_path(output)
-    #     logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
-    #     if not _export_graph_to_file(ingestor, output):
-    #         raise typer.Exit(1)
-
-    logger.info("[bold green]RUN OVER![/bold green]")
-
+# Export graph if output file specified
+# if output:
+#     output = resolve_output_path(output)
+#     logger.info(f"[bold cyan]Exporting graph to: {output}[/bold cyan]")
+#     if not _export_graph_to_file(ingestor, output):
+#         raise typer.Exit(1)
 
 # try:
 #     asyncio.run(main_async(target_repo_path))

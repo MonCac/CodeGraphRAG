@@ -1,0 +1,26 @@
+graphTarget:
+  edgeRelations:
+    - Call
+    - Set
+    - Cast
+    - Contain
+    - Inherit
+    - Import
+    - Implement
+    - Parameter
+    - Modify
+    - Annotate
+    - UseVar
+    - Reflect
+    - Override
+  edgeLevel:
+    exclude:
+      - Import
+      - Inherit
+      - Implement
+  vertexLevel:
+    class
+detectTarget:
+  findVertex:
+    oneForOne:
+      constraint: Inherit

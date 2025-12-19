@@ -1,0 +1,24 @@
+graphTarget:
+  edgeRelations:
+    - Call
+    - Set
+    - Cast
+    - Contain
+    - Inherit
+    - Import
+    - Implement
+    - Parameter
+    - Modify
+    - Annotate
+    - UseVar
+    - Reflect
+    - Override
+  edgeLevel:
+    include:
+      - Inherit
+      - Implement
+  vertexLevel:
+    class
+detectTarget:
+  multipath:
+    maxPathLength: -1

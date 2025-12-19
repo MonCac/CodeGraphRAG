@@ -434,6 +434,6 @@ def create_code2text_model() -> Any:
 
 
 if __name__ == "__main__":
-    model = create_semantic_model()
+    model = create_repair_code_model("hello")
     result = model.run_sync("hello")
     print(result)

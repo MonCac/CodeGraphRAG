@@ -14,6 +14,7 @@ def run_with_retry(client, user_prompt, max_retries=3):
     while attempt <= max_retries:
         try:
             result = client.run_sync(user_prompt)
+            print(f"result: {result}")
             desc = getattr(result, "output", str(result)).strip()  # LLM 原始返回
             llm_json = json.loads(desc)  # 解析 JSON
             return llm_json

@@ -490,8 +490,8 @@ Return your answer as a JSON object with exactly the following fields:
 
 
 def build_fix_system_prompt(
-    antipattern_type: str,
-    repaired_description_json_path: Path | str
+        antipattern_type: str,
+        repaired_description_json_path: Path | str
 ) -> str:
     """
     根据反模式类型动态构建 system_prompt
@@ -547,6 +547,51 @@ and can lead to technical debt, maintainability issues, and performance problems
 """.strip()
 
     return system_prompt
+
+
+def build_fix_system_prompt_1(
+        antipattern_type: str
+) -> str:
+    """
+    根据反模式类型动态构建 system_prompt
+    - YAML：只提供 definition
+    - JSON：完整 example 内容，原样注入，不做任何结构重组
+    """
+
+    yaml_path = os.path.join("fix_example", f"{antipattern_type}_fix.yaml")
+
+    definition = "Definition not provided."
+    antipattern_content = "antipattern content not provided"
+
+    # 1️⃣ 读取 YAML（只取 definition）
+    if os.path.exists(yaml_path):
+        try:
+            with open(yaml_path, "r", encoding="utf-8") as f:
+                content = yaml.safe_load(f) or {}
+                definition = content.get("definition")
+                antipattern_content = content.get("antipattern_type")
+        except Exception as e:
+            print(f"Warning: failed to read YAML {yaml_path}: {e}")
+
+    # 3️⃣ 构造 system prompt（不再构造 examples_text）
+    system_prompt = f"""
+# Architecture Anti-Pattern Remediation Expert
+
+## Background
+You are a professional software architect specializing in identifying and remediating architectural anti-patterns.
+Architectural anti-patterns are common design flaws in software systems that can span multiple files or modules
+and can lead to technical debt, maintainability issues, and performance problems.
+
+## Current Anti-Pattern Type
+{antipattern_content}
+
+## Anti-Pattern Definition
+{definition}
+
+""".strip()
+
+    return system_prompt
+
 
 def build_first_fix_user_input(antipattern_folder: str, related_files_json_path: str):
     # ---------- Read antipattern.json ----------
@@ -739,52 +784,99 @@ Return your answer strictly as a JSON object with fields:
     return user_prompt
 
 
-def build_generate_file_repair_suggestions_prompt(classify_result, antipattern_json) -> str:
+def build_generate_file_repair_suggestions_prompt(classify_result, antipattern_json, antipattern_type) -> str:
     """
     Construct a prompt for the LLM to generate repair suggestions for a cross-file architectural anti-pattern.
     The output must be in JSON format.
     """
 
     direct_files = classify_result.get("direct_related", [])
+    print(f"direct_files: {direct_files}")
 
-    prompt = f"""
-You are a professional software architecture repair expert.
+    # ===== 基础通用 Prompt =====
+    base_prompt = f"""
+    You are a professional software architecture repair expert.
 
-You are dealing with a **cross-file architectural anti-pattern** that affects multiple files or modules within the system. 
-This anti-pattern may involve complex dependencies and interactions between files.
+    You are dealing with a **cross-file architectural anti-pattern** that affects multiple files or modules within the system. 
+    This anti-pattern may involve complex dependencies and interactions between files.
 
-Please carefully review the anti-pattern details and the list of directly related files below, and generate repair suggestions accordingly.
+    Please carefully review the anti-pattern details and the list of directly related files below, and generate repair suggestions accordingly.
 
-**Requirements:**
+    **General Requirements:**
 
-1. Return your answer strictly in the following JSON format:
-{{
-  "summary": "A clear and comprehensive overall repair description, explaining the cross-file repair strategy and relationships between files.",
-  "files": [
+    1. Return your answer strictly in the following JSON format:
     {{
-      "file_path": "Path to the file",
-      "repair_description": "Detailed repair suggestion focused on this file, including specific changes and steps, and noting any possible impact on other files."
-    }},
-    ...
-  ]
-}}
+      "summary": "A clear and comprehensive overall repair description, explaining the cross-file repair strategy and relationships between files.",
+      "files": [
+        {{
+          "file_path": "Path to the file",
+          "repair_description": "Detailed repair suggestion focused on this file, including specific changes and steps, and noting any possible impact on other files."
+        }}
+      ]
+    }}
 
-2. The summary should clearly explain the overall repair approach and inter-file considerations, fully reflecting the repair operations for each file and covering specific repair suggestions for all involved files.
+    2. The summary must clearly and explicitly list all dependency-impacting changes, including:
+        - deleted methods or classes,
+        - renamed methods or classes (old name → new name),
+        - method signature changes,
+        - moved methods across files or class hierarchies,
+        - newly introduced or removed abstract methods.
 
-3. Each file's repair description must specify concrete modification steps and operations.
+        The summary must be detailed enough for indirect dependency files
+        to decide whether they require adaptation.
+    3. Each file's repair description must specify **concrete, step-by-step modification operations**.
 
----
+    4. Any repair suggestions should eliminate the anti-pattern while preserving existing functionality as much as possible.
+    """.strip()
 
-Anti-pattern details (JSON format):
-```json
-{json.dumps(antipattern_json, indent=2, ensure_ascii=False)}
-Directly related files:
-{json.dumps(direct_files, indent=2, ensure_ascii=False)}
+    # ===== CH 反模式专用增强 Prompt =====
+    ch_prompt = """
+    **Additional Requirements for Class Hierarchy (CH) Anti-pattern:**
 
-Please begin generating the detailed repair suggestions based on the above information.
-""".strip()
+    1. You must analyze whether the root cause of the anti-pattern lies primarily in:
+       - the superclass design,
+       - the subclass design,
+       - or both.
 
-    return prompt
+    2. Add a new field at the same level as "summary" named **"modification_scope"** with the following format:
+    {
+      "modification_scope": ["superclass"] | ["subclass"] | ["superclass", "subclass"]
+    }
+
+    3. The value of "modification_scope" must strictly reflect where the actual code modifications are applied.
+
+    4. In the repair suggestions, you must clearly explain:
+       - why the parent class or child class is modified,
+       - how responsibilities or behaviors are reassigned across the hierarchy.
+
+    5. For each file involved, the "repair_description" must include **explicit and executable operations**, such as:
+       - deleting specific methods,
+       - renaming methods (with old name → new name),
+       - moving methods between superclass and subclass,
+       - introducing abstract methods or template methods,
+       - changing method visibility or override behavior.
+
+    6. Each operation must be described step by step, with reasoning and potential impact on other classes in the hierarchy.
+    """.strip()
+
+    # ===== 根据 antipattern_type 组合 Prompt =====
+    full_prompt = ""
+    if antipattern_type == "ch":
+        full_prompt = f"""
+    {base_prompt}
+    
+    {ch_prompt}
+    
+    ---
+    Anti-pattern details (JSON format):
+    ```json
+    {json.dumps(antipattern_json, indent=2, ensure_ascii=False)}
+    Directly related files:
+    {json.dumps(direct_files, indent=2, ensure_ascii=False)}
+    Please begin generating the detailed repair suggestions based on the above information.
+    """.strip()
+
+    return full_prompt
 
 
 def build_generate_file_repair_code_prompt(target_repo_path, summary, file_info):
@@ -812,7 +904,7 @@ Repair description:
 {repair_desc}
 
 Please provide the complete, updated content of the entire file, incorporating all necessary changes.
-Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```python```).
+Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```java```).
 Do NOT include any explanation, commentary, or diff output outside the code block.
 
 File Original Code: 
@@ -823,11 +915,17 @@ File Original Code:
     return prompt
 
 
-def build_indirect_dependency_change_prompt(summary: str, file_content: str) -> str:
+def build_indirect_dependency_change_prompt(
+        summary: str,
+        file_content: str,
+        antipattern_type
+) -> str:
     prompt = f"""
-You are analyzing an indirect dependency source code file that might be impacted by recent changes in directly related files.
+You are a professional software engineer analyzing an **indirect dependency file**.
 
-Here is the summary of the repair descriptions for directly related files:
+This file itself is NOT directly modified, but it may be affected by changes made to other files.
+
+Below is a summary of the repair actions already applied to the directly related files:
 ---
 {summary}
 ---
@@ -836,20 +934,39 @@ Below is the full current content of the indirect dependency file:
 ---
 {file_content}
 ---
+
 Your task:
 
-Determine whether this indirect file needs to be updated to maintain correctness and consistency.
+1. Carefully analyze whether any of the changes described in the summary **impact this file**.
+   Impact includes (but is not limited to):
+   - Methods or classes used by this file being **deleted**
+   - Methods or classes being **renamed**
+   - Method signatures being changed (parameters, return types, visibility)
+   - Class hierarchy changes (e.g., logic moved between superclass and subclass)
+   - Abstract methods added or removed
+   - Behavioral contracts that this file depends on being modified
 
-If updates are needed, generate the full updated file content reflecting the necessary changes.
+2. If and only if the changes in the summary **require this file to adapt in order to remain correct and consistent**, update the code accordingly.
+   - Adaptations must strictly align with the changes described in the summary
+   - Do NOT introduce unrelated refactoring or behavior changes
 
-If no updates are necessary, respond accordingly.
+3. If the summary does **not** affect this file, no changes should be made.
 
-Please respond with a JSON object strictly in the following format, with no extra text:
+Response format requirements:
+
+- Respond **only** with a JSON object
+- Do NOT include any explanatory text outside the JSON
+- Use the following strict JSON structure:
 
 {{
-"should_update": true or false,
-"file_content": "If should_update is true, provide the complete updated file content as a string; if false, set this field to the string "不需要更改"."
+  "should_update": true or false,
+  "file_content": "If should_update is true, provide the complete updated file code content as a single string (including language fences such as ```java``` if applicable). If should_update is false, set this field to the exact string: 不需要更改"
 }}
+
+Decision rules (important):
+
+- Set "should_update" to true **only if** the summary describes changes that directly affect code elements used in this file.
+- If there is no concrete dependency impact, set "should_update" to false.
 """
     return prompt.strip()
 
@@ -879,15 +996,22 @@ Overall Repair Summary:
 Repair description:
 {repair_desc}
 
-Below is supplementary structural information (Classes and Methods) extracted from **other files** in the codebase.
-These files are **not strongly related**, but the information is provided only for optional contextual reference.
-Do NOT assume strong coupling unless explicitly implied by the code:
+Below is supplementary structural information (classes and methods) extracted from **other files** in the codebase.
+
+These files are provided **only for learning project-level coding style and conventions**, including:
+- naming conventions,
+- formatting and structure,
+- common design patterns.
+
+Do NOT assume any functional or dependency relationship with the current file.
+Do NOT introduce new imports, method calls, or logic based on these files.
+
 ---
 {other_file_contents}
 ---
 
 Please provide the complete, updated content of the entire file, incorporating all necessary changes.
-Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```python```).
+Return ONLY the full file content inside a single Markdown code block with the appropriate language tag (e.g., ```java```).
 Do NOT include any explanation, commentary, or diff output outside the code block.
 
 File Original Code: 
@@ -898,41 +1022,69 @@ File Original Code:
     return prompt
 
 
-def build_indirect_dependency_change_prompt_1(summary: str, file_content: str, other_file_entities: list) -> str:
+def build_indirect_dependency_change_prompt_1(summary: str, file_content: str, antipattern_type,
+                                              other_file_entities: list) -> str:
     other_file_contents = json.dumps(other_file_entities, indent=2, ensure_ascii=False)
     prompt = f"""
-You are analyzing an indirect dependency source code file that might be impacted by recent changes in directly related files.
+    You are a professional software engineer analyzing an **indirect dependency file**.
 
-Here is the summary of the repair descriptions for directly related files:
----
-{summary}
----
+    This file itself is NOT directly modified, but it may be affected by changes made to other files.
 
-Below is the full current content of the indirect dependency file:
----
-{file_content}
----
+    Below is a summary of the repair actions already applied to the directly related files:
+    ---
+    {summary}
+    ---
 
-Below is supplementary structural information (Classes and Methods) extracted from **other files** in the codebase.
-These files are **not strongly related**, but the information is provided only for optional contextual reference.
-Do NOT assume strong coupling unless explicitly implied by the code:
----
-{other_file_contents}
----
+    Below is the full current content of the indirect dependency file:
+    ---
+    {file_content}
+    ---
+    
+    Below is supplementary structural information (classes and methods) extracted from **other files** in the codebase.
 
-Your task:
+    These files are provided **only for learning project-level coding style and conventions**, including:
+        - naming conventions,
+        - formatting and structure,
+        - common design patterns.
 
-Determine whether this indirect file needs to be updated to maintain correctness and consistency.
+        Do NOT assume any functional or dependency relationship with the current file.
+        Do NOT introduce new imports, method calls, or logic based on these files.
 
-If updates are needed, generate the full updated file content reflecting the necessary changes.
+    ---
+    {other_file_contents}
+    ---
 
-If no updates are necessary, respond accordingly.
+    Your task:
 
-Please respond with a JSON object strictly in the following format, with no extra text:
+    1. Carefully analyze whether any of the changes described in the summary **impact this file**.
+       Impact includes (but is not limited to):
+       - Methods or classes used by this file being **deleted**
+       - Methods or classes being **renamed**
+       - Method signatures being changed (parameters, return types, visibility)
+       - Class hierarchy changes (e.g., logic moved between superclass and subclass)
+       - Abstract methods added or removed
+       - Behavioral contracts that this file depends on being modified
 
-{{
-"should_update": true or false,
-"file_content": "If should_update is true, provide the complete updated file content as a string; if false, set this field to the string "不需要更改"."
-}}
-"""
+    2. If and only if the changes in the summary **require this file to adapt in order to remain correct and consistent**, update the code accordingly.
+       - Adaptations must strictly align with the changes described in the summary
+       - Do NOT introduce unrelated refactoring or behavior changes
+
+    3. If the summary does **not** affect this file, no changes should be made.
+
+    Response format requirements:
+
+    - Respond **only** with a JSON object
+    - Do NOT include any explanatory text outside the JSON
+    - Use the following strict JSON structure:
+
+    {{
+      "should_update": true or false,
+      "file_content": "If should_update is true, provide the complete updated file code content as a single string (including language fences such as ```java``` if applicable). If should_update is false, set this field to the exact string: 不需要更改"
+    }}
+
+    Decision rules (important):
+
+    - Set "should_update" to true **only if** the summary describes changes that directly affect code elements used in this file.
+    - If there is no concrete dependency impact, set "should_update" to false.
+    """
     return prompt.strip()

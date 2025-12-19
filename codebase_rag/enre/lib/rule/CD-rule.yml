@@ -1,0 +1,26 @@
+graphTarget:
+  edgeRelations:
+    - Call
+    - Set
+    - Cast
+    - Contain
+    - Inherit
+    - Import
+    - Implement
+    - Parameter
+    - Modify
+    - Annotate
+    - UseVar
+    - Reflect
+    - Override
+  edgeLevel:
+    exclude:
+      - Inherit
+      - Import
+      - Implement
+  vertexLevel:
+    package
+detectTarget:
+  cycle:
+    minCycleCount: 2
+
